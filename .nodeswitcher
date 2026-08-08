@@ -1,6 +1,6 @@
 {
   "backend": "nvm",
-  "current": "24.19.0",
+  "current": "26.6.0",
   "history": [
     {
       "backend": "nvm",
@@ -11,6 +11,16 @@
       "backend": "nvm",
       "selected_at": "2026-08-07T04:38:03.590Z",
       "version": "24.19.0"
+    },
+    {
+      "backend": "nvm",
+      "selected_at": "2026-08-08T04:58:13.136Z",
+      "version": "24.19.0"
+    },
+    {
+      "backend": "nvm",
+      "selected_at": "2026-08-08T05:01:49.900Z",
+      "version": "26.6.0"
     }
   ]
 }

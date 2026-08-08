@@ -1,7 +1,15 @@
 {
   "extends": "./src/configs/tsconfig.json",
   "compilerOptions": {
-    "baseUrl": "."
+    "paths": {
+      "@/*": ["./src/*"],
+      "@components/*": ["./src/components/*"],
+      "@hooks/*": ["./src/hooks/*"],
+      "@lib/*": ["./src/lib/*"],
+      "@types/*": ["./src/types/*"],
+      "@providers/*": ["./src/providers/*"],
+      "@features/*": ["./src/features/*"]
+    }
   },
   "include": [
     "**/*.ts",

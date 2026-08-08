@@ -47,6 +47,15 @@ const TrayMenuPage: FC = () => {
     };
   }, []);
 
+  const hideTrayMenu = async () => {
+    try {
+      const { getCurrentWindow } = await import("@tauri-apps/api/window");
+      await getCurrentWindow().hide();
+    } catch (err) {
+      console.error("Failed to hide tray menu", err);
+    }
+  };
+
   // Handle keyboard navigation (Escape to close)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -57,15 +66,6 @@ const TrayMenuPage: FC = () => {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
-
-  const hideTrayMenu = async () => {
-    try {
-      const { getCurrentWindow } = await import("@tauri-apps/api/window");
-      await getCurrentWindow().hide();
-    } catch (err) {
-      console.error("Failed to hide tray menu", err);
-    }
-  };
 
   const handleToggleMain = async () => {
     try {
