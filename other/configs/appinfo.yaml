@@ -6,7 +6,7 @@
 #
 # See other/configs/README.md for guidance.
 
-version:     "0.1.0"
-codename:    "Meridian"
-build:       "dev"          # Options: dev | alpha | beta | rc | stable
+version: "0.1.0"
+codename: "Melody"
+build: "dev" # Options: dev | alpha | beta | rc | stable
 description: "GeoSource Tauri Template Desktop Application"
