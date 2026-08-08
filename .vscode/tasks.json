@@ -5,11 +5,7 @@
       "label": "tauri: dev",
       "type": "shell",
       "command": "npm",
-      "args": [
-        "run",
-        "tauri",
-        "dev"
-      ],
+      "args": ["run", "tauri", "dev"],
       "problemMatcher": [],
       "group": {
         "kind": "build",
@@ -20,21 +16,14 @@
       "label": "tauri: build",
       "type": "shell",
       "command": "npm",
-      "args": [
-        "run",
-        "tauri",
-        "build"
-      ],
+      "args": ["run", "tauri", "build"],
       "problemMatcher": []
     },
     {
       "label": "frontend: dev",
       "type": "shell",
       "command": "npm",
-      "args": [
-        "run",
-        "dev"
-      ],
+      "args": ["run", "dev"],
       "isBackground": true,
       "problemMatcher": []
     },
@@ -42,27 +31,15 @@
       "label": "cargo: check",
       "type": "shell",
       "command": "cargo",
-      "args": [
-        "check",
-        "--manifest-path",
-        "${workspaceFolder}/src-tauri/Cargo.toml"
-      ],
-      "problemMatcher": [
-        "$rustc"
-      ]
+      "args": ["check", "--manifest-path", "${workspaceFolder}/src-tauri/Cargo.toml"],
+      "problemMatcher": ["$rustc"]
     },
     {
       "label": "cargo: build",
       "type": "shell",
       "command": "cargo",
-      "args": [
-        "build",
-        "--manifest-path",
-        "${workspaceFolder}/src-tauri/Cargo.toml"
-      ],
-      "problemMatcher": [
-        "$rustc"
-      ]
+      "args": ["build", "--manifest-path", "${workspaceFolder}/src-tauri/Cargo.toml"],
+      "problemMatcher": ["$rustc"]
     }
   ]
 }
