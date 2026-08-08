@@ -1,6 +1,7 @@
 {
   "extends": "./src/configs/tsconfig.json",
   "compilerOptions": {
+    "forceConsistentCasingInFileNames": true,
     "paths": {
       "@/*": ["./src/*"],
       "@components/*": ["./src/components/*"],
