@@ -1,0 +1,32 @@
+{
+  "colors": {
+    "primary": {
+      "50": "#f0f9ff",
+      "500": "#0ea5e9",
+      "600": "#0284c7",
+      "900": "#0c4a6e"
+    },
+    "slate": {
+      "50": "#f8fafc",
+      "100": "#f1f5f9",
+      "800": "#1e293b",
+      "900": "#0f172a"
+    }
+  },
+  "typography": {
+    "fontFamily": "Inter, system-ui, sans-serif",
+    "fontSize": {
+      "xs": "0.75rem",
+      "sm": "0.875rem",
+      "base": "1rem",
+      "lg": "1.125rem",
+      "xl": "1.25rem",
+      "2xl": "1.5rem"
+    }
+  },
+  "glassmorphism": {
+    "backdropBlur": "backdrop-blur-xl",
+    "border": "border border-white/20 dark:border-slate-800/80",
+    "shadow": "shadow-2xl shadow-slate-900/10"
+  }
+}

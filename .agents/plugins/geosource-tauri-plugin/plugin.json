@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "name": "geosource-tauri-plugin",
+  "version": "1.0.0",
+  "description": "Tauri v2 IPC generator, capability whitelisting, and Rust/TypeScript contract verification for GeoSource.",
+  "author": "GeoSource Development Team",
+  "skills": [
+    {
+      "name": "tauri-ipc-generator",
+      "path": "skills/tauri-ipc-generator/SKILL.md",
+      "description": "Generates typed Rust IPC commands and TypeScript wrappers adhering to Tauri v2 security policies."
+    }
+  ]
+}

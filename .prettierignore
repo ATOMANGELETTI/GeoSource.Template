@@ -1,0 +1,8 @@
+# Ignore Next.js build output
+.next/
+dist/
+out/
+node_modules/
+
+# Font files
+public/fonts/

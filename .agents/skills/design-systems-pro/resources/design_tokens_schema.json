@@ -1,0 +1,51 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DesignSystemsProTokens",
+  "description": "W3C-compliant Design Token format specification for design-systems-pro",
+  "type": "object",
+  "required": ["$name", "$version", "color", "typography", "elevation", "radius", "spacing"],
+  "properties": {
+    "$name": {
+      "type": "string",
+      "description": "Design system identifier (e.g. material3, apple_hig, fluent_ui_2)"
+    },
+    "$version": {
+      "type": "string",
+      "example": "1.0.0"
+    },
+    "color": {
+      "type": "object",
+      "required": ["primary", "surface", "onSurface", "outline"],
+      "properties": {
+        "primary": { "type": "object", "properties": { "value": { "type": "string" } } },
+        "surface": { "type": "object", "properties": { "value": { "type": "string" } } },
+        "onSurface": { "type": "object", "properties": { "value": { "type": "string" } } },
+        "outline": { "type": "object", "properties": { "value": { "type": "string" } } }
+      }
+    },
+    "typography": {
+      "type": "object",
+      "required": ["fontFamily", "display", "body"],
+      "properties": {
+        "fontFamily": { "type": "object", "properties": { "value": { "type": "string" } } },
+        "display": { "type": "object" },
+        "body": { "type": "object" }
+      }
+    },
+    "elevation": {
+      "type": "object"
+    },
+    "radius": {
+      "type": "object",
+      "required": ["small", "medium", "large"],
+      "properties": {
+        "small": { "type": "object", "properties": { "value": { "type": "string" } } },
+        "medium": { "type": "object", "properties": { "value": { "type": "string" } } },
+        "large": { "type": "object", "properties": { "value": { "type": "string" } } }
+      }
+    },
+    "spacing": {
+      "type": "object"
+    }
+  }
+}

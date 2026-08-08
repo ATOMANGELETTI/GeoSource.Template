@@ -1,0 +1,208 @@
+/* ============================================================
+   GeoSource Template — Global Styles
+   Nord Polar Night dark theme + Terminus Nerd Font
+   Tailwind CSS v4 (CSS-first configuration)
+   ============================================================ */
+
+/* ---------- Font Face Declarations ---------- */
+@font-face {
+  font-family: "Terminus";
+  src: url("/fonts/Terminus/TerminessNerdFont-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: "Terminus";
+  src: url("/fonts/Terminus/TerminessNerdFont-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: block;
+}
+
+/* ---------- Tailwind v4 Import ---------- */
+@import "tailwindcss";
+
+/* ---------- Tailwind v4 Theme (CSS-first) ---------- */
+@theme {
+  /* Nord Polar Night — Background layers */
+  --color-nord-0: #2e3440;
+  --color-nord-1: #3b4252;
+  --color-nord-2: #434c5e;
+  --color-nord-3: #4c566a;
+
+  /* Nord Snow Storm — Text */
+  --color-nord-4: #d8dee9;
+  --color-nord-5: #e5e9f0;
+  --color-nord-6: #eceff4;
+
+  /* Nord Frost — Interactive accents */
+  --color-nord-7: #8fbcbb;
+  --color-nord-8: #88c0d0;
+  --color-nord-9: #81a1c1;
+  --color-nord-10: #5e81ac;
+
+  /* Nord Aurora — Status colors */
+  --color-nord-11: #bf616a;
+  --color-nord-12: #d08770;
+  --color-nord-13: #ebcb8b;
+  --color-nord-14: #a3be8c;
+  --color-nord-15: #b48ead;
+
+  /* Typography */
+  --font-family-terminus: "Terminus", "Consolas", monospace;
+  --font-size-2xs: 10px;
+  --font-size-xs: 11px;
+  --font-size-sm: 12px;
+  --font-size-base: 13px;
+  --font-size-md: 14px;
+  --font-size-lg: 16px;
+
+  /* Spacing */
+  --spacing-titlebar: 32px;
+
+  /* Height */
+  --height-titlebar: 32px;
+}
+
+/* ---------- Nord Design Token Custom Properties ---------- */
+:root {
+  /* Semantic tokens */
+  --bg-app: #2e3440;
+  --bg-surface: #3b4252;
+  --bg-elevated: #434c5e;
+  --border-default: #4c566a;
+  --text-primary: #eceff4;
+  --text-secondary: #d8dee9;
+  --text-muted: #4c566a;
+  --accent-primary: #88c0d0;
+  --accent-secondary: #81a1c1;
+
+  /* Titlebar */
+  --titlebar-height: 32px;
+  --titlebar-bg: #3b4252;
+  --titlebar-border: rgba(0, 0, 0, 0.35);
+
+  /* Traffic lights */
+  --traffic-close: #bf616a;
+  --traffic-minimize: #ebcb8b;
+  --traffic-maximize: #a3be8c;
+  --traffic-size: 12px;
+  --traffic-gap: 8px;
+
+  /* Typography */
+  --font-terminus: "Terminus", "Consolas", monospace;
+  --font-size-base: 13px;
+  --line-height-base: 1.5;
+
+  /* Transitions */
+  --transition-fast: 100ms ease;
+  --transition-default: 150ms ease;
+  --transition-slow: 250ms ease;
+}
+
+/* ---------- Reset & Base ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  /* Prevent text selection during drag */
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+body {
+  font-family: var(--font-terminus);
+  font-weight: 400;
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* Allow selection in content areas */
+p,
+span,
+input,
+textarea,
+[data-selectable] {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+/* ---------- Focus Visible ---------- */
+:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+/* ---------- Scrollbar Styling ---------- */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-app);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-default);
+  border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+::-webkit-scrollbar-corner {
+  background: var(--bg-app);
+}
+
+/* ---------- Text Selection ---------- */
+::selection {
+  background-color: #5e81ac;
+  color: #eceff4;
+}
+
+/* ---------- Layout Utilities ---------- */
+.app-root {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+.content-area {
+  flex: 1;
+  overflow: auto;
+  position: relative;
+}
+
+/* ---------- Traffic Lights ---------- */
+/* Show icons when hovering the traffic lights container */
+.traffic-lights:hover .traffic-icon {
+  opacity: 1 !important;
+}
+
+.traffic-btn {
+  outline: none;
+}
+
+.traffic-btn:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+  border-radius: 50%;
+}

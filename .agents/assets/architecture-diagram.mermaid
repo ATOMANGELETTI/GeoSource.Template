@@ -1,0 +1,8 @@
+graph TD
+    User["User / Slash Command"] --> AGENTS["AGENTS.md Rules"]
+    AGENTS --> Core["core/ Agent Manifest"]
+    Core --> Subagents["agents/ Subagent Personas"]
+    Subagents --> Workflows["workflows/ Pipelines"]
+    Subagents --> Skills["skills/ & plugins/"]
+    Skills --> Scripts["scripts/ Automation Scripts"]
+    Scripts --> Verification["Verification & Tests"]

@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "environment": {
+    "os": "windows",
+    "default_shell": "powershell",
+    "node_min_version": "18.0.0",
+    "rust_min_version": "1.75.0",
+    "tauri_version": "2.0"
+  },
+  "paths": {
+    "workspace_root": "c:\\Storage\\Development\\Projects\\Tauri\\GeoSource\\GeoSource.Template",
+    "agents_dir": ".agents",
+    "src_rust": "src-tauri",
+    "src_frontend": "src",
+    "configs": "configs",
+    "documents": "other/documents",
+    "changes": "other/changes"
+  },
+  "tools": {
+    "node": "node",
+    "powershell": "powershell.exe",
+    "cargo": "cargo",
+    "pnpm": "pnpm",
+    "git": "git"
+  },
+  "security": {
+    "allow_path_traversal": false,
+    "require_plan_approval": true,
+    "strict_ipc_whitelisting": true
+  }
+}

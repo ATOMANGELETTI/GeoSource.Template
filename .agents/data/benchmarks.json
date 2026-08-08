@@ -1,0 +1,11 @@
+{
+  "timestamp": "2026-08-06T05:33:00Z",
+  "workspace": "GeoSource.Template",
+  "metrics": {
+    "rust_clean_build_ms": 12450,
+    "rust_incremental_build_ms": 1820,
+    "ipc_latency_avg_ms": 1.45,
+    "ipc_latency_p99_ms": 3.82,
+    "agent_validation_time_ms": 320
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://geosource.dev/schemas/agent-manifest.schema.json",
+  "title": "AgentManifest",
+  "type": "object",
+  "required": ["name", "version", "workspace", "agents", "rules", "workflows", "commands", "plugins", "skills"],
+  "properties": {
+    "name": { "type": "string" },
+    "version": { "type": "string" },
+    "description": { "type": "string" },
+    "workspace": {
+      "type": "object",
+      "required": ["root", "agents_dir"],
+      "properties": {
+        "root": { "type": "string" },
+        "agents_dir": { "type": "string" },
+        "target": { "type": "string" }
+      }
+    },
+    "agents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "file", "role"],
+        "properties": {
+          "id": { "type": "string" },
+          "file": { "type": "string" },
+          "role": { "type": "string" }
+        }
+      }
+    },
+    "rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "file", "category"],
+        "properties": {
+          "id": { "type": "string" },
+          "file": { "type": "string" },
+          "category": { "type": "string" }
+        }
+      }
+    },
+    "workflows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "file"],
+        "properties": {
+          "id": { "type": "string" },
+          "file": { "type": "string" }
+        }
+      }
+    },
+    "commands": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["trigger", "file"],
+        "properties": {
+          "trigger": { "type": "string" },
+          "file": { "type": "string" }
+        }
+      }
+    },
+    "plugins": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "manifest"],
+        "properties": {
+          "id": { "type": "string" },
+          "manifest": { "type": "string" }
+        }
+      }
+    },
+    "skills": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "path"],
+        "properties": {
+          "id": { "type": "string" },
+          "path": { "type": "string" }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "name": "workspace-auditor-plugin",
+  "version": "1.0.0",
+  "description": "Token efficiency monitoring, code quality auditing, security vulnerability scanning, and link integrity verification.",
+  "author": "GeoSource Development Team",
+  "skills": [
+    {
+      "name": "token-quality-auditor",
+      "path": "skills/token-quality-auditor/SKILL.md",
+      "description": "Audits workspace code quality, token conservation, link integrity, and security compliance."
+    }
+  ]
+}

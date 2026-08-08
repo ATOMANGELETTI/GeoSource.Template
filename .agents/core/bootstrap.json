@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "bootstrap": {
+    "init_sequence": [
+      "read_agents_md",
+      "check_knowledge_items",
+      "validate_workspace_manifest",
+      "bind_agent_persona"
+    ],
+    "default_coordinator": "coordinator",
+    "verification_gate_mandatory": true,
+    "plan_first_gate": true
+  },
+  "role_routing": {
+    "rust_changes": "rust-engineer",
+    "frontend_changes": "frontend-engineer",
+    "security_audits": "security-auditor",
+    "performance_tuning": "performance-engineer",
+    "documentation": "docs-engineer",
+    "release_management": "release-engineer",
+    "testing": "qa-engineer"
+  }
+}

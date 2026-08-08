@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://geosource.dev/schemas/environment.schema.json",
+  "title": "AgentEnvironment",
+  "type": "object",
+  "required": ["environment", "paths", "tools", "security"],
+  "properties": {
+    "environment": {
+      "type": "object",
+      "required": ["os", "default_shell"],
+      "properties": {
+        "os": { "type": "string" },
+        "default_shell": { "type": "string" },
+        "node_min_version": { "type": "string" },
+        "rust_min_version": { "type": "string" },
+        "tauri_version": { "type": "string" }
+      }
+    },
+    "paths": { "type": "object" },
+    "tools": { "type": "object" },
+    "security": { "type": "object" }
+  }
+}

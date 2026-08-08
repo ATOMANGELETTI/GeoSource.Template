@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "context_loading": {
+    "strategy": "token_efficient",
+    "preflight_ki_review": true,
+    "max_file_view_lines": 800,
+    "prefer_grep_over_view": true,
+    "stub_first_reading": true
+  },
+  "knowledge_items": {
+    "auto_check_on_start": true,
+    "stale_verification_required": true,
+    "summary_scan_first": true
+  },
+  "token_limits": {
+    "max_response_lines": 50,
+    "concise_code_summaries": true,
+    "avoid_duplicate_reads": true
+  }
+}

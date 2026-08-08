@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "name": "GeoSource Template Workspace Agent Ecosystem",
+  "version": "1.0.0",
+  "description": "Master system registry for agents, rules, workflows, skills, commands, plugins, and memory logs in the GeoSource Tauri/Rust workspace.",
+  "workspace": {
+    "root": ".",
+    "agents_dir": ".agents",
+    "target": "GeoSource Tauri Template App"
+  },
+  "agents": [
+    { "id": "coordinator", "file": ".agents/agents/coordinator.md", "role": "Master Architect & Workflow Orchestrator" },
+    { "id": "rust-engineer", "file": ".agents/agents/rust-engineer.md", "role": "Backend Rust & Core Logic Specialist" },
+    { "id": "frontend-engineer", "file": ".agents/agents/frontend-engineer.md", "role": "Frontend UI/UX & State Manager" },
+    { "id": "scaffolding-engineer", "file": ".agents/agents/scaffolding-engineer.md", "role": "Project Architecture & Boilerplate Builder" },
+    { "id": "qa-engineer", "file": ".agents/agents/qa-engineer.md", "role": "Quality Assurance & Test Specialist" },
+    { "id": "security-auditor", "file": ".agents/agents/security-auditor.md", "role": "Security Auditing & Vulnerability Defense" },
+    { "id": "performance-engineer", "file": ".agents/agents/performance-engineer.md", "role": "Performance Optimization Specialist" },
+    { "id": "docs-engineer", "file": ".agents/agents/docs-engineer.md", "role": "Documentation & Knowledge Systems" },
+    { "id": "release-engineer", "file": ".agents/agents/release-engineer.md", "role": "Release Engineering & CI/CD Specialist" },
+    { "id": "dependency-auditor", "file": ".agents/agents/dependency-auditor.md", "role": "Dependency Audit & Supply Chain Guardian" },
+    { "id": "code-reviewer", "file": ".agents/agents/code-reviewer.md", "role": "Code Reviewer & Quality Gatekeeper" }
+  ],
+  "rules": [
+    { "id": "code-quality", "file": ".agents/rules/code-quality.md", "category": "Core Development" },
+    { "id": "token-efficiency", "file": ".agents/rules/token-efficiency.md", "category": "Core Development" },
+    { "id": "testing-verification", "file": ".agents/rules/testing-verification.md", "category": "Core Development" },
+    { "id": "planning-architecture", "file": ".agents/rules/planning-architecture.md", "category": "Architecture & Planning" },
+    { "id": "context-knowledge-management", "file": ".agents/rules/context-knowledge-management.md", "category": "Architecture & Planning" },
+    { "id": "tauri-rust-stack", "file": ".agents/rules/tauri-rust-stack.md", "category": "Project Stack Rules" },
+    { "id": "dependency-management", "file": ".agents/rules/dependency-management.md", "category": "Project Stack Rules" },
+    { "id": "git-commit-discipline", "file": ".agents/rules/git-commit-discipline.md", "category": "Process & Communication" },
+    { "id": "documentation-readme", "file": ".agents/rules/documentation-readme.md", "category": "Process & Communication" },
+    { "id": "agentic-behavior", "file": ".agents/rules/agentic-behavior.md", "category": "Process & Communication" }
+  ],
+  "workflows": [
+    { "id": "feature-development", "file": ".agents/workflows/feature-development.md" },
+    { "id": "bug-fix", "file": ".agents/workflows/bug-fix.md" },
+    { "id": "tauri-ipc-integration", "file": ".agents/workflows/tauri-ipc-integration.md" },
+    { "id": "release-prep", "file": ".agents/workflows/release-prep.md" },
+    { "id": "refactoring-code-quality", "file": ".agents/workflows/refactoring-code-quality.md" }
+  ],
+  "commands": [
+    { "trigger": "/grill-me", "file": ".agents/commands/grill-me.md" },
+    { "trigger": "/goal", "file": ".agents/commands/goal.md" },
+    { "trigger": "/ipc-gen", "file": ".agents/commands/ipc-gen.md" },
+    { "trigger": "/audit", "file": ".agents/commands/audit.md" },
+    { "trigger": "/release-prep", "file": ".agents/commands/release-prep.md" },
+    { "trigger": "/verify", "file": ".agents/commands/verify.md" },
+    { "trigger": "/benchmark", "file": ".agents/commands/benchmark.md" },
+    { "trigger": "/learn", "file": ".agents/commands/learn.md" }
+  ],
+  "plugins": [
+    { "id": "geosource-tauri-plugin", "manifest": ".agents/plugins/geosource-tauri-plugin/plugin.json" },
+    { "id": "workspace-auditor-plugin", "manifest": ".agents/plugins/workspace-auditor-plugin/plugin.json" }
+  ],
+  "skills": [
+    { "id": "skill-designer-pro", "path": ".agents/skills/skill-designer-pro" },
+    { "id": "token-efficiency", "path": ".agents/skills/token-efficiency" }
+  ]
+}
