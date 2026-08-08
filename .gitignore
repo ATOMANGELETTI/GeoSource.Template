@@ -67,4 +67,5 @@ yarn-error.log*
 pnpm-debug.log*
 
 # Coverage Tools / Testing Tools
-coverage/
+tests/artifacts/coverage/
+tests/artifacts/target_test/

@@ -15,7 +15,7 @@ const eslintConfig = [
       "node_modules/**",
       "next-env.d.ts",
       "src-tauri/**",
-      "coverage/**",
+      "tests/artifacts/coverage/**",
       "eslint.config.mjs",
       "postcss.config.mjs",
     ],

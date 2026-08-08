@@ -12,7 +12,7 @@ param (
 $WorkspaceRoot = Resolve-Path "$PSScriptRoot\..\..\..\.."
 Write-Host "Verifying code coverage against threshold: $Threshold%..." -ForegroundColor Cyan
 
-$CoverageFile = Join-Path $WorkspaceRoot "coverage\coverage-summary.json"
+$CoverageFile = Join-Path $WorkspaceRoot "tests\artifacts\coverage\coverage-summary.json"
 
 if (Test-Path $CoverageFile) {
     try {
