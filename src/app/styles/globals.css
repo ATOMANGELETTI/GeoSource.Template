@@ -21,6 +21,38 @@
   font-display: block;
 }
 
+@font-face {
+  font-family: "FiraCode";
+  src: url("/fonts/FiraCode/FiraCodeNerdFont-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: "FiraCode";
+  src: url("/fonts/FiraCode/FiraCodeNerdFont-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: "Ubuntu";
+  src: url("/fonts/Ubuntu/UbuntuNerdFont-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: "Ubuntu";
+  src: url("/fonts/Ubuntu/UbuntuNerdFont-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: block;
+}
+
 /* ---------- Tailwind v4 Import ---------- */
 @import "tailwindcss";
 
