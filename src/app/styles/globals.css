@@ -191,18 +191,3 @@ textarea,
   position: relative;
 }
 
-/* ---------- Traffic Lights ---------- */
-/* Show icons when hovering the traffic lights container */
-.traffic-lights:hover .traffic-icon {
-  opacity: 1 !important;
-}
-
-.traffic-btn {
-  outline: none;
-}
-
-.traffic-btn:focus-visible {
-  outline: 2px solid var(--accent-primary);
-  outline-offset: 2px;
-  border-radius: 50%;
-}

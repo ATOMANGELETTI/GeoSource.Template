@@ -1,0 +1,65 @@
+/* ============================================================
+   Traffic Lights Module CSS
+   Nord Polar Night — macOS-style window controls
+   ============================================================ */
+
+/* Container */
+.trafficLights {
+  display: flex;
+  align-items: center;
+  gap: var(--traffic-gap);
+  padding-left: 14px;
+  -webkit-app-region: no-drag;
+}
+
+/* Show icons when hovering the traffic lights container */
+.trafficLights:hover .trafficIcon {
+  opacity: 1 !important;
+}
+
+/* Base button style */
+.trafficBtn {
+  width: var(--traffic-size);
+  height: var(--traffic-size);
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 0;
+  transition: filter var(--transition-fast), opacity var(--transition-fast);
+  position: relative;
+  outline: none;
+}
+
+.trafficBtn:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+  border-radius: 50%;
+}
+
+.trafficBtn:hover {
+  filter: brightness(1.25);
+}
+
+/* Specific variants */
+.close {
+  background-color: var(--traffic-close);
+}
+
+.minimize {
+  background-color: var(--traffic-minimize);
+}
+
+.maximize {
+  background-color: var(--traffic-maximize);
+}
+
+/* Icon */
+.trafficIcon {
+  color: rgba(0, 0, 0, 0.55);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}

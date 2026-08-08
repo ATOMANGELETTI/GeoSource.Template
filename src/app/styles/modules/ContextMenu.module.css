@@ -1,0 +1,176 @@
+/* ============================================================
+   ContextMenu — Custom right-click menu component
+   Matches TrayMenu.module.css aesthetic:
+   Nord tokens · Glassmorphism · Terminus font · Micro-animations
+   ============================================================ */
+
+/* ---- Portal root (fixed, full-viewport overlay) ---- */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none; /* overlay itself is click-through */
+}
+
+/* ---- Menu card (the visible popup) ---- */
+.menuCard {
+  position: fixed;
+  min-width: 188px;
+  max-width: 260px;
+  background: color-mix(in srgb, var(--bg-app) 92%, transparent);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  backdrop-filter: blur(14px) saturate(1.4);
+  border: 1px solid var(--border-default);
+  border-radius: 8px;
+  box-shadow:
+    0 10px 25px -5px rgba(0, 0, 0, 0.45),
+    0 0 1px 1px color-mix(in srgb, var(--accent-primary) 28%, transparent);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: var(--font-terminus), "Consolas", monospace;
+  color: var(--text-primary);
+  pointer-events: all; /* card captures all mouse events */
+  user-select: none;
+  -webkit-user-select: none;
+
+  /* Entry animation */
+  animation: menuIn 100ms ease-out both;
+  transform-origin: top left;
+}
+
+@keyframes menuIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* ---- Section label (non-interactive header row) ---- */
+.menuSection {
+  padding: 8px 12px 4px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-default);
+}
+
+/* ---- Items list ---- */
+.menuList {
+  display: flex;
+  flex-direction: column;
+  padding: 4px;
+  gap: 1px;
+}
+
+/* ---- Individual item ---- */
+.menuItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  border-radius: 4px;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  transition:
+    background 110ms ease,
+    color 110ms ease,
+    padding-left 110ms ease;
+  text-align: left;
+  width: 100%;
+  outline: none;
+  position: relative;
+  gap: 0;
+}
+
+.menuItem:hover,
+.menuItem:focus-visible {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  padding-left: 12px;
+}
+
+/* ---- Item content (icon + label) ---- */
+.menuItemContent {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ---- Lucide icon ---- */
+.icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  color: var(--accent-secondary);
+  transition: color 110ms ease;
+}
+
+.menuItem:hover .icon,
+.menuItem:focus-visible .icon {
+  color: var(--accent-primary);
+}
+
+/* ---- Keyboard shortcut badge ---- */
+.shortcut {
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-left: 16px;
+  white-space: nowrap;
+  transition: color 110ms ease;
+}
+
+.menuItem:hover .shortcut,
+.menuItem:focus-visible .shortcut {
+  color: var(--accent-secondary);
+}
+
+/* ---- Disabled state ---- */
+.menuItemDisabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ---- Danger (destructive) variant ---- */
+.menuItemDanger {
+  color: var(--traffic-close, #bf616a);
+}
+
+.menuItemDanger .icon {
+  color: var(--traffic-close, #bf616a);
+}
+
+.menuItemDanger:hover,
+.menuItemDanger:focus-visible {
+  background: color-mix(in srgb, var(--traffic-close, #bf616a) 18%, transparent);
+  color: var(--traffic-close, #bf616a);
+}
+
+.menuItemDanger:hover .icon,
+.menuItemDanger:focus-visible .icon {
+  color: var(--traffic-close, #bf616a);
+}
+
+.menuItemDanger:hover .shortcut,
+.menuItemDanger:focus-visible .shortcut {
+  color: color-mix(in srgb, var(--traffic-close, #bf616a) 80%, transparent);
+}
+
+/* ---- Divider ---- */
+.divider {
+  height: 1px;
+  background-color: var(--border-default);
+  margin: 3px 4px;
+}

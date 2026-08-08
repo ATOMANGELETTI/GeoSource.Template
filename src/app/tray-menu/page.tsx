@@ -9,7 +9,7 @@ import {
   Power,
   Layers,
 } from "lucide-react";
-import styles from "@/components/ui/TrayMenu/TrayMenu.module.css";
+import styles from "@/app/styles/modules/TrayMenu.module.css";
 
 /**
  * Custom Tray Context Menu Page.
