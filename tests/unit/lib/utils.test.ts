@@ -32,8 +32,8 @@ describe("utils.ts", () => {
     const originalWindow = globalThis.window;
 
     afterEach(() => {
-      (window as Record<string, unknown>).__TAURI__ = undefined;
-      (window as Record<string, unknown>).__TAURI_INTERNALS__ = undefined;
+      (window as unknown as Record<string, unknown>).__TAURI__ = undefined;
+      (window as unknown as Record<string, unknown>).__TAURI_INTERNALS__ = undefined;
     });
 
     it("returns false when window is undefined or __TAURI__ keys are missing", () => {
@@ -41,12 +41,12 @@ describe("utils.ts", () => {
     });
 
     it("returns true when __TAURI__ is present in window", () => {
-      (window as Record<string, unknown>).__TAURI__ = {};
+      (window as unknown as Record<string, unknown>).__TAURI__ = {};
       expect(isTauri()).toBe(true);
     });
 
     it("returns true when __TAURI_INTERNALS__ is present in window", () => {
-      (window as Record<string, unknown>).__TAURI_INTERNALS__ = {};
+      (window as unknown as Record<string, unknown>).__TAURI_INTERNALS__ = {};
       expect(isTauri()).toBe(true);
     });
   });

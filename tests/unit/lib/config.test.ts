@@ -20,8 +20,8 @@ import { invoke } from "@tauri-apps/api/core";
 
 describe("config.ts", () => {
   afterEach(() => {
-    (window as Record<string, unknown>).__TAURI__ = undefined;
-    (window as Record<string, unknown>).__TAURI_INTERNALS__ = undefined;
+    (window as unknown as Record<string, unknown>).__TAURI__ = undefined;
+    (window as unknown as Record<string, unknown>).__TAURI_INTERNALS__ = undefined;
     vi.clearAllMocks();
   });
 
@@ -57,7 +57,7 @@ describe("config.ts", () => {
 
   describe("Tauri environment", () => {
     beforeEach(() => {
-      (window as Record<string, unknown>).__TAURI__ = {};
+      (window as unknown as Record<string, unknown>).__TAURI__ = {};
     });
 
     it("invokes 'get_settings' IPC command when in Tauri", async () => {

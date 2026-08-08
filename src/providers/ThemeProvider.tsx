@@ -2,6 +2,7 @@
 
 import { useEffect, type FC, type ReactNode } from "react";
 import { useConfigStore } from "@/lib/store/configStore";
+import { isTauri } from "@/lib/utils";
 
 export type ResolvedTheme = "polar-night" | "snow-storm" | "frost" | "aurora";
 
@@ -61,9 +62,38 @@ export const ThemeProvider: FC<ThemeProviderProps> = ({ children }) => {
   const themeSetting = useConfigStore((state) => state.settings.theme);
   const loadAll = useConfigStore((state) => state.loadAll);
 
-  // Initial configuration fetch on mount
+  // Initial configuration fetch on mount & re-sync on window focus or IPC event
   useEffect(() => {
     loadAll();
+
+    const handleFocus = () => {
+      loadAll();
+    };
+
+    window.addEventListener("focus", handleFocus);
+
+    let unlistenFn: (() => void) | undefined;
+    if (isTauri()) {
+      import("@tauri-apps/api/event")
+        .then(({ listen }) =>
+          listen("settings-changed", () => {
+            loadAll();
+          })
+        )
+        .then((cleanup) => {
+          unlistenFn = cleanup;
+        })
+        .catch((err) => {
+          console.error("Failed to listen for settings-changed event", err);
+        });
+    }
+
+    return () => {
+      window.removeEventListener("focus", handleFocus);
+      if (unlistenFn) {
+        unlistenFn();
+      }
+    };
   }, [loadAll]);
 
   // Synchronize dynamic theme to document element

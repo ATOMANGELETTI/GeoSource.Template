@@ -137,3 +137,12 @@ export async function openConfigDir(): Promise<void> {
   if (!isTauri()) return;
   await invokeConfig<void>("open_config_dir");
 }
+
+/**
+ * Signal the backend to display the main window and close the splashscreen window.
+ */
+export async function closeSplashAndShowMain(): Promise<void> {
+  if (!isTauri()) return;
+  await invokeConfig<void>("close_splash_and_show_main");
+}
+

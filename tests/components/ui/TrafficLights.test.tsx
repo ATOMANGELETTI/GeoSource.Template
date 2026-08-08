@@ -5,7 +5,7 @@ import TrafficLights from "@/components/ui/Titlebar/TrafficLights";
 
 describe("TrafficLights", () => {
   it("renders close, minimize, maximize buttons with proper aria labels", () => {
-    render(<TrafficLights />);
+    render(<TrafficLights onClose={() => {}} onMinimize={() => {}} onMaximize={() => {}} />);
 
     expect(screen.getByRole("button", { name: /close window/i })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /minimize window/i })).toBeInTheDocument();
@@ -14,7 +14,7 @@ describe("TrafficLights", () => {
 
   it("calls onClose handler when close button is clicked", () => {
     const handleClose = vi.fn();
-    render(<TrafficLights onClose={handleClose} />);
+    render(<TrafficLights onClose={handleClose} onMinimize={() => {}} onMaximize={() => {}} />);
 
     const closeBtn = screen.getByRole("button", { name: /close window/i });
     fireEvent.click(closeBtn);
@@ -23,7 +23,7 @@ describe("TrafficLights", () => {
 
   it("calls onMinimize handler when minimize button is clicked", () => {
     const handleMinimize = vi.fn();
-    render(<TrafficLights onMinimize={handleMinimize} />);
+    render(<TrafficLights onClose={() => {}} onMinimize={handleMinimize} onMaximize={() => {}} />);
 
     const minimizeBtn = screen.getByRole("button", { name: /minimize window/i });
     fireEvent.click(minimizeBtn);
@@ -32,7 +32,7 @@ describe("TrafficLights", () => {
 
   it("calls onMaximize handler when maximize button is clicked", () => {
     const handleMaximize = vi.fn();
-    render(<TrafficLights onMaximize={handleMaximize} />);
+    render(<TrafficLights onClose={() => {}} onMinimize={() => {}} onMaximize={handleMaximize} />);
 
     const maximizeBtn = screen.getByRole("button", { name: /maximize window/i });
     fireEvent.click(maximizeBtn);

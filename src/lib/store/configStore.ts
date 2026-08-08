@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { isTauri } from "@/lib/utils";
 import {
   getSettings,
   getBindings,
@@ -78,6 +79,10 @@ export const useConfigStore = create<ConfigState & ConfigActions>((set, get) => 
     set({ settings: merged });
     try {
       await setSettings(merged);
+      if (isTauri()) {
+        const { emit } = await import("@tauri-apps/api/event");
+        await emit("settings-changed", merged);
+      }
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
       set({ error: `Failed to save settings: ${msg}` });

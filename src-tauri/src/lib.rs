@@ -5,6 +5,26 @@ mod tray;
 use tauri::Manager;
 use tauri_plugin_window_state::{Builder, StateFlags};
 
+/// IPC command called by the splashscreen when 7-second minimum duration
+/// and application loading are both complete. Shows and focuses the main window
+/// and closes the splashscreen window.
+#[tauri::command]
+async fn close_splash_and_show_main(app_handle: tauri::AppHandle) -> Result<(), String> {
+    if let Some(main_window) = app_handle.get_webview_window("main") {
+        let _ = main_window.center();
+        let _ = main_window.show();
+        let _ = main_window.set_focus();
+        log::info!(target: "geosource::window", "Main webview window displayed and focused from splashscreen.");
+    }
+
+    if let Some(splashscreen) = app_handle.get_webview_window("splashscreen") {
+        let _ = splashscreen.close();
+        log::info!(target: "geosource::splash", "Splashscreen window closed.");
+    }
+
+    Ok(())
+}
+
 /// Application run function — called from main.rs.
 /// Registers all IPC command handlers and initializes plugins.
 pub fn run() {
@@ -64,18 +84,12 @@ pub fn run() {
                 log::error!(target: "geosource::tray", "Failed to setup system tray: {}", err);
             }
 
-            // Obtain the main window and ensure it is centred and visible,
-            // regardless of any previously saved state.
-            if let Some(window) = app.get_webview_window("main") {
-                // Centre on the primary monitor so the window is always reachable.
-                let _ = window.center();
-                // Explicitly show the window — this is a no-op if it is already
-                // visible, but guarantees visibility when `visible: false` or when
-                // the window-state plugin left it hidden.
-                let _ = window.show();
-                // Bring the window to the front and give it keyboard focus.
-                let _ = window.set_focus();
-                log::info!(target: "geosource::window", "Main webview window displayed and focused.");
+            // Ensure splashscreen is centered on primary monitor
+            if let Some(splashscreen) = app.get_webview_window("splashscreen") {
+                let _ = splashscreen.center();
+                let _ = splashscreen.show();
+                let _ = splashscreen.set_focus();
+                log::info!(target: "geosource::splash", "Splashscreen window initialized, centered, and displayed.");
             }
             Ok(())
         })
@@ -87,6 +101,7 @@ pub fn run() {
             config::set_settings,
             config::set_bindings,
             config::open_config_dir,
+            close_splash_and_show_main,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

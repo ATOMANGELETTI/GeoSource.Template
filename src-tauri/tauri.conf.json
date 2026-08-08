@@ -23,7 +23,22 @@
         "transparent": false,
         "resizable": true,
         "fullscreen": false,
-        "shadow": true
+        "shadow": true,
+        "visible": false
+      },
+      {
+        "label": "splashscreen",
+        "title": "GeoSource Template Splashscreen",
+        "url": "/splashScreen",
+        "width": 604,
+        "height": 384,
+        "center": true,
+        "decorations": false,
+        "transparent": true,
+        "resizable": false,
+        "alwaysOnTop": true,
+        "shadow": false,
+        "visible": true
       },
       {
         "label": "tray-menu",

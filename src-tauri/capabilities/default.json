@@ -2,7 +2,7 @@
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
   "local": true,
-  "windows": ["main", "tray-menu"],
+  "windows": ["main", "tray-menu", "splashscreen"],
   "permissions": [
     "core:default",
     "core:tray:default",

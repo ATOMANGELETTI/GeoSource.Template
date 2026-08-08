@@ -32,8 +32,8 @@ describe("useTauriWindow", () => {
   });
 
   afterEach(() => {
-    delete (window as Record<string, unknown>).__TAURI__;
-    delete (window as Record<string, unknown>).__TAURI_INTERNALS__;
+    delete (window as unknown as Record<string, unknown>).__TAURI__;
+    delete (window as unknown as Record<string, unknown>).__TAURI_INTERNALS__;
   });
 
   it("returns window store values and action handlers", () => {
@@ -59,7 +59,7 @@ describe("useTauriWindow", () => {
   });
 
   it("subscribes to window events in Tauri environment", async () => {
-    (window as Record<string, unknown>).__TAURI__ = {};
+    (window as unknown as Record<string, unknown>).__TAURI__ = {};
 
     const { getCurrentWindow } = await import("@tauri-apps/api/window");
     const mockWin = getCurrentWindow();
@@ -78,7 +78,7 @@ describe("useTauriWindow", () => {
   });
 
   it("executes Tauri window actions when called in Tauri environment", async () => {
-    (window as Record<string, unknown>).__TAURI__ = {};
+    (window as unknown as Record<string, unknown>).__TAURI__ = {};
 
     const { getCurrentWindow } = await import("@tauri-apps/api/window");
     const mockWin = getCurrentWindow();

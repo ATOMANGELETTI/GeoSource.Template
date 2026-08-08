@@ -122,7 +122,7 @@ const TrayMenuPage: FC = () => {
         <div className={styles.header}>
           <div className={styles.brand}>
             <span className={styles.statusDot} />
-            <Layers size={13} color="#88c0d0" />
+            <Layers size={13} className={styles.brandIcon} />
             <span>GeoSource</span>
           </div>
           <span className={styles.versionBadge}>v0.1.0</span>
