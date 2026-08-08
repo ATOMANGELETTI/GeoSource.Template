@@ -40,6 +40,7 @@ export default defineConfig({
       "@types": path.resolve(root, "src/types"),
       "@providers": path.resolve(root, "src/providers"),
       "@features": path.resolve(root, "src/features"),
+      "@tests": path.resolve(root, "tests"),
     },
   },
 });

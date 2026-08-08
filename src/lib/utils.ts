@@ -21,8 +21,7 @@ export function formatVersion(version: string): string {
  * Returns true if running inside a Tauri webview.
  */
 export function isTauri(): boolean {
-  return (
-    typeof window !== "undefined" &&
-    ("__TAURI_INTERNALS__" in window || "__TAURI__" in window)
-  );
+  if (typeof window === "undefined") return false;
+  const win = window as unknown as Record<string, unknown>;
+  return Boolean(win.__TAURI_INTERNALS__ || win.__TAURI__);
 }

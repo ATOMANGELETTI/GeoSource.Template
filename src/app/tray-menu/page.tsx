@@ -91,15 +91,10 @@ const TrayMenuPage: FC = () => {
 
   const handleOpenSettings = async () => {
     try {
-      const { WebviewWindow } = await import("@tauri-apps/api/webviewWindow");
-      const mainWin = await WebviewWindow.getByLabel("main");
-      if (mainWin) {
-        await mainWin.unminimize();
-        await mainWin.show();
-        await mainWin.setFocus();
-      }
+      const { openConfigDir } = await import("@/lib/config");
+      await openConfigDir();
     } catch (err) {
-      console.error("Failed to open settings", err);
+      console.error("Failed to open config directory", err);
     } finally {
       await hideTrayMenu();
     }

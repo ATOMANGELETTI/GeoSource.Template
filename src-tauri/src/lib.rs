@@ -86,6 +86,7 @@ pub fn run() {
             config::get_appinfo,
             config::set_settings,
             config::set_bindings,
+            config::open_config_dir,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

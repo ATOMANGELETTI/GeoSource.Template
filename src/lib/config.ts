@@ -129,3 +129,11 @@ export async function setBindings(bindings: AppBindings): Promise<void> {
   if (!isTauri()) return;
   await invokeConfig<void>("set_bindings", { bindings });
 }
+
+/**
+ * Open the `other/configs/` directory in the system file explorer.
+ */
+export async function openConfigDir(): Promise<void> {
+  if (!isTauri()) return;
+  await invokeConfig<void>("open_config_dir");
+}

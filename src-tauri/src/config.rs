@@ -277,6 +277,46 @@ pub fn set_bindings(
     Ok(())
 }
 
+/// Open the `other/configs/` directory in the system file explorer.
+#[tauri::command]
+pub fn open_config_dir(state: tauri::State<Mutex<AppConfig>>) -> Result<(), String> {
+    let cfg = state.lock().map_err(|e| e.to_string())?;
+    let dir = &cfg.config_dir;
+
+    if !dir.exists() {
+        if let Err(e) = fs::create_dir_all(dir) {
+            log::error!(target: "geosource::config", "Failed to create config dir: {e}");
+        }
+    }
+
+    #[cfg(target_os = "windows")]
+    {
+        std::process::Command::new("explorer")
+            .arg(dir)
+            .spawn()
+            .map_err(|e| format!("Failed to open explorer: {e}"))?;
+    }
+
+    #[cfg(target_os = "macos")]
+    {
+        std::process::Command::new("open")
+            .arg(dir)
+            .spawn()
+            .map_err(|e| format!("Failed to open directory: {e}"))?;
+    }
+
+    #[cfg(target_os = "linux")]
+    {
+        std::process::Command::new("xdg-open")
+            .arg(dir)
+            .spawn()
+            .map_err(|e| format!("Failed to open directory: {e}"))?;
+    }
+
+    log::info!(target: "geosource::config", "Opened config dir in system file explorer: {dir:?}");
+    Ok(())
+}
+
 // ---------------------------------------------------------------------------
 // Tests
 // ---------------------------------------------------------------------------
@@ -397,5 +437,11 @@ mod tests {
         );
 
         let _ = fs::remove_file(&path);
+    }
+
+    #[test]
+    fn test_config_dir_resolution() {
+        let dir = resolve_config_dir();
+        assert!(dir.ends_with("other/configs") || dir.ends_with("other\\configs"));
     }
 }

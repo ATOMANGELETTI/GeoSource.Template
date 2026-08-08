@@ -4,8 +4,10 @@ import "@testing-library/jest-dom";
 Object.defineProperty(window, "__TAURI__", {
   value: undefined,
   writable: true,
+  configurable: true,
 });
 Object.defineProperty(window, "__TAURI_INTERNALS__", {
   value: undefined,
   writable: true,
+  configurable: true,
 });
