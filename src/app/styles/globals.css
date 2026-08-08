@@ -24,6 +24,9 @@
 /* ---------- Tailwind v4 Import ---------- */
 @import "tailwindcss";
 
+/* ---------- Theme Modules ---------- */
+@import "./modules/themes/themes-nord.css";
+
 /* ---------- Tailwind v4 Theme (CSS-first) ---------- */
 @theme {
   /* Nord Polar Night — Background layers */
@@ -64,91 +67,6 @@
 
   /* Height */
   --height-titlebar: 32px;
-}
-
-/* ---------- Nord Design Token Custom Properties ---------- */
-:root,
-[data-theme="polar-night"] {
-  /* Semantic tokens — Nord Polar Night (Dark) */
-  --bg-app: #2e3440;
-  --bg-surface: #3b4252;
-  --bg-elevated: #434c5e;
-  --border-default: #4c566a;
-  --text-primary: #eceff4;
-  --text-secondary: #d8dee9;
-  --text-muted: #4c566a;
-  --accent-primary: #88c0d0;
-  --accent-secondary: #81a1c1;
-
-  /* Titlebar */
-  --titlebar-height: 32px;
-  --titlebar-bg: #3b4252;
-  --titlebar-border: rgba(0, 0, 0, 0.35);
-
-  /* Traffic lights */
-  --traffic-close: #bf616a;
-  --traffic-minimize: #ebcb8b;
-  --traffic-maximize: #a3be8c;
-  --traffic-size: 12px;
-  --traffic-gap: 8px;
-
-  /* Typography */
-  --font-terminus: "Terminus", "Consolas", monospace;
-  --font-size-base: 13px;
-  --line-height-base: 1.5;
-
-  /* Transitions */
-  --transition-fast: 100ms ease;
-  --transition-default: 150ms ease;
-  --transition-slow: 250ms ease;
-}
-
-[data-theme="snow-storm"] {
-  /* Semantic tokens — Nord Snow Storm (Light Theme) */
-  --bg-app: #eceff4;
-  --bg-surface: #e5e9f0;
-  --bg-elevated: #d8dee9;
-  --border-default: #c5cbd5;
-  --text-primary: #2e3440;
-  --text-secondary: #3b4252;
-  --text-muted: #4c566a;
-  --accent-primary: #5e81ac;
-  --accent-secondary: #81a1c1;
-
-  --titlebar-bg: #e5e9f0;
-  --titlebar-border: rgba(0, 0, 0, 0.12);
-}
-
-[data-theme="frost"] {
-  /* Semantic tokens — Nord Frost (Cyan / Ice Blue Theme) */
-  --bg-app: #1e2631;
-  --bg-surface: #2b3848;
-  --bg-elevated: #36475b;
-  --border-default: #435870;
-  --text-primary: #e0f2f1;
-  --text-secondary: #8fbcbb;
-  --text-muted: #5e81ac;
-  --accent-primary: #88c0d0;
-  --accent-secondary: #8fbcbb;
-
-  --titlebar-bg: #232f3d;
-  --titlebar-border: rgba(0, 0, 0, 0.4);
-}
-
-[data-theme="aurora"] {
-  /* Semantic tokens — Nord Aurora (Vibrant Cosmic Purple Theme) */
-  --bg-app: #2b2638;
-  --bg-surface: #373147;
-  --bg-elevated: #463e59;
-  --border-default: #5c5275;
-  --text-primary: #f3edfc;
-  --text-secondary: #d8dee9;
-  --text-muted: #b48ead;
-  --accent-primary: #b48ead;
-  --accent-secondary: #a3be8c;
-
-  --titlebar-bg: #312b40;
-  --titlebar-border: rgba(0, 0, 0, 0.4);
 }
 
 /* ---------- Reset & Base ---------- */
