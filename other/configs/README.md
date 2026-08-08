@@ -21,7 +21,7 @@ next application launch (or immediately if changed through the in-app settings p
 Controls the application appearance and window behaviour.
 
 ```yaml
-theme: "dark"        # dark | light | system
+theme: "polar-night" # polar-night | snow-storm | frost | aurora | system
 language: "en"       # ISO 639-1 code (en, fr, de, es, …)
 
 window:
@@ -35,7 +35,7 @@ log_level: "info"    # trace | debug | info | warn | error
 
 | Field | Type | Default | Description |
 |-------|------|---------|-------------|
-| `theme` | string | `"dark"` | UI color theme. `"system"` follows the OS dark/light mode. |
+| `theme` | string | `"polar-night"` | UI color theme: `"polar-night"` (Nord Dark), `"snow-storm"` (Nord Light), `"frost"` (Nord Cyan/Ice Blue), `"aurora"` (Nord Cosmic Purple/Vibrant), or `"system"` (follows OS). |
 | `language` | string | `"en"` | Display language. Add translations to `src/locales/` to unlock more codes. |
 | `window.remember_size` | bool | `true` | If `true`, the window reopens at its last dimensions. |
 | `window.start_maximized` | bool | `false` | Forces the window to maximize on launch, overriding `remember_size`. |

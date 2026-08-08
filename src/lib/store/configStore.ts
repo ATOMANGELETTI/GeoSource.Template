@@ -85,9 +85,15 @@ export const useConfigStore = create<ConfigState & ConfigActions>((set, get) => 
   },
 
   updateBindings: async (patch) => {
-    const merged: AppBindings = {
-      bindings: { ...get().bindings.bindings, ...patch },
-    };
+    const updatedMap: Record<string, string> = { ...get().bindings.bindings };
+    if (patch) {
+      for (const [key, value] of Object.entries(patch)) {
+        if (value !== undefined) {
+          updatedMap[key] = value;
+        }
+      }
+    }
+    const merged: AppBindings = { bindings: updatedMap };
     set({ bindings: merged });
     try {
       await setBindings(merged);

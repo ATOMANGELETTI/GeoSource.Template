@@ -11,9 +11,19 @@ export interface WindowSettings {
   start_maximized: boolean;
 }
 
+export type ThemeName =
+  | "polar-night"
+  | "snow-storm"
+  | "frost"
+  | "aurora"
+  | "dark"
+  | "light"
+  | "system"
+  | (string & {});
+
 export interface AppSettings {
-  /** UI color theme: `"dark"` | `"light"` | `"system"` */
-  theme: "dark" | "light" | "system";
+  /** UI color theme: `"polar-night"` | `"snow-storm"` | `"frost"` | `"aurora"` | `"system"` */
+  theme: ThemeName;
   /** ISO 639-1 language code (e.g. `"en"`, `"fr"`). */
   language: string;
   window: WindowSettings;
@@ -42,7 +52,7 @@ export interface AppInfo {
 // ---------------------------------------------------------------------------
 
 export const DEFAULT_SETTINGS: AppSettings = {
-  theme: "dark",
+  theme: "polar-night",
   language: "en",
   window: { remember_size: true, start_maximized: false },
   log_level: "info",

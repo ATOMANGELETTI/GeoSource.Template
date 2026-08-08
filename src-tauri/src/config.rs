@@ -28,7 +28,7 @@ impl Default for WindowSettings {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AppSettings {
-    /// UI color theme. One of: `dark`, `light`, `system`.
+    /// UI color theme. One of: `polar-night`, `snow-storm`, `frost`, `aurora`, `system`.
     pub theme: String,
     /// ISO 639-1 language code (e.g. `en`, `fr`).
     pub language: String,
@@ -41,7 +41,7 @@ pub struct AppSettings {
 impl Default for AppSettings {
     fn default() -> Self {
         Self {
-            theme: "dark".into(),
+            theme: "polar-night".into(),
             language: "en".into(),
             window: WindowSettings::default(),
             log_level: "info".into(),
@@ -288,7 +288,7 @@ mod tests {
     #[test]
     fn test_settings_default_values() {
         let s = AppSettings::default();
-        assert_eq!(s.theme, "dark");
+        assert_eq!(s.theme, "polar-night");
         assert_eq!(s.language, "en");
         assert!(s.window.remember_size);
         assert!(!s.window.start_maximized);
@@ -347,7 +347,7 @@ mod tests {
         let path = PathBuf::from("/nonexistent/path/that/does/not/exist.yaml");
         let result: AppSettings = load_yaml(&path, "test");
         // Should return default without panicking
-        assert_eq!(result.theme, "dark");
+        assert_eq!(result.theme, "polar-night");
     }
 
     #[test]
@@ -356,7 +356,7 @@ mod tests {
         let path = dir.join("geosource_test_malformed.yaml");
         fs::write(&path, b"{{ not valid yaml {{{{").unwrap();
         let result: AppSettings = load_yaml(&path, "test");
-        assert_eq!(result.theme, "dark");
+        assert_eq!(result.theme, "polar-night");
         let _ = fs::remove_file(&path);
     }
 
@@ -365,15 +365,17 @@ mod tests {
         let dir = std::env::temp_dir();
         let path = dir.join("geosource_test_settings_rt.yaml");
 
-        let mut original = AppSettings::default();
-        original.theme = "light".into();
-        original.language = "fr".into();
+        for theme_name in &["snow-storm", "frost", "aurora", "polar-night"] {
+            let mut original = AppSettings::default();
+            original.theme = (*theme_name).to_string();
+            original.language = "fr".into();
 
-        save_yaml(&original, &path, "test").expect("save");
+            save_yaml(&original, &path, "test").expect("save");
 
-        let loaded: AppSettings = load_yaml(&path, "test");
-        assert_eq!(loaded.theme, "light");
-        assert_eq!(loaded.language, "fr");
+            let loaded: AppSettings = load_yaml(&path, "test");
+            assert_eq!(loaded.theme, *theme_name);
+            assert_eq!(loaded.language, "fr");
+        }
 
         let _ = fs::remove_file(&path);
     }

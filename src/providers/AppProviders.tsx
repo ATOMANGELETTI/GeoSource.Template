@@ -2,6 +2,7 @@
 
 import type { FC, ReactNode } from "react";
 import { LoggerProvider } from "./LoggerProvider";
+import { ThemeProvider } from "./ThemeProvider";
 
 interface AppProvidersProps {
   children: ReactNode;
@@ -13,7 +14,11 @@ interface AppProvidersProps {
  * Zustand stores are accessed directly (no Provider needed in Zustand v5).
  */
 const AppProviders: FC<AppProvidersProps> = ({ children }) => {
-  return <LoggerProvider>{children}</LoggerProvider>;
+  return (
+    <ThemeProvider>
+      <LoggerProvider>{children}</LoggerProvider>
+    </ThemeProvider>
+  );
 };
 
 export default AppProviders;
