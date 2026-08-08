@@ -6,6 +6,11 @@ import "@/app/styles/globals.css";
 export const metadata: Metadata = {
   title: "GeoSource Template",
   description: "GeoSource Tauri Template Desktop Application",
+  icons: {
+    icon: "/icons/icon.svg",
+    shortcut: "/favicon.ico",
+    apple: "/icons/icon.png",
+  },
 };
 
 interface RootLayoutProps {
