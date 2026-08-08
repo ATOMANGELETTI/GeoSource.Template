@@ -1,3 +1,4 @@
+mod config;
 mod logger;
 mod tray;
 
@@ -17,6 +18,7 @@ pub fn run() {
     let window_state_flags = StateFlags::SIZE | StateFlags::MAXIMIZED;
 
     tauri::Builder::default()
+        .manage(config::load_config())
         .plugin(Builder::default().with_state_flags(window_state_flags).build())
         .on_window_event(|window, event| match event {
             tauri::WindowEvent::CloseRequested { .. } => {
@@ -77,7 +79,14 @@ pub fn run() {
             }
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![logger::log_app_event])
+        .invoke_handler(tauri::generate_handler![
+            logger::log_app_event,
+            config::get_settings,
+            config::get_bindings,
+            config::get_appinfo,
+            config::set_settings,
+            config::set_bindings,
+        ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

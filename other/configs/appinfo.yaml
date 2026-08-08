@@ -1,1 +1,12 @@
 # THIS IS FOR APPLICATION INFORMATION (VERSION, BUILD, CODE NAME, ECT.)
+# This file is READ-ONLY at runtime — the application never writes back to it.
+# You can edit codename, description, and build to track your own release notes.
+# Changing `version` here has no effect on the binary version (set in Cargo.toml
+# and tauri.conf.json). It is purely informational metadata for display purposes.
+#
+# See other/configs/README.md for guidance.
+
+version:     "0.1.0"
+codename:    "Meridian"
+build:       "dev"          # Options: dev | alpha | beta | rc | stable
+description: "GeoSource Tauri Template Desktop Application"

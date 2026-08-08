@@ -1,1 +1,16 @@
 # THIS IS FOR APPLICATION SETTINGS (WINDOW SIZE, THEMES, ECT.)
+# Edit these values to customize the application behaviour.
+# The app writes defaults here on first launch; changes take effect on next restart
+# unless the settings panel is used (which reloads without restarting).
+#
+# See other/configs/README.md for full documentation.
+
+theme: "dark"        # Options: dark | light | system
+
+language: "en"       # ISO 639-1 code — e.g. en, fr, de, es
+
+window:
+  remember_size: true       # Restore window dimensions from last session
+  start_maximized: false    # Override remember_size and launch maximized
+
+log_level: "info"    # Options: trace | debug | info | warn | error

@@ -1,1 +1,13 @@
 #  THIS IS FOR APPLICATION BINDINGS (SHORTCUTS, KEYBINDS, ECT.)
+# Map action identifiers to accelerator strings.
+# Accelerator format: optional modifiers joined with '+', then the key.
+# Modifiers: Ctrl, Shift, Alt, Super (Win key)
+# Examples:  Ctrl+S,  Ctrl+Shift+P,  Alt+F4
+#
+# See other/configs/README.md for the full list of supported actions.
+
+bindings:
+  toggle_sidebar: "Ctrl+B"
+  open_settings:  "Ctrl+,"
+  quit:           "Alt+F4"
+  reload:         "Ctrl+R"
