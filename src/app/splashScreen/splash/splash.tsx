@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef, type FC } from "react";
 import { useConfigStore } from "@/lib/store/configStore";
 import { closeSplashAndShowMain } from "@/lib/config";
+import { logInfo, logWarn, logError } from "@/lib/logger";
 
 const MIN_SPLASH_TIME_MS = 7000; // Mandatory 7 seconds minimum duration
 
@@ -16,15 +17,19 @@ export const SplashScreen: FC = () => {
   const startTimeRef = useRef<number>(0);
   const isAppLoadedRef = useRef<boolean>(false);
   const minTimeElapsedRef = useRef<boolean>(false);
+  const loggedMilestonesRef = useRef<Record<number, boolean>>({});
 
   // Trigger store configuration load on mount
   useEffect(() => {
+    logInfo("SplashScreen component mounted.");
+
     loadAll()
       .then(() => {
         isAppLoadedRef.current = true;
+        logInfo("SplashScreen: Config store loaded successfully.");
       })
       .catch((err) => {
-        console.warn("Config load notice in splashscreen:", err);
+        logWarn("SplashScreen: Config store load notice:", String(err));
         isAppLoadedRef.current = true;
       });
 
@@ -48,29 +53,43 @@ export const SplashScreen: FC = () => {
         minTimeElapsedRef.current = true;
       }
 
+      let currentMsg = "Preparing workspace environment...";
       // Update status messages during startup sequence
       if (calculatedProgress < 25) {
-        setStatusText("Loading application configuration & bindings...");
+        currentMsg = "Loading application configuration & bindings...";
       } else if (calculatedProgress < 55) {
-        setStatusText("Initializing GIS spatial pipelines...");
+        currentMsg = "Initializing GIS spatial pipelines...";
       } else if (calculatedProgress < 85) {
-        setStatusText("Mounting user interface subsystems...");
+        currentMsg = "Mounting user interface subsystems...";
       } else if (calculatedProgress < 100) {
-        setStatusText("Preparing workspace environment...");
+        currentMsg = "Preparing workspace environment...";
       } else {
-        setStatusText("System ready — Launching GeoSource Template...");
+        currentMsg = "System ready — Launching GeoSource Template...";
+      }
+      setStatusText(currentMsg);
+
+      // Milestone logging
+      const milestoneKey = Math.floor(calculatedProgress / 25) * 25;
+      if (!loggedMilestonesRef.current[milestoneKey]) {
+        loggedMilestonesRef.current[milestoneKey] = true;
+        logInfo(`SplashScreen milestone reached: ${calculatedProgress}% (${currentMsg})`);
       }
 
       if (minTimeElapsedRef.current) {
         if (isAppLoadedRef.current) {
           setProgress(100);
           clearInterval(interval);
+          logInfo("SplashScreen sequence complete (100%). Requesting close_splash_and_show_main.");
 
           // Short delay to allow 100% progress state to visually render smoothly
           setTimeout(() => {
-            closeSplashAndShowMain().catch((err) => {
-              console.error("Failed to signal close splash:", err);
-            });
+            closeSplashAndShowMain()
+              .then(() => {
+                logInfo("closeSplashAndShowMain IPC call succeeded.");
+              })
+              .catch((err) => {
+                logError("Failed to signal close splash:", String(err));
+              });
           }, 300);
         } else {
           // If 7s has elapsed but app initialization is still ongoing, stay at 98%

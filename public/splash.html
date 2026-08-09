@@ -258,8 +258,9 @@
     ];
 
     /* ── State ──────────────────────────────────────────────────── */
-    var startTime = Date.now();
-    var closed    = false;
+    var startTime        = Date.now();
+    var closed           = false;
+    var loggedMilestones = {};
 
     /* ── Dynamic DOM element getters ────────────────────────────── */
     function getFillEl()     { return document.getElementById("progress-fill"); }
@@ -300,6 +301,34 @@
       });
     }
 
+    /* ── Remote Logger ──────────────────────────────────────────── */
+    function logRemote(level, message, details) {
+      try {
+        console.log("[" + level.toUpperCase() + "] [splash.html] " + message, details || "");
+        tauriInvoke("log_app_event", {
+          level: level,
+          message: "[splash.html] " + message,
+          details: details || null
+        }).catch(function() {});
+      } catch (e) {
+        // Fallback for isolated console
+      }
+    }
+
+    /* ── Global Exception Handlers ──────────────────────────────── */
+    window.onerror = function(msg, url, lineNo, columnNo, error) {
+      var details = (url || "") + ":" + (lineNo || 0) + ":" + (columnNo || 0) + (error && error.stack ? "\n" + error.stack : "");
+      logRemote("error", "Unhandled Window Error: " + msg, details);
+      return false;
+    };
+
+    window.onunhandledrejection = function(event) {
+      var reason = event.reason ? (event.reason.stack || event.reason.toString()) : "Unknown promise rejection";
+      logRemote("error", "Unhandled Promise Rejection: " + reason);
+    };
+
+    logRemote("info", "Static splash screen page loaded and initialized.");
+
     /* ── Close splash ───────────────────────────────────────────── */
     function closeSplash() {
       if (closed) return;
@@ -312,9 +341,13 @@
       if (pctEl)    pctEl.textContent    = "100%";
       if (fillEl)   fillEl.style.width   = "100%";
 
+      logRemote("info", "Splash sequence complete (100%). Requesting close_splash_and_show_main.");
+
       function attemptClose(retries) {
-        tauriInvoke("close_splash_and_show_main").catch(function(err) {
-          console.error("Failed to close splash (attempt " + retries + "):", err);
+        tauriInvoke("close_splash_and_show_main").then(function() {
+          logRemote("info", "close_splash_and_show_main IPC call succeeded.");
+        }).catch(function(err) {
+          logRemote("warn", "Failed to close splash (attempt " + retries + "): " + err);
           if (retries < 10) {
             setTimeout(function() { attemptClose(retries + 1); }, 300);
           }
@@ -346,6 +379,14 @@
       }
       if (statusEl) statusEl.textContent = msg;
 
+      // Log milestone progress ticks
+      var milestoneKey = Math.floor(pct / 25) * 25;
+      if (pct >= 98 && pct < 100) milestoneKey = 98;
+      if (!loggedMilestones[milestoneKey]) {
+        loggedMilestones[milestoneKey] = true;
+        logRemote("info", "Progress milestone reached: " + pct + "% (" + msg + ")");
+      }
+
       if (elapsed >= MIN_SPLASH_MS) {
         clearInterval(timer);
         closeSplash();
@@ -354,13 +395,15 @@
 
     /* ── Load app info asynchronously (non-blocking) ─────────────── */
     function loadAppInfo() {
+      logRemote("debug", "Fetching app info via IPC...");
       tauriInvoke("get_appinfo").then(function(info) {
         var versionEl  = getVersionEl();
         var codenameEl = getCodenameEl();
         if (info && info.version && versionEl)   versionEl.textContent  = "v" + info.version;
         if (info && info.codename && codenameEl) codenameEl.textContent = info.codename;
+        logRemote("info", "App info loaded: version=" + (info ? info.version : "unknown") + ", codename=" + (info ? info.codename : "unknown"));
       }).catch(function(err) {
-        console.warn("App info load notice:", err);
+        logRemote("warn", "App info load notice (non-fatal): " + err);
       });
     }
 

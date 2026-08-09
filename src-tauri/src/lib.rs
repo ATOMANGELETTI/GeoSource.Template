@@ -20,6 +20,8 @@ use tauri_plugin_window_state::{Builder, StateFlags};
 #[tauri::command]
 #[allow(dead_code)]
 async fn close_splash_and_show_main(app_handle: tauri::AppHandle) -> Result<(), String> {
+    log::info!(target: "geosource::splash", "Received 'close_splash_and_show_main' IPC request from splashscreen.");
+
     if let Some(main_window) = app_handle.get_webview_window("main") {
         let (start_maximized, always_on_top) = if let Some(config_state) = app_handle.try_state::<std::sync::Mutex<config::AppConfig>>() {
             if let Ok(cfg) = config_state.lock() {
@@ -43,11 +45,15 @@ async fn close_splash_and_show_main(app_handle: tauri::AppHandle) -> Result<(), 
         let _ = main_window.show();
         let _ = main_window.set_focus();
         log::info!(target: "geosource::window", "Main webview window displayed and focused from splashscreen (start_maximized={}, always_on_top={}).", start_maximized, always_on_top);
+    } else {
+        log::warn!(target: "geosource::window", "Main window ('main') was not found when handling close_splash_and_show_main.");
     }
 
     if let Some(splashscreen) = app_handle.get_webview_window("splashscreen") {
         let _ = splashscreen.close();
-        log::info!(target: "geosource::splash", "Splashscreen window closed.");
+        log::info!(target: "geosource::splash", "Splashscreen window closed successfully.");
+    } else {
+        log::warn!(target: "geosource::splash", "Splashscreen window ('splashscreen') was not found during close request.");
     }
 
     Ok(())
