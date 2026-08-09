@@ -132,6 +132,11 @@ pub fn run() {
                 }
             }
 
+            // Ensure main window is hidden during splash screen sequence
+            if let Some(main_window) = app.get_webview_window("main") {
+                let _ = main_window.hide();
+            }
+
             // Ensure splashscreen is centered on primary monitor
             if let Some(splashscreen) = app.get_webview_window("splashscreen") {
                 let _ = splashscreen.center();

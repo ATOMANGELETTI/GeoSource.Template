@@ -29,7 +29,7 @@
                                 {
                                     "label":  "splashscreen",
                                     "title":  "GeoSource Template Splashscreen",
-                                    "url":  "/splash.html",
+                                    "url":  "/splashScreen/",
                                     "width":  604,
                                     "height":  384,
                                     "center":  true,
