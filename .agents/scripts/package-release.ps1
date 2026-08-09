@@ -201,7 +201,8 @@ $manifestData = [PSCustomObject]@{
     artifacts   = $manifestArtifacts
 }
 
-$manifestData | ConvertTo-Json -Depth 10 | Set-Content -Path $manifestFile -Encoding UTF8
+$manifestJson = $manifestData | ConvertTo-Json -Depth 10
+Set-Content -Path $manifestFile -Value $manifestJson -Encoding UTF8
 Write-Host "  [OK] Generated Release Manifest: release-manifest.json" -ForegroundColor Green
 
 # Print Visual Summary
