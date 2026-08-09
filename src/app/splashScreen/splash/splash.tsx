@@ -273,18 +273,6 @@ export const SplashScreen: FC = () => {
           />
         </div>
       </div>
-
-      {/* CSS Keyframe Animation for Shimmer effect */}
-      <style>{`
-        @keyframes splashShimmer {
-          0% {
-            transform: translateX(-100%);
-          }
-          100% {
-            transform: translateX(100%);
-          }
-        }
-      `}</style>
     </div>
   );
 };
