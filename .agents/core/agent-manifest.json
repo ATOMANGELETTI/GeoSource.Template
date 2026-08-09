@@ -19,7 +19,10 @@
     { "id": "docs-engineer", "file": ".agents/agents/docs-engineer.md", "role": "Documentation & Knowledge Systems" },
     { "id": "release-engineer", "file": ".agents/agents/release-engineer.md", "role": "Release Engineering & CI/CD Specialist" },
     { "id": "dependency-auditor", "file": ".agents/agents/dependency-auditor.md", "role": "Dependency Audit & Supply Chain Guardian" },
-    { "id": "code-reviewer", "file": ".agents/agents/code-reviewer.md", "role": "Code Reviewer & Quality Gatekeeper" }
+    { "id": "code-reviewer", "file": ".agents/agents/code-reviewer.md", "role": "Code Reviewer & Quality Gatekeeper" },
+    { "id": "database-engineer", "file": ".agents/agents/database-engineer.md", "role": "Database Architecture & Spatial Indexing" },
+    { "id": "ux-designer", "file": ".agents/agents/ux-designer.md", "role": "UI/UX Design & Styling Polish" },
+    { "id": "api-integration-engineer", "file": ".agents/agents/api-integration-engineer.md", "role": "API Integrations & External Webhooks" }
   ],
   "rules": [
     { "id": "code-quality", "file": ".agents/rules/code-quality.md", "category": "Core Development" },
