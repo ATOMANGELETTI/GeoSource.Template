@@ -29,7 +29,7 @@
                                 {
                                     "label":  "splashscreen",
                                     "title":  "GeoSource Template Splashscreen",
-                                    "url":  "/splashScreen",
+                                    "url":  "/splashScreen/",
                                     "width":  604,
                                     "height":  384,
                                     "center":  true,
@@ -43,7 +43,7 @@
                                 {
                                     "label":  "tray-menu",
                                     "title":  "Tray Menu",
-                                    "url":  "/tray-menu",
+                                    "url":  "/tray-menu/",
                                     "width":  220,
                                     "height":  230,
                                     "decorations":  false,
