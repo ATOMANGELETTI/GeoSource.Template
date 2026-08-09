@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="format-detection" content="telephone=no" />
+  <title>GeoSource Template</title>
+  <style>
+    /* ── Font Faces ─────────────────────────────────────────────── */
+    @font-face {
+      font-family: "Terminus";
+      src: url("/fonts/Terminus/TerminessNerdFont-Regular.ttf") format("truetype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: block;
+    }
+    @font-face {
+      font-family: "Terminus";
+      src: url("/fonts/Terminus/TerminessNerdFont-Bold.ttf") format("truetype");
+      font-weight: 700;
+      font-style: normal;
+      font-display: block;
+    }
+
+    /* ── Reset ──────────────────────────────────────────────────── */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background: transparent;
+      font-family: "Terminus", "Consolas", "Courier New", monospace;
+      font-size: 13px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    /* ── Root Container ─────────────────────────────────────────── */
+    #splash-root {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+      background: transparent;
+    }
+
+    /* ── Card ───────────────────────────────────────────────────── */
+    #splash-card {
+      width: 100%;
+      height: 100%;
+      border-radius: 14px;
+      background-color: #2e3440;
+      color: #eceff4;
+      box-shadow:
+        0 16px 40px rgba(0, 0, 0, 0.6),
+        0 0 0 1px rgba(255, 255, 255, 0.06);
+      border: 1px solid #4c566a;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      padding: 40px 36px 44px 36px;
+    }
+
+    /* ── Ambient glow ───────────────────────────────────────────── */
+    #ambient-glow {
+      position: absolute;
+      top: -60px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 360px;
+      height: 200px;
+      background: radial-gradient(circle, #88c0d0 0%, rgba(0,0,0,0) 70%);
+      opacity: 0.18;
+      pointer-events: none;
+    }
+
+    /* ── Main content area ──────────────────────────────────────── */
+    #splash-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      margin-top: 16px;
+      z-index: 1;
+    }
+
+    /* ── Logo box ───────────────────────────────────────────────── */
+    #logo-box {
+      width: 68px;
+      height: 68px;
+      border-radius: 18px;
+      background: #3b4252;
+      border: 1px solid #4c566a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      position: relative;
+    }
+
+    /* ── Typography ─────────────────────────────────────────────── */
+    #splash-title {
+      margin: 0 0 8px 0;
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: #eceff4;
+      font-family: inherit;
+    }
+
+    #splash-subtitle {
+      font-size: 12px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #88c0d0;
+      font-weight: 600;
+      opacity: 0.9;
+      font-family: inherit;
+    }
+
+    /* ── Status row ─────────────────────────────────────────────── */
+    #status-row {
+      width: 100%;
+      padding: 0 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: #d8dee9;
+      z-index: 1;
+      margin-bottom: 12px;
+      font-family: inherit;
+    }
+
+    #progress-pct {
+      font-weight: 700;
+      color: #88c0d0;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ── Progress bar ───────────────────────────────────────────── */
+    #progress-track {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      height: 6px;
+      background-color: #434c5e;
+      overflow: hidden;
+      z-index: 2;
+    }
+
+    #progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #81a1c1, #88c0d0);
+      transition: width 0.15s linear;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #progress-shimmer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(
+        90deg,
+        rgba(255,255,255,0) 0%,
+        rgba(255,255,255,0.45) 50%,
+        rgba(255,255,255,0) 100%
+      );
+      animation: splashShimmer 1.6s infinite linear;
+    }
+
+    /* ── Shimmer keyframe ───────────────────────────────────────── */
+    @keyframes splashShimmer {
+      0%   { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+  </style>
+</head>
+<body>
+  <div id="splash-root">
+    <div id="splash-card">
+
+      <!-- Ambient glow -->
+      <div id="ambient-glow"></div>
+
+      <!-- Main brand content -->
+      <div id="splash-content">
+        <!-- Logo box with globe icon -->
+        <div id="logo-box">
+          <svg
+            width="38" height="38"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#88c0d0"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="12" cy="12" r="9" />
+            <path d="M3.6 9h16.8" />
+            <path d="M3.6 15h16.8" />
+            <path d="M11.5 3a17 17 0 0 0 0 18" />
+            <path d="M12.5 3a17 17 0 0 1 0 18" />
+          </svg>
+        </div>
+
+        <h1 id="splash-title">GeoSource Template</h1>
+        <div id="splash-subtitle">GeoSpatial Desktop Platform &bull; <span id="app-version">v0.1.0</span> (<span id="app-codename">Melody</span>)</div>
+      </div>
+
+      <!-- Status row -->
+      <div id="status-row">
+        <span id="status-text">Initializing Core Engine...</span>
+        <span id="progress-pct">0%</span>
+      </div>
+
+      <!-- Progress bar -->
+      <div id="progress-track">
+        <div id="progress-fill">
+          <div id="progress-shimmer"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    "use strict";
+
+    /* ── Config ─────────────────────────────────────────────────── */
+    var MIN_SPLASH_MS = 7000;
+    var TICK_MS       = 40;
+
+    var STATUS_MESSAGES = [
+      { below: 25,  text: "Loading application configuration & bindings..." },
+      { below: 55,  text: "Initializing GIS spatial pipelines..." },
+      { below: 85,  text: "Mounting user interface subsystems..." },
+      { below: 100, text: "Preparing workspace environment..." }
+    ];
+
+    /* ── DOM refs ───────────────────────────────────────────────── */
+    var fillEl     = document.getElementById("progress-fill");
+    var statusEl   = document.getElementById("status-text");
+    var pctEl      = document.getElementById("progress-pct");
+    var versionEl  = document.getElementById("app-version");
+    var codenameEl = document.getElementById("app-codename");
+
+    /* ── State ──────────────────────────────────────────────────── */
+    var startTime = Date.now();
+    var closed    = false;
+
+    /* ── Tauri IPC helper ───────────────────────────────────────── */
+    function tauriInvoke(cmd, args) {
+      return new Promise(function(resolve, reject) {
+        function tryInvoke() {
+          var internals = window.__TAURI_INTERNALS__;
+          if (internals && typeof internals.invoke === "function") {
+            internals.invoke(cmd, args || {}).then(resolve).catch(reject);
+          } else {
+            reject(new Error("Tauri internals not available for: " + cmd));
+          }
+        }
+        // Give Tauri a moment to inject __TAURI_INTERNALS__ if not already ready
+        if (window.__TAURI_INTERNALS__) {
+          tryInvoke();
+        } else {
+          setTimeout(tryInvoke, 150);
+        }
+      });
+    }
+
+    /* ── Load app info ──────────────────────────────────────────── */
+    tauriInvoke("get_appinfo").then(function(info) {
+      if (info && info.version) versionEl.textContent = "v" + info.version;
+      if (info && info.codename) codenameEl.textContent = info.codename;
+    }).catch(function() { /* silently use defaults */ });
+
+    /* ── Close splash ───────────────────────────────────────────── */
+    function closeSplash() {
+      if (closed) return;
+      closed = true;
+      statusEl.textContent = "System ready \u2014 Launching GeoSource Template...";
+      pctEl.textContent    = "100%";
+      fillEl.style.width   = "100%";
+      setTimeout(function() {
+        tauriInvoke("close_splash_and_show_main").catch(function(err) {
+          console.error("Failed to close splash:", err);
+        });
+      }, 300);
+    }
+
+    /* ── Progress timer ─────────────────────────────────────────── */
+    var timer = setInterval(function() {
+      if (closed) { clearInterval(timer); return; }
+
+      var elapsed = Date.now() - startTime;
+      var pct     = Math.min(98, Math.floor((elapsed / MIN_SPLASH_MS) * 100));
+
+      fillEl.style.width = pct + "%";
+      pctEl.textContent  = pct + "%";
+
+      var msg = "Preparing workspace environment...";
+      for (var i = 0; i < STATUS_MESSAGES.length; i++) {
+        if (pct < STATUS_MESSAGES[i].below) { msg = STATUS_MESSAGES[i].text; break; }
+      }
+      statusEl.textContent = msg;
+
+      if (elapsed >= MIN_SPLASH_MS) {
+        clearInterval(timer);
+        closeSplash();
+      }
+    }, TICK_MS);
+  </script>
+</body>
+</html>
