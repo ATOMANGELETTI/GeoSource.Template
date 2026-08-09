@@ -1,4 +1,4 @@
-#  THIS IS FOR APPLICATION BINDINGS (SHORTCUTS, KEYBINDS, ECT.)
+# THIS IS FOR APPLICATION BINDINGS (SHORTCUTS, KEYBINDS, ECT.)
 # Map action identifiers to accelerator strings.
 # Accelerator format: optional modifiers joined with '+', then the key.
 # Modifiers: Ctrl, Shift, Alt, Super (Win key)
@@ -8,6 +8,16 @@
 
 bindings:
   toggle_sidebar: "Ctrl+B"
-  open_settings:  "Ctrl+,"
-  quit:           "Alt+F4"
-  reload:         "Ctrl+R"
+  open_settings: "Ctrl+,"
+  quit: "Alt+F4"
+  reload: "Ctrl+R"
+  toggle_fullscreen: "F11"
+  toggle_devtools: "F12"
+  toggle_window: "Ctrl+M"
+  toggle_maximize: "Ctrl+L"
+  zoom_in: "Ctrl+="
+  zoom_out: "Ctrl+-"
+  reset_zoom: "Ctrl+0"
+  copy: "Ctrl+C"
+  paste: "Ctrl+V"
+  help: "F1"

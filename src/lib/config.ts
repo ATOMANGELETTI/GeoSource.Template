@@ -9,6 +9,37 @@ export interface WindowSettings {
   remember_size: boolean;
   /** Override remember_size and launch maximized. */
   start_maximized: boolean;
+  /** Keep window above all other windows. */
+  always_on_top: boolean;
+  /** Close button hides to tray instead of quitting. */
+  close_to_tray: boolean;
+  /** Minimize button hides window to tray. */
+  minimize_to_tray: boolean;
+}
+
+export interface UiSettings {
+  /** Enable micro-animations & transitions. */
+  animations_enabled: boolean;
+  /** Display bottom status bar in UI. */
+  show_status_bar: boolean;
+  /** Base font size in px. */
+  font_size: number;
+}
+
+export interface SystemSettings {
+  /** Automatically check for application updates on launch. */
+  auto_check_updates: boolean;
+  /** Enable WebGL and GPU hardware acceleration. */
+  hardware_acceleration: boolean;
+}
+
+export interface GisSettings {
+  /** Default coordinate reference system. */
+  default_crs: string;
+  /** Enable spatial tile caching on disk. */
+  tile_cache_enabled: boolean;
+  /** Maximum memory allocated for spatial rendering (MB). */
+  max_spatial_memory_mb: number;
 }
 
 export type ThemeName =
@@ -27,6 +58,9 @@ export interface AppSettings {
   /** ISO 639-1 language code (e.g. `"en"`, `"fr"`). */
   language: string;
   window: WindowSettings;
+  ui: UiSettings;
+  system: SystemSettings;
+  gis: GisSettings;
   /** Minimum log level: `"trace"` | `"debug"` | `"info"` | `"warn"` | `"error"` */
   log_level: "trace" | "debug" | "info" | "warn" | "error";
 }
@@ -37,6 +71,8 @@ export interface AppBindings {
 }
 
 export interface AppInfo {
+  /** Application display name. */
+  name: string;
   /** Semantic version string (e.g. `"0.1.0"`). */
   version: string;
   /** Human-readable release code name. */
@@ -45,6 +81,14 @@ export interface AppInfo {
   build: string;
   /** Short description of the application. */
   description: string;
+  /** Development team or author name. */
+  author: string;
+  /** Project website or repo URL. */
+  website: string;
+  /** Open-source license string. */
+  license: string;
+  /** Copyright statement. */
+  copyright: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -54,7 +98,27 @@ export interface AppInfo {
 export const DEFAULT_SETTINGS: AppSettings = {
   theme: "polar-night",
   language: "en",
-  window: { remember_size: true, start_maximized: false },
+  window: {
+    remember_size: true,
+    start_maximized: false,
+    always_on_top: false,
+    close_to_tray: false,
+    minimize_to_tray: false,
+  },
+  ui: {
+    animations_enabled: true,
+    show_status_bar: true,
+    font_size: 13,
+  },
+  system: {
+    auto_check_updates: true,
+    hardware_acceleration: true,
+  },
+  gis: {
+    default_crs: "EPSG:4326",
+    tile_cache_enabled: true,
+    max_spatial_memory_mb: 1024,
+  },
   log_level: "info",
 };
 
@@ -64,14 +128,29 @@ export const DEFAULT_BINDINGS: AppBindings = {
     open_settings: "Ctrl+,",
     quit: "Alt+F4",
     reload: "Ctrl+R",
+    toggle_fullscreen: "F11",
+    toggle_devtools: "F12",
+    toggle_window: "Ctrl+M",
+    toggle_maximize: "Ctrl+L",
+    zoom_in: "Ctrl+=",
+    zoom_out: "Ctrl+-",
+    reset_zoom: "Ctrl+0",
+    copy: "Ctrl+C",
+    paste: "Ctrl+V",
+    help: "F1",
   },
 };
 
 export const DEFAULT_APPINFO: AppInfo = {
+  name: "GeoSource",
   version: "0.1.0",
-  codename: "Meridian",
+  codename: "Melody",
   build: "dev",
   description: "GeoSource Tauri Template Desktop Application",
+  author: "GeoSource Team",
+  website: "https://github.com/ATOMANGELETTI/GeoSource.Template",
+  license: "MIT",
+  copyright: "Copyright © 2026 GeoSource. All rights reserved.",
 };
 
 // ---------------------------------------------------------------------------

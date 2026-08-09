@@ -9,8 +9,25 @@ theme: "polar-night" # Options: polar-night (Polar Night) | snow-storm (Snow Sto
 
 language: "en" # ISO 639-1 code — e.g. en, fr, de, es
 
+log_level: "info" # Options: trace | debug | info | warn | error
+
 window:
   remember_size: true # Restore window dimensions from last session
   start_maximized: false # Override remember_size and launch maximized
+  always_on_top: false # Keep window above all other windows
+  close_to_tray: false # Close button hides to tray instead of quitting
+  minimize_to_tray: false # Minimize button hides window to tray
 
-log_level: "info" # Options: trace | debug | info | warn | error
+ui:
+  animations_enabled: true # Enable micro-animations & transitions
+  show_status_bar: true # Display bottom status bar in UI
+  font_size: 13 # Base font size in px
+
+system:
+  auto_check_updates: true # Automatically check for application updates on launch
+  hardware_acceleration: true # Enable WebGL and GPU hardware acceleration
+
+gis:
+  default_crs: "EPSG:4326" # Default coordinate reference system
+  tile_cache_enabled: true # Enable spatial tile caching on disk
+  max_spatial_memory_mb: 1024 # Maximum memory allocated for spatial rendering

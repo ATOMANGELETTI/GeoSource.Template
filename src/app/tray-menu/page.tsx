@@ -10,6 +10,7 @@ import {
   Layers,
 } from "lucide-react";
 import styles from "@/app/styles/modules/TrayMenu.module.css";
+import { useConfigStore } from "@/lib/store/configStore";
 
 /**
  * Custom Tray Context Menu Page.
@@ -18,6 +19,12 @@ import styles from "@/app/styles/modules/TrayMenu.module.css";
  */
 const TrayMenuPage: FC = () => {
   const [isMainVisible, setIsMainVisible] = useState(true);
+  const appInfo = useConfigStore((state) => state.appInfo);
+  const bindings = useConfigStore((state) => state.bindings.bindings);
+
+  const openSettingsShortcut = bindings?.open_settings || "Ctrl+,";
+  const quitShortcut = bindings?.quit || "Alt+F4";
+  const toggleWindowShortcut = bindings?.toggle_window || "Ctrl+M";
 
   // Synchronize main window visibility state on mount
   useEffect(() => {
@@ -103,7 +110,6 @@ const TrayMenuPage: FC = () => {
   const handleQuit = async () => {
     try {
       const { getCurrentWindow } = await import("@tauri-apps/api/window");
-      // Close tray menu and main window to exit app cleanly
       const { WebviewWindow } = await import("@tauri-apps/api/webviewWindow");
       const mainWin = await WebviewWindow.getByLabel("main");
       if (mainWin) {
@@ -125,7 +131,7 @@ const TrayMenuPage: FC = () => {
             <Layers size={13} className={styles.brandIcon} />
             <span>GeoSource</span>
           </div>
-          <span className={styles.versionBadge}>v0.1.0</span>
+          <span className={styles.versionBadge}>v{appInfo?.version || "0.1.0"}</span>
         </div>
 
         {/* Menu Actions */}
@@ -143,7 +149,7 @@ const TrayMenuPage: FC = () => {
               )}
               <span>{isMainVisible ? "Hide" : "Show"}</span>
             </div>
-            <span className={styles.shortcut}>Ctrl+H</span>
+            <span className={styles.shortcut}>{toggleWindowShortcut}</span>
           </button>
 
           <button
@@ -155,7 +161,7 @@ const TrayMenuPage: FC = () => {
               <Settings className={styles.icon} />
               <span>Preferences</span>
             </div>
-            <span className={styles.shortcut}>Ctrl+,</span>
+            <span className={styles.shortcut}>{openSettingsShortcut}</span>
           </button>
 
           <button
@@ -180,7 +186,7 @@ const TrayMenuPage: FC = () => {
               <Power className={styles.icon} />
               <span>Quit GeoSource</span>
             </div>
-            <span className={styles.shortcut}>Alt+F4</span>
+            <span className={styles.shortcut}>{quitShortcut}</span>
           </button>
         </div>
       </div>

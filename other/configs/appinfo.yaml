@@ -1,12 +1,17 @@
 # THIS IS FOR APPLICATION INFORMATION (VERSION, BUILD, CODE NAME, ECT.)
 # This file is READ-ONLY at runtime — the application never writes back to it.
-# You can edit codename, description, and build to track your own release notes.
+# You can edit codename, description, build, author, website, and copyright to track release info.
 # Changing `version` here has no effect on the binary version (set in Cargo.toml
 # and tauri.conf.json). It is purely informational metadata for display purposes.
 #
 # See other/configs/README.md for guidance.
 
+name: "GeoSource"
 version: "0.1.0"
 codename: "Melody"
 build: "dev" # Options: dev | alpha | beta | rc | stable
 description: "GeoSource Tauri Template Desktop Application"
+author: "GeoSource Team"
+website: "https://github.com/ATOMANGELETTI/GeoSource.Template"
+license: "MIT"
+copyright: "Copyright © 2026 GeoSource. All rights reserved."

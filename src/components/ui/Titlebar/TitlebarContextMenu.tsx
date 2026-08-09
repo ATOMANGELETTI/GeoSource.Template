@@ -4,6 +4,7 @@ import { type FC, useMemo } from "react";
 import { Minus, Square, Maximize2, X, Move, RotateCcw, Scaling } from "lucide-react";
 import { ContextMenuGate, type ContextMenuEntry } from "@/components/ui/ContextMenu";
 import { isTauri } from "@/lib/utils";
+import { useConfigStore } from "@/lib/store/configStore";
 
 interface TitlebarContextMenuProps {
   open: boolean;
@@ -20,16 +21,6 @@ interface TitlebarContextMenuProps {
 /**
  * Right-click context menu for the custom window titlebar.
  * Styled consistently with the content area right-click menu and tray menu.
- *
- * Items:
- *   Restore
- *   Move
- *   Size
- *   ─────────────────
- *   Minimize    Ctrl+M
- *   Maximize    Ctrl+↑
- *   ─────────────────
- *   Close       Alt+F4  (danger)
  */
 const TitlebarContextMenu: FC<TitlebarContextMenuProps> = ({
   open,
@@ -42,6 +33,10 @@ const TitlebarContextMenu: FC<TitlebarContextMenuProps> = ({
   isMaximized,
 }) => {
   const inTauri = isTauri();
+  const bindings = useConfigStore((state) => state.bindings.bindings);
+  const quitShortcut = bindings?.quit || "Alt+F4";
+  const toggleWindowShortcut = bindings?.toggle_window || "Ctrl+M";
+  const toggleMaximizeShortcut = bindings?.toggle_maximize || "Ctrl+Up";
 
   const items = useMemo<ContextMenuEntry[]>(() => {
     const handleMove = async () => {
@@ -79,31 +74,31 @@ const TitlebarContextMenu: FC<TitlebarContextMenuProps> = ({
       {
         key: "minimize",
         icon: Minus,
-        label: "Minimize",
-        shortcut: "Ctrl+M",
+        label: "Toggle Window",
+        shortcut: toggleWindowShortcut,
         onClick: onMinimize,
         disabled: !inTauri,
       },
       {
         key: "maximize",
         icon: isMaximized ? Square : Maximize2,
-        label: "Maximize",
-        shortcut: "Ctrl+↑",
+        label: "Toggle Maximize",
+        shortcut: toggleMaximizeShortcut,
         onClick: onMaximize,
-        disabled: !inTauri || isMaximized,
+        disabled: !inTauri,
       },
       { key: "div-2", divider: true as const },
       {
         key: "close",
         icon: X,
         label: "Close",
-        shortcut: "Alt+F4",
+        shortcut: quitShortcut,
         onClick: onClose_window,
         danger: true,
         disabled: !inTauri,
       },
     ];
-  }, [inTauri, isMaximized, onMinimize, onMaximize, onClose_window]);
+  }, [inTauri, isMaximized, onMinimize, onMaximize, onClose_window, quitShortcut, toggleWindowShortcut, toggleMaximizeShortcut]);
 
   return (
     <ContextMenuGate

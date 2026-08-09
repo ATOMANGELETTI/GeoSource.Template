@@ -92,11 +92,27 @@ pub fn init_logger() -> Result<PathBuf, Box<dyn std::error::Error>> {
         })
         .chain(std::io::stdout());
 
+    // Load log_level from settings.yaml if available, defaulting to Info
+    let settings_path = root_dir.join("other").join("configs").join("settings.yaml");
+    let log_level_filter = if settings_path.exists() {
+        if let Ok(content) = fs::read_to_string(&settings_path) {
+            if let Ok(settings) = serde_yaml::from_str::<crate::config::AppSettings>(&content) {
+                settings.parse_log_level()
+            } else {
+                log::LevelFilter::Info
+            }
+        } else {
+            log::LevelFilter::Info
+        }
+    } else {
+        log::LevelFilter::Info
+    };
+
     let dispatch = fern::Dispatch::new()
-        .level(log::LevelFilter::Info)
-        .level_for("geosource", log::LevelFilter::Debug)
-        .level_for("geosource::window", log::LevelFilter::Info)
-        .level_for("frontend", log::LevelFilter::Debug)
+        .level(log_level_filter)
+        .level_for("geosource", log_level_filter)
+        .level_for("geosource::window", log_level_filter)
+        .level_for("frontend", log_level_filter)
         .level_for("tao", log::LevelFilter::Warn)
         .level_for("wry", log::LevelFilter::Warn)
         .level_for("hyper", log::LevelFilter::Warn)

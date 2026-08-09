@@ -9,6 +9,7 @@ const MIN_SPLASH_TIME_MS = 7000; // Mandatory 7 seconds minimum duration
 
 export const SplashScreen: FC = () => {
   const settings = useConfigStore((state) => state.settings);
+  const appInfo = useConfigStore((state) => state.appInfo);
   const loadAll = useConfigStore((state) => state.loadAll);
 
   const [progress, setProgress] = useState<number>(0);
@@ -201,7 +202,7 @@ export const SplashScreen: FC = () => {
             opacity: 0.9,
           }}
         >
-          GeoSpatial Desktop Platform • v0.1.0
+          GeoSpatial Desktop Platform • v{appInfo?.version || "0.1.0"} ({appInfo?.codename || "Melody"})
         </div>
       </div>
 

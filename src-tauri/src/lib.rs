@@ -11,10 +11,28 @@ use tauri_plugin_window_state::{Builder, StateFlags};
 #[tauri::command]
 async fn close_splash_and_show_main(app_handle: tauri::AppHandle) -> Result<(), String> {
     if let Some(main_window) = app_handle.get_webview_window("main") {
-        let _ = main_window.center();
+        let (start_maximized, always_on_top) = if let Some(config_state) = app_handle.try_state::<std::sync::Mutex<config::AppConfig>>() {
+            if let Ok(cfg) = config_state.lock() {
+                (cfg.settings.window.start_maximized, cfg.settings.window.always_on_top)
+            } else {
+                (false, false)
+            }
+        } else {
+            (false, false)
+        };
+
+        if always_on_top {
+            let _ = main_window.set_always_on_top(true);
+        }
+
+        if start_maximized {
+            let _ = main_window.maximize();
+        } else {
+            let _ = main_window.center();
+        }
         let _ = main_window.show();
         let _ = main_window.set_focus();
-        log::info!(target: "geosource::window", "Main webview window displayed and focused from splashscreen.");
+        log::info!(target: "geosource::window", "Main webview window displayed and focused from splashscreen (start_maximized={}, always_on_top={}).", start_maximized, always_on_top);
     }
 
     if let Some(splashscreen) = app_handle.get_webview_window("splashscreen") {

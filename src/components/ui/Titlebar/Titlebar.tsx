@@ -50,6 +50,7 @@ const Titlebar: FC<TitlebarProps> = ({ title = "GeoSource Template" }) => {
     <>
       <header
         id="titlebar"
+        data-tauri-drag-region=""
         aria-label="Window titlebar"
         onMouseDown={handleMouseDown}
         onDoubleClick={handleDoubleClick}

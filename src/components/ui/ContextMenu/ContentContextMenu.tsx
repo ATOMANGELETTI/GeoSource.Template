@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { ContextMenuGate, type ContextMenuEntry } from "@/components/ui/ContextMenu";
 import { isTauri } from "@/lib/utils";
+import { useConfigStore } from "@/lib/store/configStore";
 
 interface ContentContextMenuProps {
   open: boolean;
@@ -39,6 +40,16 @@ interface ContentContextMenuProps {
  */
 const ContentContextMenu: FC<ContentContextMenuProps> = ({ open, x, y, onClose }) => {
   const inTauri = isTauri();
+  const bindings = useConfigStore((state) => state.bindings.bindings);
+  const appInfo = useConfigStore((state) => state.appInfo);
+
+  const reloadShortcut = bindings?.reload || "Ctrl+R";
+  const settingsShortcut = bindings?.open_settings || "Ctrl+,";
+  const zoomInShortcut = bindings?.zoom_in || "Ctrl+=";
+  const zoomOutShortcut = bindings?.zoom_out || "Ctrl+-";
+  const resetZoomShortcut = bindings?.reset_zoom || "Ctrl+0";
+  const copyShortcut = bindings?.copy || "Ctrl+C";
+  const pasteShortcut = bindings?.paste || "Ctrl+V";
 
   const items = useMemo<ContextMenuEntry[]>(() => {
     const handleReload = async () => {
@@ -48,9 +59,7 @@ const ContentContextMenu: FC<ContentContextMenuProps> = ({ open, x, y, onClose }
       }
       try {
         const { getCurrentWindow } = await import("@tauri-apps/api/window");
-        // Reload the webview
         const win = getCurrentWindow();
-        // Tauri v2 webview window reload
         await (win as unknown as { webview?: { reload?: () => Promise<void> } }).webview?.reload?.();
       } catch {
         window.location.reload();
@@ -89,9 +98,36 @@ const ContentContextMenu: FC<ContentContextMenuProps> = ({ open, x, y, onClose }
       }
     };
 
+    const handleZoomIn = () => {
+      const root = document.documentElement;
+      const currentZoom = parseFloat(root.style.getPropertyValue("--app-zoom") || "1");
+      const newZoom = Math.min(2.0, currentZoom + 0.1);
+      root.style.setProperty("--app-zoom", newZoom.toString());
+      root.style.zoom = newZoom.toString();
+    };
+
+    const handleZoomOut = () => {
+      const root = document.documentElement;
+      const currentZoom = parseFloat(root.style.getPropertyValue("--app-zoom") || "1");
+      const newZoom = Math.max(0.5, currentZoom - 0.1);
+      root.style.setProperty("--app-zoom", newZoom.toString());
+      root.style.zoom = newZoom.toString();
+    };
+
+    const handleResetZoom = () => {
+      const root = document.documentElement;
+      root.style.setProperty("--app-zoom", "1");
+      root.style.zoom = "1";
+    };
+
     const handleAbout = () => {
-      // Simple info alert — no external dialog plugin required
-      window.alert("GeoSource Template — v0.1.0\nBuilt with Tauri · Next.js · Rust");
+      const name = appInfo?.name || "GeoSource";
+      const version = appInfo?.version || "0.1.0";
+      const codename = appInfo?.codename || "Melody";
+      const desc = appInfo?.description || "GeoSource Tauri Template Desktop Application";
+      const author = appInfo?.author || "GeoSource Team";
+      const copyright = appInfo?.copyright || "Copyright © 2026 GeoSource. All rights reserved.";
+      window.alert(`${name} — v${version} (${codename})\n${desc}\nBy ${author} · ${copyright}\nBuilt with Tauri · Next.js · Rust`);
     };
 
     return [
@@ -99,7 +135,7 @@ const ContentContextMenu: FC<ContentContextMenuProps> = ({ open, x, y, onClose }
         key: "reload",
         icon: RotateCcw,
         label: "Reload",
-        shortcut: "Ctrl+R",
+        shortcut: reloadShortcut,
         onClick: handleReload,
       },
       { key: "div-1", divider: true as const },
@@ -107,39 +143,36 @@ const ContentContextMenu: FC<ContentContextMenuProps> = ({ open, x, y, onClose }
         key: "zoom-in",
         icon: ZoomIn,
         label: "Zoom In",
-        shortcut: "Ctrl++",
-        onClick: () => { /* browser zoom is OS-level; label only */ },
-        disabled: true,
+        shortcut: zoomInShortcut,
+        onClick: handleZoomIn,
       },
       {
         key: "zoom-out",
         icon: ZoomOut,
         label: "Zoom Out",
-        shortcut: "Ctrl+–",
-        onClick: () => { /* label only */ },
-        disabled: true,
+        shortcut: zoomOutShortcut,
+        onClick: handleZoomOut,
       },
       {
         key: "zoom-reset",
         icon: Maximize2,
         label: "Reset Zoom",
-        shortcut: "Ctrl+0",
-        onClick: () => { /* label only */ },
-        disabled: true,
+        shortcut: resetZoomShortcut,
+        onClick: handleResetZoom,
       },
       { key: "div-2", divider: true as const },
       {
         key: "copy",
         icon: Copy,
         label: "Copy",
-        shortcut: "Ctrl+C",
+        shortcut: copyShortcut,
         onClick: handleCopy,
       },
       {
         key: "paste",
         icon: Clipboard,
         label: "Paste",
-        shortcut: "Ctrl+V",
+        shortcut: pasteShortcut,
         onClick: handlePaste,
       },
       { key: "div-3", divider: true as const },
@@ -147,7 +180,7 @@ const ContentContextMenu: FC<ContentContextMenuProps> = ({ open, x, y, onClose }
         key: "settings",
         icon: Settings,
         label: "Preferences",
-        shortcut: "Ctrl+,",
+        shortcut: settingsShortcut,
         onClick: handleOpenSettings,
         disabled: !inTauri,
       },
@@ -158,7 +191,7 @@ const ContentContextMenu: FC<ContentContextMenuProps> = ({ open, x, y, onClose }
         onClick: handleAbout,
       },
     ];
-  }, [inTauri]);
+  }, [inTauri, reloadShortcut, settingsShortcut, zoomInShortcut, zoomOutShortcut, resetZoomShortcut, copyShortcut, pasteShortcut, appInfo]);
 
   return (
     <ContextMenuGate

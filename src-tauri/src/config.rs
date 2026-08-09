@@ -8,13 +8,36 @@ use std::sync::Mutex;
 // Structs
 // ---------------------------------------------------------------------------
 
-/// Application appearance and behaviour settings (`settings.yaml`).
+fn default_true() -> bool { true }
+fn default_font_size() -> u32 { 13 }
+fn default_crs() -> String { "EPSG:4326".into() }
+fn default_max_spatial_memory() -> u32 { 1024 }
+fn default_theme() -> String { "polar-night".into() }
+fn default_language() -> String { "en".into() }
+fn default_log_level() -> String { "info".into() }
+fn default_app_name() -> String { "GeoSource".into() }
+fn default_version() -> String { "0.1.0".into() }
+fn default_codename() -> String { "Melody".into() }
+fn default_build() -> String { "dev".into() }
+fn default_description() -> String { "GeoSource Tauri Template Desktop Application".into() }
+fn default_author() -> String { "GeoSource Team".into() }
+fn default_website() -> String { "https://github.com/ATOMANGELETTI/GeoSource.Template".into() }
+fn default_license() -> String { "MIT".into() }
+fn default_copyright() -> String { "Copyright © 2026 GeoSource. All rights reserved.".into() }
+
+/// Window appearance and positioning settings.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct WindowSettings {
-    /// Restore the last window size on next launch.
+    #[serde(default = "default_true")]
     pub remember_size: bool,
-    /// Launch the window maximized.
+    #[serde(default)]
     pub start_maximized: bool,
+    #[serde(default)]
+    pub always_on_top: bool,
+    #[serde(default)]
+    pub close_to_tray: bool,
+    #[serde(default)]
+    pub minimize_to_tray: bool,
 }
 
 impl Default for WindowSettings {
@@ -22,20 +45,102 @@ impl Default for WindowSettings {
         Self {
             remember_size: true,
             start_maximized: false,
+            always_on_top: false,
+            close_to_tray: false,
+            minimize_to_tray: false,
+        }
+    }
+}
+
+/// User interface customisation settings.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct UiSettings {
+    #[serde(default = "default_true")]
+    pub animations_enabled: bool,
+    #[serde(default = "default_true")]
+    pub show_status_bar: bool,
+    #[serde(default = "default_font_size")]
+    pub font_size: u32,
+}
+
+impl Default for UiSettings {
+    fn default() -> Self {
+        Self {
+            animations_enabled: true,
+            show_status_bar: true,
+            font_size: 13,
+        }
+    }
+}
+
+/// System & runtime settings.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct SystemSettings {
+    #[serde(default = "default_true")]
+    pub auto_check_updates: bool,
+    #[serde(default = "default_true")]
+    pub hardware_acceleration: bool,
+}
+
+impl Default for SystemSettings {
+    fn default() -> Self {
+        Self {
+            auto_check_updates: true,
+            hardware_acceleration: true,
+        }
+    }
+}
+
+/// GIS & Spatial engine settings.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct GisSettings {
+    #[serde(default = "default_crs")]
+    pub default_crs: String,
+    #[serde(default = "default_true")]
+    pub tile_cache_enabled: bool,
+    #[serde(default = "default_max_spatial_memory")]
+    pub max_spatial_memory_mb: u32,
+}
+
+impl Default for GisSettings {
+    fn default() -> Self {
+        Self {
+            default_crs: "EPSG:4326".into(),
+            tile_cache_enabled: true,
+            max_spatial_memory_mb: 1024,
         }
     }
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AppSettings {
-    /// UI color theme. One of: `polar-night`, `snow-storm`, `frost`, `aurora`, `system`.
+    #[serde(default = "default_theme")]
     pub theme: String,
-    /// ISO 639-1 language code (e.g. `en`, `fr`).
+    #[serde(default = "default_language")]
     pub language: String,
-    /// Window behaviour.
-    pub window: WindowSettings,
-    /// Minimum log level written to file. One of: `trace`, `debug`, `info`, `warn`, `error`.
+    #[serde(default = "default_log_level")]
     pub log_level: String,
+    #[serde(default)]
+    pub window: WindowSettings,
+    #[serde(default)]
+    pub ui: UiSettings,
+    #[serde(default)]
+    pub system: SystemSettings,
+    #[serde(default)]
+    pub gis: GisSettings,
+}
+
+impl AppSettings {
+    /// Convert string `log_level` field to `log::LevelFilter`.
+    pub fn parse_log_level(&self) -> log::LevelFilter {
+        match self.log_level.to_lowercase().trim() {
+            "trace" => log::LevelFilter::Trace,
+            "debug" => log::LevelFilter::Debug,
+            "warn" | "warning" => log::LevelFilter::Warn,
+            "error" => log::LevelFilter::Error,
+            _ => log::LevelFilter::Info,
+        }
+    }
 }
 
 impl Default for AppSettings {
@@ -43,8 +148,11 @@ impl Default for AppSettings {
         Self {
             theme: "polar-night".into(),
             language: "en".into(),
-            window: WindowSettings::default(),
             log_level: "info".into(),
+            window: WindowSettings::default(),
+            ui: UiSettings::default(),
+            system: SystemSettings::default(),
+            gis: GisSettings::default(),
         }
     }
 }
@@ -63,6 +171,15 @@ impl Default for AppBindings {
         map.insert("open_settings".into(), "Ctrl+,".into());
         map.insert("quit".into(), "Alt+F4".into());
         map.insert("reload".into(), "Ctrl+R".into());
+        map.insert("toggle_fullscreen".into(), "F11".into());
+        map.insert("toggle_devtools".into(), "F12".into());
+        map.insert("minimize".into(), "Ctrl+M".into());
+        map.insert("zoom_in".into(), "Ctrl+=".into());
+        map.insert("zoom_out".into(), "Ctrl+-".into());
+        map.insert("reset_zoom".into(), "Ctrl+0".into());
+        map.insert("copy".into(), "Ctrl+C".into());
+        map.insert("paste".into(), "Ctrl+V".into());
+        map.insert("help".into(), "F1".into());
         Self { bindings: map }
     }
 }
@@ -71,23 +188,38 @@ impl Default for AppBindings {
 /// The app reads this once at startup and **never writes back to this file**.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AppInfo {
-    /// Semantic version string (e.g. `"0.1.0"`).
+    #[serde(default = "default_app_name")]
+    pub name: String,
+    #[serde(default = "default_version")]
     pub version: String,
-    /// Human-readable release code name.
+    #[serde(default = "default_codename")]
     pub codename: String,
-    /// Build identifier or channel (e.g. `"dev"`, `"stable"`).
+    #[serde(default = "default_build")]
     pub build: String,
-    /// Short description of the application.
+    #[serde(default = "default_description")]
     pub description: String,
+    #[serde(default = "default_author")]
+    pub author: String,
+    #[serde(default = "default_website")]
+    pub website: String,
+    #[serde(default = "default_license")]
+    pub license: String,
+    #[serde(default = "default_copyright")]
+    pub copyright: String,
 }
 
 impl Default for AppInfo {
     fn default() -> Self {
         Self {
+            name: "GeoSource".into(),
             version: "0.1.0".into(),
-            codename: "Meridian".into(),
+            codename: "Melody".into(),
             build: "dev".into(),
             description: "GeoSource Tauri Template Desktop Application".into(),
+            author: "GeoSource Team".into(),
+            website: "https://github.com/ATOMANGELETTI/GeoSource.Template".into(),
+            license: "MIT".into(),
+            copyright: "Copyright © 2026 GeoSource. All rights reserved.".into(),
         }
     }
 }
@@ -437,6 +569,29 @@ mod tests {
         );
 
         let _ = fs::remove_file(&path);
+    }
+
+    #[test]
+    fn test_parse_log_level() {
+        let mut settings = AppSettings::default();
+
+        settings.log_level = "trace".into();
+        assert_eq!(settings.parse_log_level(), log::LevelFilter::Trace);
+
+        settings.log_level = "debug".into();
+        assert_eq!(settings.parse_log_level(), log::LevelFilter::Debug);
+
+        settings.log_level = "info".into();
+        assert_eq!(settings.parse_log_level(), log::LevelFilter::Info);
+
+        settings.log_level = "warn".into();
+        assert_eq!(settings.parse_log_level(), log::LevelFilter::Warn);
+
+        settings.log_level = "error".into();
+        assert_eq!(settings.parse_log_level(), log::LevelFilter::Error);
+
+        settings.log_level = "invalid_level".into();
+        assert_eq!(settings.parse_log_level(), log::LevelFilter::Info);
     }
 
     #[test]

@@ -2,6 +2,7 @@
 
 import { useEffect, type FC, type ReactNode } from "react";
 import { useConfigStore } from "@/lib/store/configStore";
+import { useKeyBindings } from "@/hooks/useKeyBindings";
 import { isTauri } from "@/lib/utils";
 
 export type ResolvedTheme = "polar-night" | "snow-storm" | "frost" | "aurora";
@@ -56,11 +57,16 @@ interface ThemeProviderProps {
 
 /**
  * Client-side ThemeProvider component.
- * Synchronizes application theme setting with root `<html>` element data attributes & classes.
+ * Synchronizes application theme setting with root `<html>` element data attributes & classes,
+ * synchronizes document language, and activates global keybindings loaded from `bindings.yaml`.
  */
 export const ThemeProvider: FC<ThemeProviderProps> = ({ children }) => {
   const themeSetting = useConfigStore((state) => state.settings.theme);
+  const languageSetting = useConfigStore((state) => state.settings.language);
   const loadAll = useConfigStore((state) => state.loadAll);
+
+  // Activate global keyboard bindings listener from bindings.yaml
+  useKeyBindings();
 
   // Initial configuration fetch on mount & re-sync on window focus or IPC event
   useEffect(() => {
@@ -95,6 +101,13 @@ export const ThemeProvider: FC<ThemeProviderProps> = ({ children }) => {
       }
     };
   }, [loadAll]);
+
+  // Synchronize language attribute to document element
+  useEffect(() => {
+    if (typeof document !== "undefined" && languageSetting) {
+      document.documentElement.lang = languageSetting;
+    }
+  }, [languageSetting]);
 
   // Synchronize dynamic theme to document element
   useEffect(() => {

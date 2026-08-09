@@ -7,7 +7,7 @@ describe("MainWindowContent", () => {
   it("renders main window wordmark and version badge", () => {
     render(<MainWindowContent />);
 
-    expect(screen.getByText("Tauri Template")).toBeInTheDocument();
-    expect(screen.getByText("v0.1.0")).toBeInTheDocument();
+    expect(screen.getByText(/GeoSource Tauri Template/i)).toBeInTheDocument();
+    expect(screen.getByText(/v0\.1\.0/i)).toBeInTheDocument();
   });
 });
