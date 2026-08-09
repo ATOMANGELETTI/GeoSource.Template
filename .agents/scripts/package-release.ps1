@@ -41,7 +41,7 @@ if (Test-Path $syncScript) {
 Write-Host "`n[2/6] Setting up Release Directory: $releaseDir..." -ForegroundColor Yellow
 if ($Clean -and (Test-Path $releaseDir)) {
     Write-Host "  [CLEAN] Removing previous release artifacts..." -ForegroundColor Magenta
-    Remove-Item -Path $releaseDir -Recurse -Force
+    Get-ChildItem -Path $releaseDir -Recurse | Remove-Item -Recurse -Force -ErrorAction SilentlyContinue
 }
 
 if (-not (Test-Path $releaseDir)) {
@@ -106,8 +106,12 @@ if (Test-Path $winExePath) {
     if (Test-Path $stagingDir) { Remove-Item $stagingDir -Recurse -Force }
     New-Item -ItemType Directory -Path $stagingDir -Force | Out-Null
 
-    # Copy binary
+    # Copy binary and associated release DLLs (e.g. WebView2Loader.dll)
     Copy-Item -Path $winExePath -Destination (Join-Path $stagingDir "geosource-template.exe") -Force
+    Get-ChildItem -Path $targetReleaseDir -File -Filter "*.dll" | ForEach-Object {
+        Copy-Item -Path $_.FullName -Destination (Join-Path $stagingDir $_.Name) -Force
+        Write-Host "  [PORTABLE INCLUDED] DLL: $($_.Name)" -ForegroundColor Gray
+    }
 
     # Copy configurations
     $configSrc = Join-Path $rootDir "other/configs"
