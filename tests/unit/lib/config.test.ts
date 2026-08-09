@@ -62,10 +62,14 @@ describe("config.ts", () => {
 
     it("invokes 'get_settings' IPC command when in Tauri", async () => {
       const mockSettings: AppSettings = {
+        ...DEFAULT_SETTINGS,
         theme: "frost",
         language: "fr",
-        window: { remember_size: false, start_maximized: true },
-        log_level: { trace: false, debug: true, info: true, warn: true, error: true },
+        window: {
+          ...DEFAULT_SETTINGS.window,
+          remember_size: false,
+          start_maximized: true,
+        },
       };
       vi.mocked(invoke).mockResolvedValueOnce(mockSettings);
 

@@ -3,6 +3,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, act } from "@testing-library/react";
 import { ThemeProvider, normalizeTheme } from "@/providers/ThemeProvider";
 import { useConfigStore } from "@/lib/store/configStore";
+import { DEFAULT_SETTINGS } from "@/lib/config";
 
 describe("ThemeProvider", () => {
   beforeEach(() => {
@@ -46,10 +47,8 @@ describe("ThemeProvider", () => {
     it("renders children and sets document element attributes", async () => {
       useConfigStore.setState({
         settings: {
+          ...DEFAULT_SETTINGS,
           theme: "aurora",
-          language: "en",
-          window: { remember_size: true, start_maximized: false },
-          log_level: { trace: false, debug: false, info: true, warn: true, error: true },
         },
       });
 
@@ -69,10 +68,8 @@ describe("ThemeProvider", () => {
     it("applies light class when snow-storm theme is selected", async () => {
       useConfigStore.setState({
         settings: {
+          ...DEFAULT_SETTINGS,
           theme: "snow-storm",
-          language: "en",
-          window: { remember_size: true, start_maximized: false },
-          log_level: { trace: false, debug: false, info: true, warn: true, error: true },
         },
       });
 
@@ -102,10 +99,8 @@ describe("ThemeProvider", () => {
 
       useConfigStore.setState({
         settings: {
+          ...DEFAULT_SETTINGS,
           theme: "system",
-          language: "en",
-          window: { remember_size: true, start_maximized: false },
-          log_level: { trace: false, debug: false, info: true, warn: true, error: true },
         },
       });
 

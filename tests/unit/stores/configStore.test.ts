@@ -37,15 +37,16 @@ describe("configStore.ts", () => {
 
   it("loadAll successfully populates store from getSettings, getBindings, getAppInfo", async () => {
     const mockSettings: configLib.AppSettings = {
+      ...configLib.DEFAULT_SETTINGS,
       theme: "aurora",
       language: "de",
-      window: { remember_size: true, start_maximized: true },
-      log_level: { trace: false, debug: true, info: true, warn: true, error: true },
+      window: { ...configLib.DEFAULT_SETTINGS.window, remember_size: true, start_maximized: true },
     };
     const mockBindings: configLib.AppBindings = {
       bindings: { toggle_sidebar: "Ctrl+Shift+B" },
     };
     const mockAppInfo: configLib.AppInfo = {
+      ...configLib.DEFAULT_APPINFO,
       version: "0.2.0",
       codename: "Borealis",
       build: "stable",
