@@ -1,0 +1,5 @@
+# ----------------------
+# AI CAN EDIT THIS FILE!
+# ----------------------
+
+# FEATURES ADDED NOT IN THE BASE GEOSOURCE.TEMPLATE APPLICATION

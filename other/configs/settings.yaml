@@ -5,7 +5,7 @@
 #
 # See other/configs/README.md for full documentation.
 
-theme: "polar-night" # Options: polar-night | snow-storm | frost | aurora | system
+theme: "system" # Options: polar-night | snow-storm | frost | aurora | system
 
 language: "en" # ISO 639-1 code — e.g. en, fr, de, es
 
