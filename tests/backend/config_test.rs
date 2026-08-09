@@ -158,3 +158,16 @@ fn test_config_dir_resolution() {
     let dir = resolve_config_dir();
     assert!(dir.ends_with("other/configs") || dir.ends_with("other\\configs"));
 }
+
+#[test]
+fn test_utilities_dir_resolution() {
+    let dir = resolve_utilities_dir();
+    assert!(dir.ends_with("other/utilities") || dir.ends_with("other\\utilities"));
+    assert!(dir.exists(), "utilities directory should exist");
+}
+
+#[test]
+fn test_logs_dir_resolution() {
+    let dir = resolve_logs_dir();
+    assert!(dir.ends_with("other/logs") || dir.ends_with("other\\logs"));
+}

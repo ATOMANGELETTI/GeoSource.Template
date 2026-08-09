@@ -378,6 +378,42 @@ pub fn resolve_config_dir() -> PathBuf {
     root.join("other").join("configs")
 }
 
+/// Resolve the `other/utilities/` directory.
+pub fn resolve_utilities_dir() -> PathBuf {
+    if let Ok(exe) = std::env::current_exe() {
+        if let Some(exe_dir) = exe.parent() {
+            if exe_dir.join("other").exists() {
+                return exe_dir.join("other").join("utilities");
+            }
+        }
+    }
+    let mut root = std::env::current_dir().unwrap_or_else(|_| PathBuf::from("."));
+    if root.ends_with("src-tauri") {
+        if let Some(parent) = root.parent() {
+            root = parent.to_path_buf();
+        }
+    }
+    root.join("other").join("utilities")
+}
+
+/// Resolve the `other/logs/` directory.
+pub fn resolve_logs_dir() -> PathBuf {
+    if let Ok(exe) = std::env::current_exe() {
+        if let Some(exe_dir) = exe.parent() {
+            if exe_dir.join("other").exists() {
+                return exe_dir.join("other").join("logs");
+            }
+        }
+    }
+    let mut root = std::env::current_dir().unwrap_or_else(|_| PathBuf::from("."));
+    if root.ends_with("src-tauri") {
+        if let Some(parent) = root.parent() {
+            root = parent.to_path_buf();
+        }
+    }
+    root.join("other").join("logs")
+}
+
 // ---------------------------------------------------------------------------
 // Load helpers
 // ---------------------------------------------------------------------------
@@ -552,10 +588,14 @@ pub fn set_bindings(
 pub fn open_config_dir(state: tauri::State<Mutex<AppConfig>>) -> Result<(), String> {
     let cfg = state.lock().map_err(|e| e.to_string())?;
     let dir = &cfg.config_dir;
+    open_directory_in_explorer(dir, "configs")
+}
 
+/// Helper function to open a directory path in the system file explorer.
+fn open_directory_in_explorer(dir: &PathBuf, label: &str) -> Result<(), String> {
     if !dir.exists() {
         if let Err(e) = fs::create_dir_all(dir) {
-            log::error!(target: "geosource::config", "Failed to create config dir: {e}");
+            log::error!(target: "geosource::config", "Failed to create {label} dir: {e}");
         }
     }
 
@@ -583,8 +623,22 @@ pub fn open_config_dir(state: tauri::State<Mutex<AppConfig>>) -> Result<(), Stri
             .map_err(|e| format!("Failed to open directory: {e}"))?;
     }
 
-    log::info!(target: "geosource::config", "Opened config dir in system file explorer: {dir:?}");
+    log::info!(target: "geosource::config", "Opened {label} dir in system file explorer: {dir:?}");
     Ok(())
+}
+
+/// Open the `other/utilities/` directory in the system file explorer.
+#[tauri::command]
+pub fn open_utilities_dir() -> Result<(), String> {
+    let dir = resolve_utilities_dir();
+    open_directory_in_explorer(&dir, "utilities")
+}
+
+/// Open the `other/logs/` directory in the system file explorer.
+#[tauri::command]
+pub fn open_logs_dir() -> Result<(), String> {
+    let dir = resolve_logs_dir();
+    open_directory_in_explorer(&dir, "logs")
 }
 
 // ---------------------------------------------------------------------------

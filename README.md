@@ -25,6 +25,7 @@ GeoSource Tauri Template is a modern, production-ready desktop application boile
 - 🚀 **Tauri v2 Desktop Architecture**: Lightweight cross-platform native execution using Rust and web technology.
 - 🎨 **Nord Visual Design System**: Modern theme palette supporting `polar-night` (Nord Dark), `snow-storm` (Nord Light), `frost`, `aurora`, and `system` modes.
 - ⚙️ **Hot-Reloadable YAML Configuration**: User settings (`settings.yaml`), keybindings (`bindings.yaml`), and release metadata (`appinfo.yaml`) managed via `other/configs/`.
+- 🛠️ **User Utilities & Log Maintenance**: Bundled system binaries (`7zr.exe`) and log management batch scripts in `other/utilities/`.
 - 🔌 **Typed Tauri IPC Integration**: Secure Rust IPC commands with strongly-typed TypeScript invoke wrappers and Zustand state integration.
 - 🧪 **Centralized Testing Suite**: Frontend unit & integration testing via Vitest and Rust backend integration testing under `tests/`.
 - 🛡️ **Security & Capability Hardened**: Strict Content Security Policy (CSP), Tauri capability isolation, and automated validation scripts.
@@ -103,7 +104,7 @@ npm run release:clean
 All generated distribution files are output into the root `release/` directory:
 
 - **Installer Bundles**: Native OS installer packages (e.g. `geosource-template_0.1.0_x64-setup.exe` NSIS installer, `.msi` MSI package, `.deb`, `.AppImage`, `.dmg`).
-- **Portable ZIP Releases**: Standalone zero-installation zip archive (`geosource-template-v0.1.0-windows-x64-portable.zip`) bundling the compiled executable binary, configuration files (`other/configs/`), log directory (`other/logs/`), documentation, and portable setup notes.
+- **Portable ZIP Releases**: Standalone zero-installation zip archive (`geosource-template-v0.1.0-windows-x64-portable.zip`) bundling the compiled executable binary, configuration files (`other/configs/`), log directory (`other/logs/`), utilities (`other/utilities/`), documentation, and portable setup notes.
 - **SHA256 Checksums**: Cryptographic `release/SHA256SUMS.txt` hash file for verifying package downloads.
 - **Release Manifest**: Structured `release/release-manifest.json` detailing release version, build timestamp, file sizes, and cryptographic signatures.
 
@@ -118,6 +119,19 @@ Application settings and keybindings are stored in human-readable YAML format in
 - **`other/configs/appinfo.yaml`**: Read-only application version and codename metadata.
 
 For detailed configuration field documentation, refer to the [Config Documentation](file:///c:/Storage/Development/Projects/Tauri/GeoSource/GeoSource.Template/other/configs/README.md).
+
+---
+
+## Utilities & Maintenance Reference
+
+System utility binaries and log maintenance batch scripts are located in [`other/utilities/`](file:///c:/Storage/Development/Projects/Tauri/GeoSource/GeoSource.Template/other/utilities/README.md):
+
+- **`7zr.exe`**: Lightweight standalone 7-Zip archiver binary.
+- **`other/utilities/scripts/compress-logs.bat`**: Compresses archived log files into a timestamped ZIP archive.
+- **`other/utilities/scripts/clear-logs.bat`**: Deletes uncompressed `.log` files from archive.
+- **`other/utilities/scripts/clearall-logs.bat`**: Purges all log files and ZIP archives from `other/logs/archive/`.
+
+For detailed utility documentation, refer to the [Utilities Documentation](file:///c:/Storage/Development/Projects/Tauri/GeoSource/GeoSource.Template/other/utilities/README.md).
 
 ---
 

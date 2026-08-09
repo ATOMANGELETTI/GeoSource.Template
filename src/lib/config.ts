@@ -242,6 +242,22 @@ export async function openConfigDir(): Promise<void> {
 }
 
 /**
+ * Open the `other/utilities/` directory in the system file explorer.
+ */
+export async function openUtilitiesDir(): Promise<void> {
+  if (!isTauri()) return;
+  await invokeConfig<void>("open_utilities_dir");
+}
+
+/**
+ * Open the `other/logs/` directory in the system file explorer.
+ */
+export async function openLogsDir(): Promise<void> {
+  if (!isTauri()) return;
+  await invokeConfig<void>("open_logs_dir");
+}
+
+/**
  * Signal the backend to display the main window and close the splashscreen window.
  */
 export async function closeSplashAndShowMain(): Promise<void> {

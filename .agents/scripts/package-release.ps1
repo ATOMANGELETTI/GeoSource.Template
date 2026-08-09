@@ -130,18 +130,26 @@ if (Test-Path $winExePath) {
         Write-Host "  [PORTABLE INCLUDED] DLL: $($_.Name)" -ForegroundColor Gray
     }
 
-    # Copy other/configs and ensure other/logs exists
+    # Copy other/configs, other/utilities, and ensure other/logs exists
     $otherStagingDir = Join-Path $stagingDir "other"
     $otherConfigDest = Join-Path $otherStagingDir "configs"
     $otherLogsDest = Join-Path $otherStagingDir "logs"
+    $otherUtilitiesDest = Join-Path $otherStagingDir "utilities"
 
     New-Item -ItemType Directory -Path $otherConfigDest -Force | Out-Null
     New-Item -ItemType Directory -Path $otherLogsDest -Force | Out-Null
+    New-Item -ItemType Directory -Path $otherUtilitiesDest -Force | Out-Null
 
     $configSrc = Join-Path $rootDir "other/configs"
     if (Test-Path $configSrc) {
         Copy-Item -Path "$configSrc\*" -Destination $otherConfigDest -Recurse -Force
         Write-Host "  [PORTABLE INCLUDED] Configuration directory: other/configs/" -ForegroundColor Gray
+    }
+
+    $utilitiesSrc = Join-Path $rootDir "other/utilities"
+    if (Test-Path $utilitiesSrc) {
+        Copy-Item -Path "$utilitiesSrc\*" -Destination $otherUtilitiesDest -Recurse -Force
+        Write-Host "  [PORTABLE INCLUDED] Utilities directory: other/utilities/" -ForegroundColor Gray
     }
 
     # Ensure other/logs has a .gitkeep so it is visible and accessible
@@ -169,6 +177,7 @@ Instructions:
 2. Launch 'geosource-template.exe' directly (no installation required).
 3. Configuration files and settings are located in the 'other/configs/' directory.
 4. Application log files will be written to the 'other/logs/' directory.
+5. System utility binaries and log management scripts are in the 'other/utilities/' directory.
 "@
     Set-Content -Path (Join-Path $stagingDir "PORTABLE_NOTES.txt") -Value $portableNotes
 

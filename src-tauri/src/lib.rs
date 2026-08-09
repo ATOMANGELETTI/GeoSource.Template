@@ -154,6 +154,8 @@ pub fn run() {
             config::set_settings,
             config::set_bindings,
             config::open_config_dir,
+            config::open_utilities_dir,
+            config::open_logs_dir,
             config::sync_autostart,
             close_splash_and_show_main,
         ])
