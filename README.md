@@ -12,7 +12,7 @@ GeoSource Tauri Template is a modern, production-ready desktop application boile
 
 ## Application Screenshots
 
-### Menus
+### Custom Context Menus
 
 | Content Area Context Menu | Titlebar Context Menu | Tray Context Menu |
 | :---: | :---: | :---: |
