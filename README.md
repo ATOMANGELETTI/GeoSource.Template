@@ -4,7 +4,7 @@
 [![Tauri](https://img.shields.io/badge/Tauri-v2.11-orange.svg?logo=tauri)](https://tauri.app)
 [![Next.js](https://img.shields.io/badge/Next.js-v16.3-black.svg?logo=nextdotjs)](https://nextjs.org)
 [![Rust](https://img.shields.io/badge/Rust-1.80%2B-red.svg?logo=rust)](https://www.rust-lang.org)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](file:///c:/Storage/Development/Projects/Tauri/GeoSource/GeoSource.Template/other/documents/licenses/)
+[![License](https://img.shields.io/badge/license-GPLv3-blue.svg)](file:///c:/Storage/Development/Projects/Tauri/GeoSource/GeoSource.Template/other/documents/licenses/GeoSource/LICENSE)
 
 GeoSource Tauri Template is a modern, production-ready desktop application boilerplate engineered with Tauri v2, Next.js 16 (React 19), Tailwind CSS, Nord Dark theme system, and a robust Rust system backend.
 
@@ -95,4 +95,4 @@ To contribute, create a feature branch, adhere to Conventional Commits (`feat:`,
 
 ## License
 
-This project is licensed under the [MIT License](file:///c:/Storage/Development/Projects/Tauri/GeoSource/GeoSource.Template/other/documents/licenses/).
+This project is licensed under the [GNU General Public License v3 (GPLv3)](file:///c:/Storage/Development/Projects/Tauri/GeoSource/GeoSource.Template/other/documents/licenses/GeoSource/LICENSE).

@@ -168,7 +168,7 @@ export const DEFAULT_APPINFO: AppInfo = {
   description: "GeoSource Tauri Template Desktop Application",
   author: "GeoSource Team",
   website: "https://github.com/ATOMANGELETTI/GeoSource.Template",
-  license: "MIT",
+  license: "GPL-3.0-or-later",
   copyright: "Copyright © 2026 GeoSource. All rights reserved.",
 };
 

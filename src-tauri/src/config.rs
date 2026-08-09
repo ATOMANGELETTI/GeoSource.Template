@@ -21,7 +21,7 @@ fn default_build() -> String { "dev".into() }
 fn default_description() -> String { "GeoSource Tauri Template Desktop Application".into() }
 fn default_author() -> String { "GeoSource Team".into() }
 fn default_website() -> String { "https://github.com/ATOMANGELETTI/GeoSource.Template".into() }
-fn default_license() -> String { "MIT".into() }
+fn default_license() -> String { "GPL-3.0-or-later".into() }
 fn default_copyright() -> String { "Copyright © 2026 GeoSource. All rights reserved.".into() }
 
 /// Window appearance and positioning settings.
@@ -324,7 +324,7 @@ impl Default for AppInfo {
             description: "GeoSource Tauri Template Desktop Application".into(),
             author: "GeoSource Team".into(),
             website: "https://github.com/ATOMANGELETTI/GeoSource.Template".into(),
-            license: "MIT".into(),
+            license: "GPL-3.0-or-later".into(),
             copyright: "Copyright © 2026 GeoSource. All rights reserved.".into(),
         }
     }
