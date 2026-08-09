@@ -6,10 +6,10 @@ import { useWindowStore } from "@/lib/store/windowStore";
 vi.mock("@tauri-apps/api/window", () => {
   const mockWin = {
     isMaximized: vi.fn().mockResolvedValue(false),
-    onResized: vi.fn().mockImplementation((cb: () => void) => {
+    onResized: vi.fn().mockImplementation((_cb: () => void) => {
       return Promise.resolve(() => {});
     }),
-    onFocusChanged: vi.fn().mockImplementation((cb: (evt: { payload: boolean }) => void) => {
+    onFocusChanged: vi.fn().mockImplementation((_cb: (evt: { payload: boolean }) => void) => {
       return Promise.resolve(() => {});
     }),
     minimize: vi.fn().mockResolvedValue(undefined),

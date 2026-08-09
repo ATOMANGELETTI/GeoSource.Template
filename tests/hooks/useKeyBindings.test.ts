@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { parseAccelerator, matchesAccelerator } from "./useKeyBindings";
+import { parseAccelerator, matchesAccelerator } from "@/hooks/useKeyBindings";
 
 describe("useKeyBindings", () => {
   describe("parseAccelerator", () => {

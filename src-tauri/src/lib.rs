@@ -1,6 +1,14 @@
-mod config;
-mod logger;
+pub mod config;
+pub mod logger;
 mod tray;
+
+#[cfg(test)]
+#[path = "../../tests/backend/config_test.rs"]
+mod config_test;
+
+#[cfg(test)]
+#[path = "../../tests/backend/logger_test.rs"]
+mod logger_test;
 
 use tauri::Manager;
 use tauri_plugin_window_state::{Builder, StateFlags};
@@ -45,6 +53,7 @@ async fn close_splash_and_show_main(app_handle: tauri::AppHandle) -> Result<(), 
 
 /// Application run function — called from main.rs.
 /// Registers all IPC command handlers and initializes plugins.
+#[cfg(not(test))]
 pub fn run() {
     if let Err(err) = logger::init_logger() {
         eprintln!("Failed to initialize application logger: {}", err);

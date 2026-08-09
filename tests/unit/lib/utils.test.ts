@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, afterEach } from "vitest";
+import { describe, it, expect, afterEach } from "vitest";
 import { cn, formatVersion, isTauri } from "@/lib/utils";
 
 describe("utils.ts", () => {
@@ -29,7 +29,6 @@ describe("utils.ts", () => {
   });
 
   describe("isTauri", () => {
-    const originalWindow = globalThis.window;
 
     afterEach(() => {
       (window as unknown as Record<string, unknown>).__TAURI__ = undefined;
