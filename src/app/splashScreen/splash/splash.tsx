@@ -98,7 +98,6 @@ export const SplashScreen: FC = () => {
         padding: "40px 36px 44px 36px",
         userSelect: "none",
         fontFamily: 'var(--splash-font, "Terminus", "Consolas", monospace)',
-        backdropFilter: "blur(20px)",
       }}
     >
       {/* Background ambient glow effect */}

@@ -14,10 +14,7 @@
 .menuCard {
   width: 100%;
   height: 100%;
-  background: var(--bg-surface);
-  background: color-mix(in srgb, var(--bg-app) 94%, transparent);
-  -webkit-backdrop-filter: blur(12px);
-  backdrop-filter: blur(12px);
+  background: var(--bg-surface, #3b4252);
   border: 1px solid var(--border-default);
   border-radius: 8px;
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 0 1px 1px rgba(136, 192, 208, 0.3);

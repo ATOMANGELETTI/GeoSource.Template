@@ -16,10 +16,7 @@
   position: fixed;
   min-width: 188px;
   max-width: 260px;
-  background: var(--bg-surface);
-  background: color-mix(in srgb, var(--bg-app) 92%, transparent);
-  -webkit-backdrop-filter: blur(14px) saturate(1.4);
-  backdrop-filter: blur(14px) saturate(1.4);
+  background: var(--bg-surface, #3b4252);
   border: 1px solid var(--border-default);
   border-radius: 8px;
   box-shadow:
