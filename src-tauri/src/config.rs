@@ -351,28 +351,30 @@ pub struct AppConfig {
 // Directory resolution
 // ---------------------------------------------------------------------------
 
-/// Resolve the `other/configs/` directory relative to the project root.
-/// Mirrors the same step-up logic used in `logger.rs`.
+/// Resolve the `other/configs/` directory.
+///
+/// Priority:
+/// 1. **Exe-sibling** (`current_exe().parent()/other/configs`) — correct for packaged
+///    and portable builds where `other/` is bundled beside the executable.
+/// 2. **Project-root fallback** — used during `tauri dev` / `cargo run` where the
+///    exe lives deep inside `target/debug/…` and has no `other/` sibling.
 pub fn resolve_config_dir() -> PathBuf {
-    let mut root = std::env::current_dir().unwrap_or_else(|_| PathBuf::from("."));
+    // PRIMARY: exe-sibling — valid when `other/` exists beside the binary (prod/portable).
+    if let Ok(exe) = std::env::current_exe() {
+        if let Some(exe_dir) = exe.parent() {
+            if exe_dir.join("other").exists() {
+                return exe_dir.join("other").join("configs");
+            }
+        }
+    }
 
+    // FALLBACK: project-root relative — used in dev where CWD is the workspace root.
+    let mut root = std::env::current_dir().unwrap_or_else(|_| PathBuf::from("."));
     if root.ends_with("src-tauri") {
         if let Some(parent) = root.parent() {
             root = parent.to_path_buf();
         }
     }
-
-    // Packaged binary: check exe directory if `other/` is not at cwd.
-    if !root.join("other").exists() {
-        if let Ok(exe) = std::env::current_exe() {
-            if let Some(exe_dir) = exe.parent() {
-                if exe_dir.join("other").exists() {
-                    root = exe_dir.to_path_buf();
-                }
-            }
-        }
-    }
-
     root.join("other").join("configs")
 }
 

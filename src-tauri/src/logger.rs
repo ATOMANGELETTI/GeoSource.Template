@@ -6,27 +6,26 @@ use std::path::PathBuf;
 /// 1. Terminal stdout with ANSI color codes.
 /// 2. Timestamped log file in `other/logs/YYYY-MM-DD_HH-mm-ss.log` (plain text).
 pub fn init_logger() -> Result<PathBuf, Box<dyn std::error::Error>> {
-    let mut root_dir = std::env::current_dir().unwrap_or_else(|_| PathBuf::from("."));
-
-    // Step up to project root if execution directory is inside `src-tauri`
-    if root_dir.ends_with("src-tauri") {
-        if let Some(parent) = root_dir.parent() {
-            root_dir = parent.to_path_buf();
+    // PRIMARY: exe-sibling `other/` — correct for packaged and portable builds.
+    // FALLBACK: project-root via current_dir() — used in dev (exe is deep in target/).
+    let root_dir: PathBuf = (|| {
+        if let Ok(exe) = std::env::current_exe() {
+            if let Some(exe_dir) = exe.parent() {
+                if exe_dir.join("other").exists() {
+                    return exe_dir.to_path_buf();
+                }
+            }
         }
-    }
-
-    // Also check executable parent directory for packaged application root
-    let logs_folder = if root_dir.join("other").exists() || !std::env::current_exe().is_ok() {
-        root_dir.join("other").join("logs")
-    } else if let Ok(exe_path) = std::env::current_exe() {
-        if let Some(exe_dir) = exe_path.parent() {
-            exe_dir.join("other").join("logs")
-        } else {
-            root_dir.join("other").join("logs")
+        let mut root = std::env::current_dir().unwrap_or_else(|_| PathBuf::from("."));
+        if root.ends_with("src-tauri") {
+            if let Some(parent) = root.parent() {
+                root = parent.to_path_buf();
+            }
         }
-    } else {
-        root_dir.join("other").join("logs")
-    };
+        root
+    })();
+
+    let logs_folder = root_dir.join("other").join("logs");
 
     fs::create_dir_all(&logs_folder)?;
     let archive_folder = logs_folder.join("archive");
