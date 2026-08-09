@@ -49,20 +49,18 @@ const SplashScreenLayout: FC<SplashScreenLayoutProps> = ({ children }) => {
           font-display: block;
         }
 
-        /* ── Nord Theme Tokens ─────────────────────────────────────────── */
-        :root {
-          --bg-app:            #2e3440;
-          --bg-surface:        #3b4252;
-          --bg-elevated:       #434c5e;
-          --border-default:    #4c566a;
-          --text-primary:      #eceff4;
-          --text-secondary:    #d8dee9;
-          --text-muted:        #4c566a;
-          --accent-primary:    #88c0d0;
-          --accent-secondary:  #81a1c1;
-          --font-terminus:     "Terminus", "Consolas", monospace;
-          --transition-fast:   100ms ease;
-          --transition-default:150ms ease;
+        /* ── Universal Splash Theme Tokens ─────────────────────────────── */
+        :root, html, body {
+          --splash-bg:               #2e3440;
+          --splash-surface:          #3b4252;
+          --splash-elevated:         #434c5e;
+          --splash-border:           #4c566a;
+          --splash-text-primary:     #eceff4;
+          --splash-text-secondary:   #d8dee9;
+          --splash-text-muted:       #4c566a;
+          --splash-accent-primary:   #88c0d0;
+          --splash-accent-secondary: #81a1c1;
+          --splash-font:             "Terminus", "Consolas", monospace;
         }
 
         /* ── Base Reset ────────────────────────────────────────────────── */

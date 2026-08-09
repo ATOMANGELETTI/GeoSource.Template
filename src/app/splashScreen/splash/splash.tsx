@@ -29,12 +29,6 @@ export const SplashScreen: FC = () => {
       });
   }, [loadAll]);
 
-  // Ensure root element has data-theme set
-  useEffect(() => {
-    document.documentElement.setAttribute("data-theme", "polar-night");
-    document.documentElement.classList.add("dark");
-  }, []);
-
   // Progress timer logic (7 seconds minimum + app loaded gate)
   useEffect(() => {
     startTimeRef.current = Date.now();
@@ -86,15 +80,14 @@ export const SplashScreen: FC = () => {
 
   return (
     <div
-      data-theme="polar-night"
       style={{
         width: "100%",
         height: "100%",
         borderRadius: "14px",
-        backgroundColor: "var(--bg-app, #2e3440)",
-        color: "var(--text-primary, #eceff4)",
+        backgroundColor: "var(--splash-bg, #2e3440)",
+        color: "var(--splash-text-primary, #eceff4)",
         boxShadow: "0 16px 40px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.06)",
-        border: "1px solid var(--border-default, #4c566a)",
+        border: "1px solid var(--splash-border, #4c566a)",
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
@@ -104,7 +97,7 @@ export const SplashScreen: FC = () => {
         boxSizing: "border-box",
         padding: "40px 36px 44px 36px",
         userSelect: "none",
-        fontFamily: 'var(--font-terminus, "Terminus", "Consolas", monospace)',
+        fontFamily: 'var(--splash-font, "Terminus", "Consolas", monospace)',
         backdropFilter: "blur(20px)",
       }}
     >
@@ -118,7 +111,7 @@ export const SplashScreen: FC = () => {
           width: "360px",
           height: "200px",
           background:
-            "radial-gradient(circle, var(--accent-primary, #88c0d0) 0%, rgba(0,0,0,0) 70%)",
+            "radial-gradient(circle, var(--splash-accent-primary, #88c0d0) 0%, rgba(0,0,0,0) 70%)",
           opacity: 0.18,
           pointerEvents: "none",
         }}
@@ -141,8 +134,8 @@ export const SplashScreen: FC = () => {
             width: "68px",
             height: "68px",
             borderRadius: "18px",
-            background: "var(--bg-surface, #3b4252)",
-            border: "1px solid var(--border-default, #4c566a)",
+            background: "var(--splash-surface, #3b4252)",
+            border: "1px solid var(--splash-border, #4c566a)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -156,7 +149,7 @@ export const SplashScreen: FC = () => {
             height="38"
             viewBox="0 0 24 24"
             fill="none"
-            stroke="var(--accent-primary, #88c0d0)"
+            stroke="var(--splash-accent-primary, #88c0d0)"
             strokeWidth="1.8"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -176,7 +169,7 @@ export const SplashScreen: FC = () => {
             fontSize: "28px",
             fontWeight: 700,
             letterSpacing: "0.5px",
-            color: "var(--text-primary, #eceff4)",
+            color: "var(--splash-text-primary, #eceff4)",
           }}
         >
           GeoSource Template
@@ -188,7 +181,7 @@ export const SplashScreen: FC = () => {
             fontSize: "12px",
             letterSpacing: "1.5px",
             textTransform: "uppercase",
-            color: "var(--accent-primary, #88c0d0)",
+            color: "var(--splash-accent-primary, #88c0d0)",
             fontWeight: 600,
             opacity: 0.9,
           }}
@@ -206,7 +199,7 @@ export const SplashScreen: FC = () => {
           justifyContent: "space-between",
           alignItems: "center",
           fontSize: "12px",
-          color: "var(--text-secondary, #d8dee9)",
+          color: "var(--splash-text-secondary, #d8dee9)",
           zIndex: 1,
           marginBottom: "12px",
         }}
@@ -215,7 +208,7 @@ export const SplashScreen: FC = () => {
         <span
           style={{
             fontWeight: 700,
-            color: "var(--accent-primary, #88c0d0)",
+            color: "var(--splash-accent-primary, #88c0d0)",
             fontVariantNumeric: "tabular-nums",
           }}
         >
@@ -232,7 +225,7 @@ export const SplashScreen: FC = () => {
           right: 0,
           width: "100%",
           height: "6px",
-          backgroundColor: "var(--bg-elevated, #434c5e)",
+          backgroundColor: "var(--splash-elevated, #434c5e)",
           overflow: "hidden",
           zIndex: 2,
         }}
@@ -243,7 +236,7 @@ export const SplashScreen: FC = () => {
             height: "100%",
             width: `${progress}%`,
             background:
-              "linear-gradient(90deg, var(--accent-secondary, #81a1c1), var(--accent-primary, #88c0d0))",
+              "linear-gradient(90deg, var(--splash-accent-secondary, #81a1c1), var(--splash-accent-primary, #88c0d0))",
             transition: "width 0.15s linear",
             position: "relative",
             overflow: "hidden",
