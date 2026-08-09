@@ -1,6 +1,7 @@
 {
   // Pinned editor tabs minimal icon-only styling
   "workbench.editor.pinnedTabSizing": "compact",
+  "workbench.editor.pinnedTabsOnSeparateRow": true,
   "workbench.editor.showIcons": true,
 
   // Rust Analyzer Configuration
