@@ -257,16 +257,16 @@
       { below: 100, text: "Preparing workspace environment..." }
     ];
 
-    /* ── DOM refs ───────────────────────────────────────────────── */
-    var fillEl     = document.getElementById("progress-fill");
-    var statusEl   = document.getElementById("status-text");
-    var pctEl      = document.getElementById("progress-pct");
-    var versionEl  = document.getElementById("app-version");
-    var codenameEl = document.getElementById("app-codename");
-
     /* ── State ──────────────────────────────────────────────────── */
     var startTime = Date.now();
     var closed    = false;
+
+    /* ── Dynamic DOM element getters ────────────────────────────── */
+    function getFillEl()     { return document.getElementById("progress-fill"); }
+    function getStatusEl()   { return document.getElementById("status-text"); }
+    function getPctEl()      { return document.getElementById("progress-pct"); }
+    function getVersionEl()  { return document.getElementById("app-version"); }
+    function getCodenameEl() { return document.getElementById("app-codename"); }
 
     /* ── Tauri IPC helper ───────────────────────────────────────── */
     function tauriInvoke(cmd, args) {
@@ -283,13 +283,13 @@
               tauriGlobal.core.invoke(cmd, args || {}).then(resolve).catch(reject);
             } else if (typeof window.__TAURI_INVOKE__ === "function") {
               window.__TAURI_INVOKE__(cmd, args || {}).then(resolve).catch(reject);
-            } else if (attempts < 20) {
+            } else if (attempts < 30) {
               setTimeout(tryInvoke, 100);
             } else {
               reject(new Error("Tauri IPC bridge not ready for command: " + cmd));
             }
           } catch (err) {
-            if (attempts < 20) {
+            if (attempts < 30) {
               setTimeout(tryInvoke, 100);
             } else {
               reject(err);
@@ -304,14 +304,18 @@
     function closeSplash() {
       if (closed) return;
       closed = true;
+      var statusEl = getStatusEl();
+      var pctEl    = getPctEl();
+      var fillEl   = getFillEl();
+
       if (statusEl) statusEl.textContent = "System ready \u2014 Launching GeoSource Template...";
-      if (pctEl) pctEl.textContent    = "100%";
-      if (fillEl) fillEl.style.width   = "100%";
+      if (pctEl)    pctEl.textContent    = "100%";
+      if (fillEl)   fillEl.style.width   = "100%";
 
       function attemptClose(retries) {
         tauriInvoke("close_splash_and_show_main").catch(function(err) {
           console.error("Failed to close splash (attempt " + retries + "):", err);
-          if (retries < 5) {
+          if (retries < 10) {
             setTimeout(function() { attemptClose(retries + 1); }, 300);
           }
         });
@@ -329,8 +333,12 @@
       var elapsed = Date.now() - startTime;
       var pct     = Math.min(98, Math.floor((elapsed / MIN_SPLASH_MS) * 100));
 
+      var fillEl   = getFillEl();
+      var pctEl    = getPctEl();
+      var statusEl = getStatusEl();
+
       if (fillEl) fillEl.style.width = pct + "%";
-      if (pctEl) pctEl.textContent  = pct + "%";
+      if (pctEl)  pctEl.textContent  = pct + "%";
 
       var msg = "Preparing workspace environment...";
       for (var i = 0; i < STATUS_MESSAGES.length; i++) {
@@ -345,15 +353,21 @@
     }, TICK_MS);
 
     /* ── Load app info asynchronously (non-blocking) ─────────────── */
-    try {
+    function loadAppInfo() {
       tauriInvoke("get_appinfo").then(function(info) {
-        if (info && info.version && versionEl) versionEl.textContent = "v" + info.version;
+        var versionEl  = getVersionEl();
+        var codenameEl = getCodenameEl();
+        if (info && info.version && versionEl)   versionEl.textContent  = "v" + info.version;
         if (info && info.codename && codenameEl) codenameEl.textContent = info.codename;
       }).catch(function(err) {
         console.warn("App info load notice:", err);
       });
-    } catch (e) {
-      console.warn("App info invoke error:", e);
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", loadAppInfo);
+    } else {
+      loadAppInfo();
     }
   </script>
 </body>

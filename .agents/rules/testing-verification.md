@@ -36,7 +36,8 @@ This document defines the mandatory test coverage requirements, verification gat
 ## Pillar 4: Snapshot & UI Component Tests
 
 - **UI Snapshot Tests**: All UI components that render deterministic output must have snapshot/golden-file tests.
-- **Snapshot Update Policy**: Snapshot files (`*.snap`) must be committed to the repository. Snapshot updates require explicit review — never auto-accept snapshot diffs blindly.
+- **Playwright Visual Snapshot Verification**: All UI changes, layout fixes, styling updates, and visual features MUST be verified using Playwright visual tests (`npm run test:visual`). The agent MUST run visual tests to visually verify that what was asked to be fixed was actually fixed without visual regressions.
+- **Snapshot Update Policy**: Snapshot files (`*.png`, `*.snap`) must be committed to the repository (`tests/visual/__snapshots__/`). When updating baseline visual snapshots after intentional UI modifications, run `npm run test:visual:update`. Snapshot updates require explicit verification — never auto-accept diffs blindly.
 - **Visual Regression**: For significant UI changes, capture before/after screenshots and embed them in the `walkthrough.md` artifact.
 
 ---
@@ -49,6 +50,7 @@ Before any task is marked complete, the agent MUST run and verify the following 
 |---------|-------|-------------|
 | `cargo test --workspace` | All Rust crates | Zero test failures |
 | `npm test` / `pnpm test` | Frontend | Zero test failures |
+| `npm run test:visual` | Playwright UI & Visual | Zero visual regressions |
 | `cargo clippy -- -D warnings` | All Rust crates | Zero warnings |
 | `npm run lint` | Frontend TypeScript | Zero errors |
 | `cargo tarpaulin --out Lcov` (or equivalent) | Coverage | ≥ 80% line coverage |

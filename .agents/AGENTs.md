@@ -8,7 +8,7 @@ The following rules apply to **all** agent interactions within this workspace wi
 
 - [Code Quality Standard](file:///c:/Storage/Development/Projects/Tauri/GeoSource/GeoSource.Template/.agents/rules/code-quality.md): Enforces modern syntax, performance optimization, security defense, clean architecture, and mandatory pre-completion verification.
 - [Token Efficiency Standard](file:///c:/Storage/Development/Projects/Tauri/GeoSource/GeoSource.Template/.agents/rules/token-efficiency.md): Enforces token conservation, grep-first discovery, stub-first file reading, and concise response discipline while maintaining full code quality.
-- [Testing & Verification Standard](file:///c:/Storage/Development/Projects/Tauri/GeoSource/GeoSource.Template/.agents/rules/testing-verification.md): Unit tests for all new public functions, integration tests for all IPC commands, 80% coverage threshold, regression test mandate, and mandatory pre-completion test gate.
+- [Testing & Verification Standard](file:///c:/Storage/Development/Projects/Tauri/GeoSource/GeoSource.Template/.agents/rules/testing-verification.md): Unit tests for all new public functions, integration tests for all IPC commands, Playwright visual snapshot testing for UI fixes/features, 80% coverage threshold, regression test mandate, and mandatory pre-completion test gate.
 
 ---
 

@@ -27,6 +27,13 @@ export const SplashScreen: FC = () => {
         console.warn("Config load notice in splashscreen:", err);
         isAppLoadedRef.current = true;
       });
+
+    // Safety fallback: Ensure isAppLoadedRef is set to true after 3 seconds max
+    const safetyTimer = setTimeout(() => {
+      isAppLoadedRef.current = true;
+    }, 3000);
+
+    return () => clearTimeout(safetyTimer);
   }, [loadAll]);
 
   // Progress timer logic (7 seconds minimum + app loaded gate)

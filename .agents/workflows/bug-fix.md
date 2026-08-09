@@ -50,8 +50,9 @@ flowchart TD
 
 ### Phase 5: Verification & Regression Testing
 1. Re-run the reproduction test and confirm it passes.
-2. Run the entire test suite (`cargo test`, `pnpm test`) to guarantee zero regression across the codebase.
-3. Run linting (`pnpm lint` or `cargo check`).
+2. Run Playwright visual tests (`npm run test:visual`) for any UI or layout fixes to visually confirm that the bug was fixed and no visual regressions were introduced.
+3. Run the entire test suite (`cargo test`, `npm test`) to guarantee zero regression across the codebase.
+4. Run linting (`npm run lint` or `cargo check`).
 
 ### Phase 6: Documentation & Walkthrough
 1. Summarize the root cause, fix rationale, and test results in `walkthrough.md`.
@@ -65,5 +66,6 @@ flowchart TD
 - [ ] Root cause identified (not symptom-masked with dummy fallbacks).
 - [ ] Reproduction test added and verified failing prior to fix.
 - [ ] Fix implemented with zero breaking API contract changes.
+- [ ] Visual tests (`npm run test:visual`) executed and verified zero visual regressions for UI fixes.
 - [ ] All unit and integration tests passing clean.
 - [ ] `walkthrough.md` generated with before/after trace evidence.

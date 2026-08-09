@@ -47,7 +47,8 @@ flowchart TD
 ### Phase 4: Verification & Testing
 1. Write unit tests for all new Rust modules and TypeScript utilities.
 2. Write integration tests for new IPC command handlers.
-3. Run project build and test commands (`cargo test`, `pnpm test`, `pnpm build` or `cargo check`).
+3. Run Playwright visual tests (`npm run test:visual`) for any new UI components or layouts to capture and verify baseline visual snapshots.
+4. Run project build and test commands (`cargo test`, `npm test`, `npm run build` or `cargo check`).
 
 ### Phase 5: Code Quality & Security Audit
 1. Verify no unsafe blocks exist without mandatory `// SAFETY:` comments.
@@ -56,7 +57,7 @@ flowchart TD
 
 ### Phase 6: Walkthrough & Delivery
 1. Update `task.md` ensuring all checkboxes are marked complete.
-2. Create `walkthrough.md` documenting modified files, test outputs, and manual verification instructions.
+2. Create `walkthrough.md` documenting modified files, test outputs, visual snapshot updates, and manual verification instructions.
 
 ---
 
@@ -66,5 +67,6 @@ flowchart TD
 - [ ] Backend Rust logic contains no raw unhandled panics (`unwrap()`, `expect()`).
 - [ ] Tauri IPC commands registered and whitelisted in capabilities.
 - [ ] Typed TypeScript wrapper created in frontend API layer.
+- [ ] Visual snapshot tests (`npm run test:visual`) executed and baseline screenshots verified.
 - [ ] Unit & integration tests pass cleanly.
 - [ ] `walkthrough.md` created with verification logs.
