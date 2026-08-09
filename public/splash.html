@@ -274,65 +274,87 @@
         var attempts = 0;
         function tryInvoke() {
           attempts++;
-          var internals = window.__TAURI_INTERNALS__;
-          var tauriGlobal = window.__TAURI__;
-          if (internals && typeof internals.invoke === "function") {
-            internals.invoke(cmd, args || {}).then(resolve).catch(reject);
-          } else if (tauriGlobal && tauriGlobal.core && typeof tauriGlobal.core.invoke === "function") {
-            tauriGlobal.core.invoke(cmd, args || {}).then(resolve).catch(reject);
-          } else if (typeof window.__TAURI_INVOKE__ === "function") {
-            window.__TAURI_INVOKE__(cmd, args || {}).then(resolve).catch(reject);
-          } else if (attempts < 10) {
-            setTimeout(tryInvoke, 100);
-          } else {
-            reject(new Error("Tauri IPC bridge not ready for command: " + cmd));
+          try {
+            var internals = window.__TAURI_INTERNALS__;
+            var tauriGlobal = window.__TAURI__;
+            if (internals && typeof internals.invoke === "function") {
+              internals.invoke(cmd, args || {}).then(resolve).catch(reject);
+            } else if (tauriGlobal && tauriGlobal.core && typeof tauriGlobal.core.invoke === "function") {
+              tauriGlobal.core.invoke(cmd, args || {}).then(resolve).catch(reject);
+            } else if (typeof window.__TAURI_INVOKE__ === "function") {
+              window.__TAURI_INVOKE__(cmd, args || {}).then(resolve).catch(reject);
+            } else if (attempts < 20) {
+              setTimeout(tryInvoke, 100);
+            } else {
+              reject(new Error("Tauri IPC bridge not ready for command: " + cmd));
+            }
+          } catch (err) {
+            if (attempts < 20) {
+              setTimeout(tryInvoke, 100);
+            } else {
+              reject(err);
+            }
           }
         }
         tryInvoke();
       });
     }
 
-    /* ── Load app info ──────────────────────────────────────────── */
-    tauriInvoke("get_appinfo").then(function(info) {
-      if (info && info.version) versionEl.textContent = "v" + info.version;
-      if (info && info.codename) codenameEl.textContent = info.codename;
-    }).catch(function() { /* silently use defaults */ });
-
     /* ── Close splash ───────────────────────────────────────────── */
     function closeSplash() {
       if (closed) return;
       closed = true;
-      statusEl.textContent = "System ready \u2014 Launching GeoSource Template...";
-      pctEl.textContent    = "100%";
-      fillEl.style.width   = "100%";
-      setTimeout(function() {
+      if (statusEl) statusEl.textContent = "System ready \u2014 Launching GeoSource Template...";
+      if (pctEl) pctEl.textContent    = "100%";
+      if (fillEl) fillEl.style.width   = "100%";
+
+      function attemptClose(retries) {
         tauriInvoke("close_splash_and_show_main").catch(function(err) {
-          console.error("Failed to close splash:", err);
+          console.error("Failed to close splash (attempt " + retries + "):", err);
+          if (retries < 5) {
+            setTimeout(function() { attemptClose(retries + 1); }, 300);
+          }
         });
+      }
+
+      setTimeout(function() {
+        attemptClose(1);
       }, 300);
     }
 
-    /* ── Progress timer ─────────────────────────────────────────── */
+    /* ── Progress timer (starts immediately on script load) ─────── */
     var timer = setInterval(function() {
       if (closed) { clearInterval(timer); return; }
 
       var elapsed = Date.now() - startTime;
       var pct     = Math.min(98, Math.floor((elapsed / MIN_SPLASH_MS) * 100));
 
-      fillEl.style.width = pct + "%";
-      pctEl.textContent  = pct + "%";
+      if (fillEl) fillEl.style.width = pct + "%";
+      if (pctEl) pctEl.textContent  = pct + "%";
 
       var msg = "Preparing workspace environment...";
       for (var i = 0; i < STATUS_MESSAGES.length; i++) {
         if (pct < STATUS_MESSAGES[i].below) { msg = STATUS_MESSAGES[i].text; break; }
       }
-      statusEl.textContent = msg;
+      if (statusEl) statusEl.textContent = msg;
 
       if (elapsed >= MIN_SPLASH_MS) {
         clearInterval(timer);
         closeSplash();
       }
     }, TICK_MS);
+
+    /* ── Load app info asynchronously (non-blocking) ─────────────── */
+    try {
+      tauriInvoke("get_appinfo").then(function(info) {
+        if (info && info.version && versionEl) versionEl.textContent = "v" + info.version;
+        if (info && info.codename && codenameEl) codenameEl.textContent = info.codename;
+      }).catch(function(err) {
+        console.warn("App info load notice:", err);
+      });
+    } catch (e) {
+      console.warn("App info invoke error:", e);
+    }
   </script>
 </body>
 </html>

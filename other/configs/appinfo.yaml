@@ -8,6 +8,7 @@
 
 name: "GeoSource"
 version: "0.1.0"
+buidNumber: "86"
 codename: "Melody"
 build: "dev" # Options: dev | alpha | beta | rc | stable
 description: "GeoSource Tauri Template Desktop Application"
