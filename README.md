@@ -71,12 +71,41 @@ Before running or building the project, ensure your environment meets the follow
 | **Dev (Tauri + Next.js)** | `npm run tauri:dev`               | Launches Next.js dev server alongside Tauri desktop window |
 | **Frontend Dev Only**     | `npm run dev`                     | Runs Next.js dev server on port `3000`                     |
 | **Build Desktop App**     | `npm run tauri:build`             | Compiles production Tauri desktop binary                   |
+| **Package Release (All)** | `npm run release`                 | Builds & packages installers, portable ZIPs, and manifest  |
+| **Clean Package Release**  | `npm run release:clean`           | Cleans `release/` directory and builds release packages    |
 | **Build Frontend**        | `npm run build`                   | Builds static/SSR Next.js bundle                           |
 | **Run Frontend Tests**    | `npm run test`                    | Executes Vitest test suite                                 |
 | **Test Coverage**         | `npm run test:coverage`           | Runs Vitest with coverage reporting                        |
 | **Run Rust Tests**        | `cargo test`                      | Executes Rust backend tests                                |
 | **Type Check**            | `npm run type-check`              | Performs TypeScript compiler validation                    |
 | **Lint & Format**         | `npm run lint` / `npm run format` | Runs ESLint and Prettier code formatting                   |
+
+---
+
+## Release Build & Packaging
+
+The application includes an automated, cross-platform release packaging pipeline script located in [`.agents/scripts/package-release.ps1`](file:///c:/Storage/Development/Projects/Tauri/GeoSource/GeoSource.Template/.agents/scripts/package-release.ps1).
+
+### Generating Distribution Packages
+
+To trigger a full production release build and gather all installers, portable ZIPs, and verification manifests:
+
+```bash
+# Package release for all target installers and portable releases
+npm run release
+
+# Package clean release (clears previous artifacts in release/)
+npm run release:clean
+```
+
+### Release Output (`release/`) Structure
+
+All generated distribution files are output into the root `release/` directory:
+
+- **Installer Bundles**: Native OS installer packages (e.g. `geosource-template_0.1.0_x64-setup.exe` NSIS installer, `.msi` MSI package, `.deb`, `.AppImage`, `.dmg`).
+- **Portable ZIP Releases**: Standalone zero-installation zip archive (`geosource-template-v0.1.0-windows-x64-portable.zip`) bundling the compiled executable binary, configuration files (`configs/`), documentation, and portable setup notes.
+- **SHA256 Checksums**: Cryptographic `release/SHA256SUMS.txt` hash file for verifying package downloads.
+- **Release Manifest**: Structured `release/release-manifest.json` detailing release version, build timestamp, file sizes, and cryptographic signatures.
 
 ---
 
