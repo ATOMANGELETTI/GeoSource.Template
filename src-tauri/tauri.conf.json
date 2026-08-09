@@ -72,7 +72,7 @@
         "resources": [
             "WebView2Loader.dll",
             "../other/configs/**/*",
-            "../other/logs/**/*",
+            "../other/logs/.gitkeep",
             "../other/utilities/**/*"
         ]
     }
