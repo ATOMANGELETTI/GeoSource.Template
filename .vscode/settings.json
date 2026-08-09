@@ -2,6 +2,8 @@
   // Pinned editor tabs minimal icon-only styling
   "workbench.editor.pinnedTabSizing": "compact",
   "workbench.editor.pinnedTabsOnSeparateRow": true,
+  "workbench.editor.preventPinnedEditorClose": true,
+  "workbench.editor.highlightModifiedTabs": true,
   "workbench.editor.showIcons": true,
 
   // Rust Analyzer Configuration
@@ -12,9 +14,13 @@
 
   // Formatting & Linting Defaults
   "editor.formatOnSave": true,
+  "editor.guides.bracketPairs": true,
+  "editor.guides.bracketPairsHorizontal": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
   },
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
   "[rust]": {
     "editor.defaultFormatter": "rust-lang.rust-analyzer",
     "editor.formatOnSave": true
