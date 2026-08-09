@@ -10,6 +10,7 @@ use std::sync::Mutex;
 
 fn default_true() -> bool { true }
 fn default_font_size() -> u32 { 13 }
+fn default_font() -> String { "terminus".into() }
 fn default_crs() -> String { "EPSG:4326".into() }
 fn default_max_spatial_memory() -> u32 { 1024 }
 fn default_theme() -> String { "polar-night".into() }
@@ -60,6 +61,9 @@ pub struct UiSettings {
     pub show_status_bar: bool,
     #[serde(default = "default_font_size")]
     pub font_size: u32,
+    /// Active font family: `"terminus"` | `"fira-code"` | `"ubuntu"`
+    #[serde(default = "default_font")]
+    pub font: String,
 }
 
 impl Default for UiSettings {
@@ -68,6 +72,7 @@ impl Default for UiSettings {
             animations_enabled: true,
             show_status_bar: true,
             font_size: 13,
+            font: "terminus".into(),
         }
     }
 }
@@ -76,16 +81,17 @@ impl Default for UiSettings {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SystemSettings {
     #[serde(default = "default_true")]
-    pub auto_check_updates: bool,
-    #[serde(default = "default_true")]
     pub hardware_acceleration: bool,
+    /// Launch application automatically when Windows boots.
+    #[serde(default)]
+    pub start_with_windows: bool,
 }
 
 impl Default for SystemSettings {
     fn default() -> Self {
         Self {
-            auto_check_updates: true,
             hardware_acceleration: true,
+            start_with_windows: false,
         }
     }
 }
@@ -492,13 +498,37 @@ pub fn get_appinfo(state: tauri::State<Mutex<AppConfig>>) -> Result<AppInfo, Str
 /// Persist updated settings to disk and update in-memory state.
 #[tauri::command]
 pub fn set_settings(
+    app: tauri::AppHandle,
     settings: AppSettings,
     state: tauri::State<Mutex<AppConfig>>,
 ) -> Result<(), String> {
+    use tauri_plugin_autostart::ManagerExt;
     let mut cfg = state.lock().map_err(|e| e.to_string())?;
     let path = cfg.config_dir.join("settings.yaml");
     save_yaml(&settings, &path, "settings.yaml").map_err(|e| e.to_string())?;
+
+    // Sync autostart status with operating system
+    let manager = app.autolaunch();
+    if settings.system.start_with_windows {
+        let _ = manager.enable();
+    } else {
+        let _ = manager.disable();
+    }
+
     cfg.settings = settings;
+    Ok(())
+}
+
+/// Enable or disable autostart with OS directly via IPC.
+#[tauri::command]
+pub fn sync_autostart(app: tauri::AppHandle, enabled: bool) -> Result<(), String> {
+    use tauri_plugin_autostart::ManagerExt;
+    let manager = app.autolaunch();
+    if enabled {
+        manager.enable().map_err(|e| e.to_string())?;
+    } else {
+        manager.disable().map_err(|e| e.to_string())?;
+    }
     Ok(())
 }
 

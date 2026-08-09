@@ -71,3 +71,6 @@ pnpm-debug.log*
 # Coverage Tools / Testing Tools
 tests/artifacts/coverage/
 tests/artifacts/target_test/
+
+# Release files
+release/

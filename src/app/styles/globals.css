@@ -87,6 +87,8 @@
 
   /* Typography */
   --font-family-terminus: "Terminus", "Consolas", monospace;
+  --font-family-fira-code: "FiraCode", "Courier New", monospace;
+  --font-family-ubuntu: "Ubuntu", "Segoe UI", sans-serif;
   --font-size-2xs: 10px;
   --font-size-xs: 11px;
   --font-size-sm: 12px;
@@ -99,6 +101,11 @@
 
   /* Height */
   --height-titlebar: 32px;
+}
+
+/* Runtime font variable — overridden by JS (ThemeProvider) based on settings.yaml */
+:root {
+  --font-app: var(--font-family-terminus);
 }
 
 /* ---------- Reset & Base ---------- */
@@ -122,7 +129,7 @@ html {
 }
 
 body {
-  font-family: var(--font-terminus);
+  font-family: var(--font-app, "Terminus", "Consolas", monospace);
   font-weight: 400;
   background-color: var(--bg-app);
   color: var(--text-primary);

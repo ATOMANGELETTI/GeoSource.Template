@@ -23,6 +23,9 @@
     "core:window:allow-set-title",
     "core:window:allow-start-dragging",
     "window-state:allow-restore-state",
-    "window-state:allow-save-window-state"
+    "window-state:allow-save-window-state",
+    "autostart:allow-enable",
+    "autostart:allow-disable",
+    "autostart:allow-is-enabled"
   ]
 }

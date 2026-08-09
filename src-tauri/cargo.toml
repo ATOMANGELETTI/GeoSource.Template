@@ -30,6 +30,7 @@ anyhow = "1.0.104"
 log = "0.4.33"
 fern = { version = "0.7.1", features = ["colored"] }
 chrono = "0.4.45"
+tauri-plugin-autostart = "2"
 
 [profile.release]
 codegen-units = 1

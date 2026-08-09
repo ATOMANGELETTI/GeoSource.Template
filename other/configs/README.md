@@ -24,6 +24,16 @@ Controls the application appearance and window behaviour.
 theme: "polar-night" # polar-night | snow-storm | frost | aurora | system
 language: "en"       # ISO 639-1 code (en, fr, de, es, …)
 
+ui:
+  animations_enabled: true
+  show_status_bar: true
+  font_size: 13
+  font: "terminus"     # terminus | fira-code | ubuntu
+
+system:
+  hardware_acceleration: true
+  start_with_windows: false # Launch application on Windows startup
+
 window:
   remember_size: true     # Restore window size from last session
   start_maximized: false  # Always launch maximized
@@ -42,6 +52,10 @@ log_level:
 |-------|------|---------|-------------|
 | `theme` | string | `"polar-night"` | UI color theme: `"polar-night"` (Nord Dark), `"snow-storm"` (Nord Light), `"frost"` (Nord Cyan/Ice Blue), `"aurora"` (Nord Cosmic Purple/Vibrant), or `"system"` (follows OS). |
 | `language` | string | `"en"` | Display language. Add translations to `src/locales/` to unlock more codes. |
+| `ui.font` | string | `"terminus"` | Primary application font family: `"terminus"` (Terminus Nerd Font), `"fira-code"` (FiraCode Nerd Font), or `"ubuntu"` (Ubuntu Nerd Font). |
+| `ui.font_size` | number | `13` | Base font size in px. |
+| `system.start_with_windows` | bool | `false` | Launch application automatically on Windows startup. |
+| `system.hardware_acceleration` | bool | `true` | Enable WebGL and GPU hardware acceleration. |
 | `window.remember_size` | bool | `true` | If `true`, the window reopens at its last dimensions. |
 | `window.start_maximized` | bool | `false` | Forces the window to maximize on launch, overriding `remember_size`. |
 | `log_level.trace` | bool | `false` | Enable trace level diagnostics in `other/logs/`. |

@@ -17,6 +17,8 @@ export interface WindowSettings {
   minimize_to_tray: boolean;
 }
 
+export type FontName = "terminus" | "fira-code" | "ubuntu";
+
 export interface UiSettings {
   /** Enable micro-animations & transitions. */
   animations_enabled: boolean;
@@ -24,13 +26,15 @@ export interface UiSettings {
   show_status_bar: boolean;
   /** Base font size in px. */
   font_size: number;
+  /** Active font family: `"terminus"` | `"fira-code"` | `"ubuntu"` */
+  font: FontName;
 }
 
 export interface SystemSettings {
-  /** Automatically check for application updates on launch. */
-  auto_check_updates: boolean;
   /** Enable WebGL and GPU hardware acceleration. */
   hardware_acceleration: boolean;
+  /** Launch application automatically when Windows boots. */
+  start_with_windows: boolean;
 }
 
 export interface GisSettings {
@@ -122,10 +126,11 @@ export const DEFAULT_SETTINGS: AppSettings = {
     animations_enabled: true,
     show_status_bar: true,
     font_size: 13,
+    font: "terminus",
   },
   system: {
-    auto_check_updates: true,
     hardware_acceleration: true,
+    start_with_windows: false,
   },
   gis: {
     default_crs: "EPSG:4326",
@@ -242,5 +247,14 @@ export async function openConfigDir(): Promise<void> {
 export async function closeSplashAndShowMain(): Promise<void> {
   if (!isTauri()) return;
   await invokeConfig<void>("close_splash_and_show_main");
+}
+
+/**
+ * Enable or disable launching the app automatically when Windows boots.
+ * Persists the change to disk via the Rust backend.
+ */
+export async function syncAutostart(enabled: boolean): Promise<void> {
+  if (!isTauri()) return;
+  await invokeConfig<void>("sync_autostart", { enabled });
 }
 

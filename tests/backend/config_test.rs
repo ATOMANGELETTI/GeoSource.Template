@@ -7,6 +7,8 @@ fn test_settings_default_values() {
     let s = AppSettings::default();
     assert_eq!(s.theme, "polar-night");
     assert_eq!(s.language, "en");
+    assert_eq!(s.ui.font, "terminus");
+    assert!(!s.system.start_with_windows);
     assert!(s.window.remember_size);
     assert!(!s.window.start_maximized);
     assert_eq!(s.log_level, LogLevelSettings::default());

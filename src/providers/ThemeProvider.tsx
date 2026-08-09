@@ -51,6 +51,21 @@ function resolveSystemTheme(): ResolvedTheme {
   return "polar-night";
 }
 
+export function resolveFontVar(fontInput: string): string {
+  const font = (fontInput || "").trim().toLowerCase();
+  switch (font) {
+    case "fira-code":
+    case "fira_code":
+    case "firacode":
+      return "var(--font-family-fira-code)";
+    case "ubuntu":
+      return "var(--font-family-ubuntu)";
+    case "terminus":
+    default:
+      return "var(--font-family-terminus)";
+  }
+}
+
 interface ThemeProviderProps {
   children: ReactNode;
 }
@@ -58,11 +73,13 @@ interface ThemeProviderProps {
 /**
  * Client-side ThemeProvider component.
  * Synchronizes application theme setting with root `<html>` element data attributes & classes,
- * synchronizes document language, and activates global keybindings loaded from `bindings.yaml`.
+ * synchronizes document language, font choice, font size, and activates global keybindings loaded from `bindings.yaml`.
  */
 export const ThemeProvider: FC<ThemeProviderProps> = ({ children }) => {
   const themeSetting = useConfigStore((state) => state.settings.theme);
   const languageSetting = useConfigStore((state) => state.settings.language);
+  const fontSetting = useConfigStore((state) => state.settings.ui.font);
+  const fontSizeSetting = useConfigStore((state) => state.settings.ui.font_size);
   const loadAll = useConfigStore((state) => state.loadAll);
 
   // Activate global keyboard bindings listener from bindings.yaml
@@ -149,6 +166,18 @@ export const ThemeProvider: FC<ThemeProviderProps> = ({ children }) => {
       return () => mediaQuery.removeEventListener("change", handleChange);
     }
   }, [themeSetting]);
+
+  // Synchronize font family & font size to document element
+  useEffect(() => {
+    if (typeof document !== "undefined") {
+      const root = document.documentElement;
+      const fontVar = resolveFontVar(fontSetting);
+      root.style.setProperty("--font-app", fontVar);
+      if (fontSizeSetting && fontSizeSetting > 0) {
+        root.style.fontSize = `${fontSizeSetting}px`;
+      }
+    }
+  }, [fontSetting, fontSizeSetting]);
 
   return <>{children}</>;
 };

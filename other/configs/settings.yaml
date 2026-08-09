@@ -27,10 +27,11 @@ ui:
   animations_enabled: true # Enable micro-animations & transitions
   show_status_bar: true # Display bottom status bar in UI
   font_size: 13 # Base font size in px
+  font: "terminus" # Active font: terminus | fira-code | ubuntu
 
 system:
-  auto_check_updates: true # Automatically check for application updates on launch
   hardware_acceleration: true # Enable WebGL and GPU hardware acceleration
+  start_with_windows: false # Launch application automatically when Windows boots
 
 gis:
   default_crs: "EPSG:4326" # Default coordinate reference system

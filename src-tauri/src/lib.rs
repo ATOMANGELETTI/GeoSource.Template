@@ -11,6 +11,7 @@ mod config_test;
 mod logger_test;
 
 use tauri::Manager;
+#[cfg(not(test))]
 use tauri_plugin_window_state::{Builder, StateFlags};
 
 /// IPC command called by the splashscreen when 7-second minimum duration
@@ -67,6 +68,10 @@ pub fn run() {
     tauri::Builder::default()
         .manage(config::load_config())
         .plugin(Builder::default().with_state_flags(window_state_flags).build())
+        .plugin(tauri_plugin_autostart::init(
+            tauri_plugin_autostart::MacosLauncher::AppleScript,
+            Some(vec!["--autostart"]),
+        ))
         .on_window_event(|window, event| match event {
             tauri::WindowEvent::CloseRequested { .. } => {
                 log::info!(target: "geosource::window", "Window close requested for window '{}'", window.label());
@@ -111,6 +116,21 @@ pub fn run() {
                 log::error!(target: "geosource::tray", "Failed to setup system tray: {}", err);
             }
 
+            // Synchronize autostart on startup setting with OS
+            use tauri_plugin_autostart::ManagerExt;
+            if let Some(config_state) = app.try_state::<std::sync::Mutex<config::AppConfig>>() {
+                if let Ok(cfg) = config_state.lock() {
+                    let autostart_manager = app.autolaunch();
+                    if cfg.settings.system.start_with_windows {
+                        let _ = autostart_manager.enable();
+                        log::info!(target: "geosource::app", "Autostart on boot is enabled.");
+                    } else {
+                        let _ = autostart_manager.disable();
+                        log::info!(target: "geosource::app", "Autostart on boot is disabled.");
+                    }
+                }
+            }
+
             // Ensure splashscreen is centered on primary monitor
             if let Some(splashscreen) = app.get_webview_window("splashscreen") {
                 let _ = splashscreen.center();
@@ -128,6 +148,7 @@ pub fn run() {
             config::set_settings,
             config::set_bindings,
             config::open_config_dir,
+            config::sync_autostart,
             close_splash_and_show_main,
         ])
         .run(tauri::generate_context!())
