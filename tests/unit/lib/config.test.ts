@@ -5,6 +5,9 @@ import {
   getAppInfo,
   setSettings,
   setBindings,
+  openConfigDir,
+  openUtilitiesDir,
+  openLogsDir,
   DEFAULT_SETTINGS,
   DEFAULT_BINDINGS,
   DEFAULT_APPINFO,
@@ -108,6 +111,24 @@ describe("config.ts", () => {
 
       await setBindings(DEFAULT_BINDINGS);
       expect(invoke).toHaveBeenCalledWith("set_bindings", { bindings: DEFAULT_BINDINGS });
+    });
+
+    it("invokes 'open_config_dir' IPC command when openConfigDir is called", async () => {
+      vi.mocked(invoke).mockResolvedValueOnce(undefined);
+      await openConfigDir();
+      expect(invoke).toHaveBeenCalledWith("open_config_dir", undefined);
+    });
+
+    it("invokes 'open_utilities_dir' IPC command when openUtilitiesDir is called", async () => {
+      vi.mocked(invoke).mockResolvedValueOnce(undefined);
+      await openUtilitiesDir();
+      expect(invoke).toHaveBeenCalledWith("open_utilities_dir", undefined);
+    });
+
+    it("invokes 'open_logs_dir' IPC command when openLogsDir is called", async () => {
+      vi.mocked(invoke).mockResolvedValueOnce(undefined);
+      await openLogsDir();
+      expect(invoke).toHaveBeenCalledWith("open_logs_dir", undefined);
     });
   });
 });
