@@ -28,7 +28,12 @@ window:
   remember_size: true     # Restore window size from last session
   start_maximized: false  # Always launch maximized
 
-log_level: "info"    # trace | debug | info | warn | error
+log_level:
+  trace: false
+  debug: false
+  info: true
+  warn: true
+  error: true
 ```
 
 **Field reference:**
@@ -39,7 +44,11 @@ log_level: "info"    # trace | debug | info | warn | error
 | `language` | string | `"en"` | Display language. Add translations to `src/locales/` to unlock more codes. |
 | `window.remember_size` | bool | `true` | If `true`, the window reopens at its last dimensions. |
 | `window.start_maximized` | bool | `false` | Forces the window to maximize on launch, overriding `remember_size`. |
-| `log_level` | string | `"info"` | Minimum level written to `other/logs/`. Set `"debug"` for verbose output. |
+| `log_level.trace` | bool | `false` | Enable trace level diagnostics in `other/logs/`. |
+| `log_level.debug` | bool | `false` | Enable debug level messages. |
+| `log_level.info` | bool | `true` | Enable general information events. |
+| `log_level.warn` | bool | `true` | Enable warning messages. |
+| `log_level.error` | bool | `true` | Enable error & critical failure logs. |
 
 ---
 

@@ -9,7 +9,12 @@ theme: "polar-night" # Options: polar-night (Polar Night) | snow-storm (Snow Sto
 
 language: "en" # ISO 639-1 code — e.g. en, fr, de, es
 
-log_level: "info" # Options: trace | debug | info | warn | error
+log_level:
+  trace: false # Include trace level diagnostics
+  debug: false # Include debug level logs
+  info: true # Include general info logs
+  warn: true # Include warning messages
+  error: true # Include error & critical events
 
 window:
   remember_size: true # Restore window dimensions from last session

@@ -92,27 +92,24 @@ pub fn init_logger() -> Result<PathBuf, Box<dyn std::error::Error>> {
         })
         .chain(std::io::stdout());
 
-    // Load log_level from settings.yaml if available, defaulting to Info
+    // Load log_level from settings.yaml if available, defaulting to standard LogLevelSettings
     let settings_path = root_dir.join("other").join("configs").join("settings.yaml");
-    let log_level_filter = if settings_path.exists() {
+    let log_level_settings = if settings_path.exists() {
         if let Ok(content) = fs::read_to_string(&settings_path) {
             if let Ok(settings) = serde_yaml::from_str::<crate::config::AppSettings>(&content) {
-                settings.parse_log_level()
+                settings.log_level
             } else {
-                log::LevelFilter::Info
+                crate::config::LogLevelSettings::default()
             }
         } else {
-            log::LevelFilter::Info
+            crate::config::LogLevelSettings::default()
         }
     } else {
-        log::LevelFilter::Info
+        crate::config::LogLevelSettings::default()
     };
 
     let dispatch = fern::Dispatch::new()
-        .level(log_level_filter)
-        .level_for("geosource", log_level_filter)
-        .level_for("geosource::window", log_level_filter)
-        .level_for("frontend", log_level_filter)
+        .filter(move |metadata| log_level_settings.should_log(metadata.level()))
         .level_for("tao", log::LevelFilter::Warn)
         .level_for("wry", log::LevelFilter::Warn)
         .level_for("hyper", log::LevelFilter::Warn)

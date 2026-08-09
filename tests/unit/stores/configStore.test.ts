@@ -40,7 +40,7 @@ describe("configStore.ts", () => {
       theme: "aurora",
       language: "de",
       window: { remember_size: true, start_maximized: true },
-      log_level: "debug",
+      log_level: { trace: false, debug: true, info: true, warn: true, error: true },
     };
     const mockBindings: configLib.AppBindings = {
       bindings: { toggle_sidebar: "Ctrl+Shift+B" },

@@ -65,7 +65,7 @@ describe("config.ts", () => {
         theme: "frost",
         language: "fr",
         window: { remember_size: false, start_maximized: true },
-        log_level: "debug",
+        log_level: { trace: false, debug: true, info: true, warn: true, error: true },
       };
       vi.mocked(invoke).mockResolvedValueOnce(mockSettings);
 

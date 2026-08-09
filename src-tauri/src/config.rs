@@ -14,7 +14,6 @@ fn default_crs() -> String { "EPSG:4326".into() }
 fn default_max_spatial_memory() -> u32 { 1024 }
 fn default_theme() -> String { "polar-night".into() }
 fn default_language() -> String { "en".into() }
-fn default_log_level() -> String { "info".into() }
 fn default_app_name() -> String { "GeoSource".into() }
 fn default_version() -> String { "0.1.0".into() }
 fn default_codename() -> String { "Melody".into() }
@@ -112,14 +111,126 @@ impl Default for GisSettings {
     }
 }
 
+/// Granular log level toggle settings.
+#[derive(Debug, Clone, Serialize, PartialEq, Eq)]
+pub struct LogLevelSettings {
+    #[serde(default)]
+    pub trace: bool,
+    #[serde(default)]
+    pub debug: bool,
+    #[serde(default = "default_true")]
+    pub info: bool,
+    #[serde(default = "default_true")]
+    pub warn: bool,
+    #[serde(default = "default_true")]
+    pub error: bool,
+}
+
+impl Default for LogLevelSettings {
+    fn default() -> Self {
+        Self {
+            trace: false,
+            debug: false,
+            info: true,
+            warn: true,
+            error: true,
+        }
+    }
+}
+
+impl LogLevelSettings {
+    /// Check if a log message at `level` should be output.
+    pub fn should_log(&self, level: log::Level) -> bool {
+        match level {
+            log::Level::Error => self.error,
+            log::Level::Warn => self.warn,
+            log::Level::Info => self.info,
+            log::Level::Debug => self.debug,
+            log::Level::Trace => self.trace,
+        }
+    }
+}
+
+impl<'de> Deserialize<'de> for LogLevelSettings {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+    {
+        #[derive(Deserialize)]
+        #[serde(untagged)]
+        enum Helper {
+            String(String),
+            Map {
+                #[serde(default)]
+                trace: bool,
+                #[serde(default)]
+                debug: bool,
+                #[serde(default = "default_true")]
+                info: bool,
+                #[serde(default = "default_true")]
+                warn: bool,
+                #[serde(default = "default_true")]
+                error: bool,
+            },
+        }
+
+        match Helper::deserialize(deserializer)? {
+            Helper::String(s) => match s.to_lowercase().trim() {
+                "trace" => Ok(Self {
+                    trace: true,
+                    debug: true,
+                    info: true,
+                    warn: true,
+                    error: true,
+                }),
+                "debug" => Ok(Self {
+                    trace: false,
+                    debug: true,
+                    info: true,
+                    warn: true,
+                    error: true,
+                }),
+                "warn" | "warning" => Ok(Self {
+                    trace: false,
+                    debug: false,
+                    info: false,
+                    warn: true,
+                    error: true,
+                }),
+                "error" => Ok(Self {
+                    trace: false,
+                    debug: false,
+                    info: false,
+                    warn: false,
+                    error: true,
+                }),
+                _ => Ok(Self::default()),
+            },
+            Helper::Map {
+                trace,
+                debug,
+                info,
+                warn,
+                error,
+            } => Ok(Self {
+                trace,
+                debug,
+                info,
+                warn,
+                error,
+            }),
+        }
+    }
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AppSettings {
     #[serde(default = "default_theme")]
     pub theme: String,
     #[serde(default = "default_language")]
     pub language: String,
-    #[serde(default = "default_log_level")]
-    pub log_level: String,
+    #[serde(default)]
+    pub log_level: LogLevelSettings,
     #[serde(default)]
     pub window: WindowSettings,
     #[serde(default)]
@@ -131,15 +242,10 @@ pub struct AppSettings {
 }
 
 impl AppSettings {
-    /// Convert string `log_level` field to `log::LevelFilter`.
-    pub fn parse_log_level(&self) -> log::LevelFilter {
-        match self.log_level.to_lowercase().trim() {
-            "trace" => log::LevelFilter::Trace,
-            "debug" => log::LevelFilter::Debug,
-            "warn" | "warning" => log::LevelFilter::Warn,
-            "error" => log::LevelFilter::Error,
-            _ => log::LevelFilter::Info,
-        }
+    /// Check if a given log level is enabled.
+    #[allow(dead_code)]
+    pub fn should_log(&self, level: log::Level) -> bool {
+        self.log_level.should_log(level)
     }
 }
 
@@ -148,7 +254,7 @@ impl Default for AppSettings {
         Self {
             theme: "polar-night".into(),
             language: "en".into(),
-            log_level: "info".into(),
+            log_level: LogLevelSettings::default(),
             window: WindowSettings::default(),
             ui: UiSettings::default(),
             system: SystemSettings::default(),
@@ -464,7 +570,7 @@ mod tests {
         assert_eq!(s.language, "en");
         assert!(s.window.remember_size);
         assert!(!s.window.start_maximized);
-        assert_eq!(s.log_level, "info");
+        assert_eq!(s.log_level, LogLevelSettings::default());
     }
 
     #[test]
@@ -572,26 +678,35 @@ mod tests {
     }
 
     #[test]
-    fn test_parse_log_level() {
-        let mut settings = AppSettings::default();
+    fn test_log_level_settings() {
+        let mut settings = LogLevelSettings::default();
+        assert!(!settings.should_log(log::Level::Trace));
+        assert!(!settings.should_log(log::Level::Debug));
+        assert!(settings.should_log(log::Level::Info));
+        assert!(settings.should_log(log::Level::Warn));
+        assert!(settings.should_log(log::Level::Error));
 
-        settings.log_level = "trace".into();
-        assert_eq!(settings.parse_log_level(), log::LevelFilter::Trace);
+        // Enable trace and debug
+        settings.trace = true;
+        settings.debug = true;
+        assert!(settings.should_log(log::Level::Trace));
+        assert!(settings.should_log(log::Level::Debug));
 
-        settings.log_level = "debug".into();
-        assert_eq!(settings.parse_log_level(), log::LevelFilter::Debug);
+        // Test map deserialization from YAML
+        let yaml_map = "trace: true\ndebug: false\ninfo: true\nwarn: false\nerror: true\n";
+        let deserialized_map: LogLevelSettings = serde_yaml::from_str(yaml_map).expect("deserialize map");
+        assert!(deserialized_map.should_log(log::Level::Trace));
+        assert!(!deserialized_map.should_log(log::Level::Debug));
+        assert!(deserialized_map.should_log(log::Level::Info));
+        assert!(!deserialized_map.should_log(log::Level::Warn));
+        assert!(deserialized_map.should_log(log::Level::Error));
 
-        settings.log_level = "info".into();
-        assert_eq!(settings.parse_log_level(), log::LevelFilter::Info);
-
-        settings.log_level = "warn".into();
-        assert_eq!(settings.parse_log_level(), log::LevelFilter::Warn);
-
-        settings.log_level = "error".into();
-        assert_eq!(settings.parse_log_level(), log::LevelFilter::Error);
-
-        settings.log_level = "invalid_level".into();
-        assert_eq!(settings.parse_log_level(), log::LevelFilter::Info);
+        // Test string fallback deserialization (legacy format)
+        let yaml_str = "\"debug\"";
+        let deserialized_str: LogLevelSettings = serde_yaml::from_str(yaml_str).expect("deserialize string");
+        assert!(!deserialized_str.should_log(log::Level::Trace));
+        assert!(deserialized_str.should_log(log::Level::Debug));
+        assert!(deserialized_str.should_log(log::Level::Info));
     }
 
     #[test]

@@ -42,6 +42,19 @@ export interface GisSettings {
   max_spatial_memory_mb: number;
 }
 
+export interface LogLevelSettings {
+  /** Include trace level diagnostics. */
+  trace: boolean;
+  /** Include debug level logs. */
+  debug: boolean;
+  /** Include general info logs. */
+  info: boolean;
+  /** Include warning messages. */
+  warn: boolean;
+  /** Include error & critical events. */
+  error: boolean;
+}
+
 export type ThemeName =
   | "polar-night"
   | "snow-storm"
@@ -61,8 +74,8 @@ export interface AppSettings {
   ui: UiSettings;
   system: SystemSettings;
   gis: GisSettings;
-  /** Minimum log level: `"trace"` | `"debug"` | `"info"` | `"warn"` | `"error"` */
-  log_level: "trace" | "debug" | "info" | "warn" | "error";
+  /** Granular log level toggles. */
+  log_level: LogLevelSettings;
 }
 
 export interface AppBindings {
@@ -119,7 +132,13 @@ export const DEFAULT_SETTINGS: AppSettings = {
     tile_cache_enabled: true,
     max_spatial_memory_mb: 1024,
   },
-  log_level: "info",
+  log_level: {
+    trace: false,
+    debug: false,
+    info: true,
+    warn: true,
+    error: true,
+  },
 };
 
 export const DEFAULT_BINDINGS: AppBindings = {

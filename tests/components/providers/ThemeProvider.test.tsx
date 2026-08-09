@@ -49,7 +49,7 @@ describe("ThemeProvider", () => {
           theme: "aurora",
           language: "en",
           window: { remember_size: true, start_maximized: false },
-          log_level: "info",
+          log_level: { trace: false, debug: false, info: true, warn: true, error: true },
         },
       });
 
@@ -72,7 +72,7 @@ describe("ThemeProvider", () => {
           theme: "snow-storm",
           language: "en",
           window: { remember_size: true, start_maximized: false },
-          log_level: "info",
+          log_level: { trace: false, debug: false, info: true, warn: true, error: true },
         },
       });
 
@@ -105,7 +105,7 @@ describe("ThemeProvider", () => {
           theme: "system",
           language: "en",
           window: { remember_size: true, start_maximized: false },
-          log_level: "info",
+          log_level: { trace: false, debug: false, info: true, warn: true, error: true },
         },
       });
 
