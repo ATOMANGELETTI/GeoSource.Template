@@ -19,6 +19,23 @@ $releaseDir = Join-Path $rootDir "release"
 $targetReleaseDir = Join-Path $rootDir "src-tauri/target/release"
 $bundleDir = Join-Path $targetReleaseDir "bundle"
 
+function Get-SHA256Hash {
+    param ([string]$Path)
+    if (Get-Command Get-FileHash -ErrorAction SilentlyContinue) {
+        return (Get-FileHash -Path $Path -Algorithm SHA256).Hash.ToLower()
+    } else {
+        $stream = [System.IO.File]::OpenRead($Path)
+        try {
+            $sha256 = [System.Security.Cryptography.SHA256]::Create()
+            $hashBytes = $sha256.ComputeHash($stream)
+            return ([System.BitConverter]::ToString($hashBytes)).Replace("-", "").ToLower()
+        } finally {
+            $stream.Close()
+            $stream.Dispose()
+        }
+    }
+}
+
 # 1. Determine Version
 if (-not $Version) {
     if (Test-Path "package.json") {
@@ -163,7 +180,7 @@ $checksumLines = @()
 $manifestArtifacts = @()
 
 foreach ($artifact in $collectedArtifacts) {
-    $hash = (Get-FileHash -Path $artifact.Path -Algorithm SHA256).Hash.ToLower()
+    $hash = Get-SHA256Hash -Path $artifact.Path
     $checksumLines += "$hash  $($artifact.Name)"
 
     $manifestArtifacts += [PSCustomObject]@{
