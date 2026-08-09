@@ -50,8 +50,7 @@ const SplashScreenLayout: FC<SplashScreenLayoutProps> = ({ children }) => {
         }
 
         /* ── Nord Theme Tokens ─────────────────────────────────────────── */
-        :root,
-        [data-theme="polar-night"] {
+        :root {
           --bg-app:            #2e3440;
           --bg-surface:        #3b4252;
           --bg-elevated:       #434c5e;
@@ -64,39 +63,6 @@ const SplashScreenLayout: FC<SplashScreenLayoutProps> = ({ children }) => {
           --font-terminus:     "Terminus", "Consolas", monospace;
           --transition-fast:   100ms ease;
           --transition-default:150ms ease;
-        }
-        [data-theme="snow-storm"] {
-          --bg-app:            #eceff4;
-          --bg-surface:        #e5e9f0;
-          --bg-elevated:       #d8dee9;
-          --border-default:    #c5cbd5;
-          --text-primary:      #2e3440;
-          --text-secondary:    #3b4252;
-          --text-muted:        #4c566a;
-          --accent-primary:    #5e81ac;
-          --accent-secondary:  #81a1c1;
-        }
-        [data-theme="frost"] {
-          --bg-app:            #1e2631;
-          --bg-surface:        #2b3848;
-          --bg-elevated:       #36475b;
-          --border-default:    #435870;
-          --text-primary:      #e0f2f1;
-          --text-secondary:    #8fbcbb;
-          --text-muted:        #5e81ac;
-          --accent-primary:    #88c0d0;
-          --accent-secondary:  #8fbcbb;
-        }
-        [data-theme="aurora"] {
-          --bg-app:            #2b2638;
-          --bg-surface:        #373147;
-          --bg-elevated:       #463e59;
-          --border-default:    #5c5275;
-          --text-primary:      #f3edfc;
-          --text-secondary:    #d8dee9;
-          --text-muted:        #b48ead;
-          --accent-primary:    #b48ead;
-          --accent-secondary:  #a3be8c;
         }
 
         /* ── Base Reset ────────────────────────────────────────────────── */

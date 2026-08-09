@@ -2,26 +2,16 @@
 
 import { useEffect, useState, useRef, type FC } from "react";
 import { useConfigStore } from "@/lib/store/configStore";
-import { normalizeTheme } from "@/providers/ThemeProvider";
 import { closeSplashAndShowMain } from "@/lib/config";
 
 const MIN_SPLASH_TIME_MS = 7000; // Mandatory 7 seconds minimum duration
 
 export const SplashScreen: FC = () => {
-  const settings = useConfigStore((state) => state.settings);
   const appInfo = useConfigStore((state) => state.appInfo);
   const loadAll = useConfigStore((state) => state.loadAll);
 
   const [progress, setProgress] = useState<number>(0);
   const [statusText, setStatusText] = useState<string>("Initializing Core Engine...");
-
-  const rawTheme = settings?.theme || "polar-night";
-  let activeTheme = normalizeTheme(rawTheme);
-  if (activeTheme === "system" && typeof window !== "undefined") {
-    activeTheme = window.matchMedia("(prefers-color-scheme: light)").matches
-      ? "snow-storm"
-      : "polar-night";
-  }
 
   const startTimeRef = useRef<number>(0);
   const isAppLoadedRef = useRef<boolean>(false);
@@ -39,10 +29,11 @@ export const SplashScreen: FC = () => {
       });
   }, [loadAll]);
 
-  // Synchronize theme with config file settings
+  // Ensure root element has data-theme set
   useEffect(() => {
-    document.documentElement.setAttribute("data-theme", activeTheme);
-  }, [activeTheme]);
+    document.documentElement.setAttribute("data-theme", "polar-night");
+    document.documentElement.classList.add("dark");
+  }, []);
 
   // Progress timer logic (7 seconds minimum + app loaded gate)
   useEffect(() => {
@@ -95,15 +86,15 @@ export const SplashScreen: FC = () => {
 
   return (
     <div
-      data-theme={activeTheme}
+      data-theme="polar-night"
       style={{
         width: "100%",
         height: "100%",
         borderRadius: "14px",
-        backgroundColor: "var(--bg-app)",
-        color: "var(--text-primary)",
+        backgroundColor: "var(--bg-app, #2e3440)",
+        color: "var(--text-primary, #eceff4)",
         boxShadow: "0 16px 40px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.06)",
-        border: "1px solid var(--border-default)",
+        border: "1px solid var(--border-default, #4c566a)",
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
@@ -113,7 +104,7 @@ export const SplashScreen: FC = () => {
         boxSizing: "border-box",
         padding: "40px 36px 44px 36px",
         userSelect: "none",
-        fontFamily: "var(--font-terminus)",
+        fontFamily: 'var(--font-terminus, "Terminus", "Consolas", monospace)',
         backdropFilter: "blur(20px)",
       }}
     >
@@ -127,7 +118,7 @@ export const SplashScreen: FC = () => {
           width: "360px",
           height: "200px",
           background:
-            "radial-gradient(circle, var(--accent-primary) 0%, rgba(0,0,0,0) 70%)",
+            "radial-gradient(circle, var(--accent-primary, #88c0d0) 0%, rgba(0,0,0,0) 70%)",
           opacity: 0.18,
           pointerEvents: "none",
         }}
@@ -150,8 +141,8 @@ export const SplashScreen: FC = () => {
             width: "68px",
             height: "68px",
             borderRadius: "18px",
-            background: "var(--bg-surface)",
-            border: "1px solid var(--border-default)",
+            background: "var(--bg-surface, #3b4252)",
+            border: "1px solid var(--border-default, #4c566a)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -165,7 +156,7 @@ export const SplashScreen: FC = () => {
             height="38"
             viewBox="0 0 24 24"
             fill="none"
-            stroke="var(--accent-primary)"
+            stroke="var(--accent-primary, #88c0d0)"
             strokeWidth="1.8"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -185,7 +176,7 @@ export const SplashScreen: FC = () => {
             fontSize: "28px",
             fontWeight: 700,
             letterSpacing: "0.5px",
-            color: "var(--text-primary)",
+            color: "var(--text-primary, #eceff4)",
           }}
         >
           GeoSource Template
@@ -197,7 +188,7 @@ export const SplashScreen: FC = () => {
             fontSize: "12px",
             letterSpacing: "1.5px",
             textTransform: "uppercase",
-            color: "var(--accent-primary)",
+            color: "var(--accent-primary, #88c0d0)",
             fontWeight: 600,
             opacity: 0.9,
           }}
@@ -215,7 +206,7 @@ export const SplashScreen: FC = () => {
           justifyContent: "space-between",
           alignItems: "center",
           fontSize: "12px",
-          color: "var(--text-secondary)",
+          color: "var(--text-secondary, #d8dee9)",
           zIndex: 1,
           marginBottom: "12px",
         }}
@@ -224,7 +215,7 @@ export const SplashScreen: FC = () => {
         <span
           style={{
             fontWeight: 700,
-            color: "var(--accent-primary)",
+            color: "var(--accent-primary, #88c0d0)",
             fontVariantNumeric: "tabular-nums",
           }}
         >
@@ -241,7 +232,7 @@ export const SplashScreen: FC = () => {
           right: 0,
           width: "100%",
           height: "6px",
-          backgroundColor: "var(--bg-elevated)",
+          backgroundColor: "var(--bg-elevated, #434c5e)",
           overflow: "hidden",
           zIndex: 2,
         }}
@@ -252,7 +243,7 @@ export const SplashScreen: FC = () => {
             height: "100%",
             width: `${progress}%`,
             background:
-              "linear-gradient(90deg, var(--accent-secondary), var(--accent-primary))",
+              "linear-gradient(90deg, var(--accent-secondary, #81a1c1), var(--accent-primary, #88c0d0))",
             transition: "width 0.15s linear",
             position: "relative",
             overflow: "hidden",

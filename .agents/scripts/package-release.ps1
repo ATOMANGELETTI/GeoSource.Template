@@ -130,11 +130,26 @@ if (Test-Path $winExePath) {
         Write-Host "  [PORTABLE INCLUDED] DLL: $($_.Name)" -ForegroundColor Gray
     }
 
-    # Copy configurations
+    # Copy other/configs and ensure other/logs exists
+    $otherStagingDir = Join-Path $stagingDir "other"
+    $otherConfigDest = Join-Path $otherStagingDir "configs"
+    $otherLogsDest = Join-Path $otherStagingDir "logs"
+
+    New-Item -ItemType Directory -Path $otherConfigDest -Force | Out-Null
+    New-Item -ItemType Directory -Path $otherLogsDest -Force | Out-Null
+
     $configSrc = Join-Path $rootDir "other/configs"
     if (Test-Path $configSrc) {
-        Copy-Item -Path $configSrc -Destination (Join-Path $stagingDir "configs") -Recurse -Force
+        Copy-Item -Path "$configSrc\*" -Destination $otherConfigDest -Recurse -Force
+        Write-Host "  [PORTABLE INCLUDED] Configuration directory: other/configs/" -ForegroundColor Gray
     }
+
+    # Ensure other/logs has a .gitkeep so it is visible and accessible
+    $logsKeepFile = Join-Path $otherLogsDest ".gitkeep"
+    if (-not (Test-Path $logsKeepFile)) {
+        Set-Content -Path $logsKeepFile -Value "" -Encoding UTF8
+    }
+    Write-Host "  [PORTABLE INCLUDED] Logs directory: other/logs/" -ForegroundColor Gray
 
     # Copy root documentation & license
     if (Test-Path (Join-Path $rootDir "README.md")) {
@@ -152,7 +167,8 @@ Built At: $((Get-Date).ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss 'UTC'"))
 Instructions:
 1. Extract all contents of this ZIP archive into any folder.
 2. Launch 'geosource-template.exe' directly (no installation required).
-3. Configuration files and settings are located in the 'configs/' directory.
+3. Configuration files and settings are located in the 'other/configs/' directory.
+4. Application log files will be written to the 'other/logs/' directory.
 "@
     Set-Content -Path (Join-Path $stagingDir "PORTABLE_NOTES.txt") -Value $portableNotes
 

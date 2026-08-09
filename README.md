@@ -103,7 +103,7 @@ npm run release:clean
 All generated distribution files are output into the root `release/` directory:
 
 - **Installer Bundles**: Native OS installer packages (e.g. `geosource-template_0.1.0_x64-setup.exe` NSIS installer, `.msi` MSI package, `.deb`, `.AppImage`, `.dmg`).
-- **Portable ZIP Releases**: Standalone zero-installation zip archive (`geosource-template-v0.1.0-windows-x64-portable.zip`) bundling the compiled executable binary, configuration files (`configs/`), documentation, and portable setup notes.
+- **Portable ZIP Releases**: Standalone zero-installation zip archive (`geosource-template-v0.1.0-windows-x64-portable.zip`) bundling the compiled executable binary, configuration files (`other/configs/`), log directory (`other/logs/`), documentation, and portable setup notes.
 - **SHA256 Checksums**: Cryptographic `release/SHA256SUMS.txt` hash file for verifying package downloads.
 - **Release Manifest**: Structured `release/release-manifest.json` detailing release version, build timestamp, file sizes, and cryptographic signatures.
 

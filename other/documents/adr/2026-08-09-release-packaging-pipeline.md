@@ -23,7 +23,7 @@ Key architectural decisions:
 2. **Native Installer Bundling**: Native installer binaries produced by Tauri v2 (`.msi`, `-setup.exe`, `.deb`, `.AppImage`, `.dmg`) are automatically discovered and copied to `release/`.
 3. **Portable ZIP Releases**:
    - Compiles and packages standalone binaries (`geosource-template.exe`) into `geosource-template-v<VERSION>-<OS>-<ARCH>-portable.zip`.
-   - Bundles default configuration files (`configs/settings.yaml`, `configs/bindings.yaml`, `configs/appinfo.yaml`), `README.md`, and `PORTABLE_NOTES.txt` inside the portable archive.
+   - Bundles default configuration files (`other/configs/settings.yaml`, `other/configs/bindings.yaml`, `other/configs/appinfo.yaml`), log directory (`other/logs/`), `README.md`, and `PORTABLE_NOTES.txt` inside the portable archive.
 4. **Integrity & Verification**:
    - Generates cryptographic `SHA256SUMS.txt` for all release files.
    - Generates machine-readable `release-manifest.json` containing build timestamps, file sizes, artifact types, and hashes.
