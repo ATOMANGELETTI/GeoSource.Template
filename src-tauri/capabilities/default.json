@@ -4,6 +4,7 @@
   "local": true,
   "windows": ["main", "tray-menu", "splashscreen"],
   "permissions": [
+    "core:event:default",
     "core:default",
     "core:tray:default",
     "core:app:default",

@@ -247,15 +247,7 @@
     "use strict";
 
     /* ── Config ─────────────────────────────────────────────────── */
-    var MIN_SPLASH_MS = 7000;
-    var TICK_MS       = 40;
-
-    var STATUS_MESSAGES = [
-      { below: 25,  text: "Loading application configuration & bindings..." },
-      { below: 55,  text: "Initializing GIS spatial pipelines..." },
-      { below: 85,  text: "Mounting user interface subsystems..." },
-      { below: 100, text: "Preparing workspace environment..." }
-    ];
+    var MIN_SPLASH_MS = 3000;
 
     /* ── State ──────────────────────────────────────────────────── */
     var startTime        = Date.now();
@@ -359,39 +351,63 @@
       }, 300);
     }
 
-    /* ── Progress timer (starts immediately on script load) ─────── */
-    var timer = setInterval(function() {
-      if (closed) { clearInterval(timer); return; }
+    /* ── Event Driven Progress & Lifecycle ──────────────────────── */
+    var minTimeElapsed = false;
+    var mainReady = false;
 
-      var elapsed = Date.now() - startTime;
-      var pct     = Math.min(98, Math.floor((elapsed / MIN_SPLASH_MS) * 100));
+    setTimeout(function() {
+      minTimeElapsed = true;
+      checkClose();
+    }, MIN_SPLASH_MS);
 
-      var fillEl   = getFillEl();
-      var pctEl    = getPctEl();
-      var statusEl = getStatusEl();
-
-      if (fillEl) fillEl.style.width = pct + "%";
-      if (pctEl)  pctEl.textContent  = pct + "%";
-
-      var msg = "Preparing workspace environment...";
-      for (var i = 0; i < STATUS_MESSAGES.length; i++) {
-        if (pct < STATUS_MESSAGES[i].below) { msg = STATUS_MESSAGES[i].text; break; }
-      }
-      if (statusEl) statusEl.textContent = msg;
-
-      // Log milestone progress ticks
-      var milestoneKey = Math.floor(pct / 25) * 25;
-      if (pct >= 98 && pct < 100) milestoneKey = 98;
-      if (!loggedMilestones[milestoneKey]) {
-        loggedMilestones[milestoneKey] = true;
-        logRemote("info", "Progress milestone reached: " + pct + "% (" + msg + ")");
-      }
-
-      if (elapsed >= MIN_SPLASH_MS) {
-        clearInterval(timer);
+    function checkClose() {
+      if (minTimeElapsed && mainReady && !closed) {
         closeSplash();
       }
-    }, TICK_MS);
+    }
+
+    function setupTauriEvents() {
+      if (!window.__TAURI__ || !window.__TAURI__.event) {
+        setTimeout(setupTauriEvents, 50);
+        return;
+      }
+      
+      logRemote("info", "Tauri API found. Setting up event listeners.");
+
+      window.__TAURI__.event.listen("splash-progress", function(event) {
+        var payload = event.payload;
+        if (!payload) return;
+        var pct = payload.pct || 0;
+        var msg = payload.msg || "Loading...";
+
+        var fillEl   = getFillEl();
+        var pctEl    = getPctEl();
+        var statusEl = getStatusEl();
+
+        if (fillEl) fillEl.style.width = pct + "%";
+        if (pctEl)  pctEl.textContent  = pct + "%";
+        if (statusEl) statusEl.textContent = msg;
+        
+        logRemote("info", "Progress event: " + pct + "% (" + msg + ")");
+      });
+
+      window.__TAURI__.event.listen("main-ready", function(event) {
+        logRemote("info", "Received main-ready event from Next.js.");
+        mainReady = true;
+        
+        var fillEl   = getFillEl();
+        var pctEl    = getPctEl();
+        var statusEl = getStatusEl();
+
+        if (fillEl) fillEl.style.width = "100%";
+        if (pctEl)  pctEl.textContent  = "100%";
+        if (statusEl) statusEl.textContent = "System ready \u2014 Launching GeoSource Template...";
+        
+        checkClose();
+      });
+    }
+
+    setupTauriEvents();
 
     /* ── Load app info asynchronously (non-blocking) ─────────────── */
     function loadAppInfo() {
