@@ -271,20 +271,24 @@
     /* ── Tauri IPC helper ───────────────────────────────────────── */
     function tauriInvoke(cmd, args) {
       return new Promise(function(resolve, reject) {
+        var attempts = 0;
         function tryInvoke() {
+          attempts++;
           var internals = window.__TAURI_INTERNALS__;
+          var tauriGlobal = window.__TAURI__;
           if (internals && typeof internals.invoke === "function") {
             internals.invoke(cmd, args || {}).then(resolve).catch(reject);
+          } else if (tauriGlobal && tauriGlobal.core && typeof tauriGlobal.core.invoke === "function") {
+            tauriGlobal.core.invoke(cmd, args || {}).then(resolve).catch(reject);
+          } else if (typeof window.__TAURI_INVOKE__ === "function") {
+            window.__TAURI_INVOKE__(cmd, args || {}).then(resolve).catch(reject);
+          } else if (attempts < 10) {
+            setTimeout(tryInvoke, 100);
           } else {
-            reject(new Error("Tauri internals not available for: " + cmd));
+            reject(new Error("Tauri IPC bridge not ready for command: " + cmd));
           }
         }
-        // Give Tauri a moment to inject __TAURI_INTERNALS__ if not already ready
-        if (window.__TAURI_INTERNALS__) {
-          tryInvoke();
-        } else {
-          setTimeout(tryInvoke, 150);
-        }
+        tryInvoke();
       });
     }
 
