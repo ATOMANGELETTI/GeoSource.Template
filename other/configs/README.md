@@ -9,7 +9,7 @@ next application launch (or immediately if changed through the in-app settings p
 ## Files at a Glance
 
 | File | Purpose | Writable by app? |
-|------|---------|-----------------|
+| ------ | --------- | ------------------ |
 | `settings.yaml` | Appearance & behaviour | ✅ Yes — saved on every settings change |
 | `bindings.yaml` | Keyboard shortcuts | ✅ Yes — saved when bindings are updated |
 | `appinfo.yaml` | Release metadata | ❌ No — read once at startup, never overwritten |
@@ -49,7 +49,7 @@ log_level:
 **Field reference:**
 
 | Field | Type | Default | Description |
-|-------|------|---------|-------------|
+| ------- | ------ | --------- | ------------- |
 | `theme` | string | `"polar-night"` | UI color theme: `"polar-night"` (Nord Dark), `"snow-storm"` (Nord Light), `"frost"` (Nord Cyan/Ice Blue), `"aurora"` (Nord Cosmic Purple/Vibrant), or `"system"` (follows OS). |
 | `language` | string | `"en"` | Display language. Add translations to `src/locales/` to unlock more codes. |
 | `ui.font` | string | `"terminus"` | Primary application font family: `"terminus"` (Terminus Nerd Font), `"fira-code"` (FiraCode Nerd Font), or `"ubuntu"` (Ubuntu Nerd Font). |
@@ -85,7 +85,7 @@ Supported modifiers: `Ctrl`, `Shift`, `Alt`, `Super` (Windows key / Cmd on macOS
 **Built-in actions:**
 
 | Action | Default | Description |
-|--------|---------|-------------|
+| -------- | --------- | ------------- |
 | `toggle_sidebar` | `Ctrl+B` | Show/hide the sidebar panel |
 | `open_settings` | `Ctrl+,` | Open the settings panel |
 | `quit` | `Alt+F4` | Exit the application |

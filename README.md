@@ -20,7 +20,6 @@ GeoSource Tauri Template is a modern, production-ready desktop application boile
 
 ---
 
-
 ## Features Overview
 
 - 🚀 **Tauri v2 Desktop Architecture**: Lightweight cross-platform native execution using Rust and web technology.
@@ -56,6 +55,7 @@ Before running or building the project, ensure your environment meets the follow
    ```
 
 2. Install frontend dependencies:
+
    ```bash
    npm install
    ```
@@ -72,7 +72,7 @@ Before running or building the project, ensure your environment meets the follow
 | **Frontend Dev Only**     | `npm run dev`                     | Runs Next.js dev server on port `3000`                     |
 | **Build Desktop App**     | `npm run tauri:build`             | Compiles production Tauri desktop binary                   |
 | **Package Release (All)** | `npm run release`                 | Builds & packages installers, portable ZIPs, and manifest  |
-| **Clean Package Release**  | `npm run release:clean`           | Cleans `release/` directory and builds release packages    |
+| **Clean Package Release** | `npm run release:clean`           | Cleans `release/` directory and builds release packages    |
 | **Build Frontend**        | `npm run build`                   | Builds static/SSR Next.js bundle                           |
 | **Run Frontend Tests**    | `npm run test`                    | Executes Vitest test suite                                 |
 | **Test Coverage**         | `npm run test:coverage`           | Runs Vitest with coverage reporting                        |
