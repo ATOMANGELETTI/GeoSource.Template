@@ -1,0 +1,27 @@
+# GeoSource Git LFS (Large File Storage) Configuration
+
+# Geospatial datasets & databases
+*.gpkg filter=lfs diff=lfs merge=lfs -text
+*.mbtiles filter=lfs diff=lfs merge=lfs -text
+*.pmtiles filter=lfs diff=lfs merge=lfs -text
+*.tif filter=lfs diff=lfs merge=lfs -text
+*.tiff filter=lfs diff=lfs merge=lfs -text
+*.spatialite filter=lfs diff=lfs merge=lfs -text
+
+# Native Binaries & Executables
+*.exe filter=lfs diff=lfs merge=lfs -text
+*.dll filter=lfs diff=lfs merge=lfs -text
+*.so filter=lfs diff=lfs merge=lfs -text
+*.dylib filter=lfs diff=lfs merge=lfs -text
+*.node filter=lfs diff=lfs merge=lfs -text
+
+# Desktop Application Packaging & Installers
+*.msi filter=lfs diff=lfs merge=lfs -text
+*.AppImage filter=lfs diff=lfs merge=lfs -text
+*.dmg filter=lfs diff=lfs merge=lfs -text
+*.pkg filter=lfs diff=lfs merge=lfs -text
+
+# Fonts & Heavy Media
+*.ttf filter=lfs diff=lfs merge=lfs -text
+*.otf filter=lfs diff=lfs merge=lfs -text
+*.woff2 filter=lfs diff=lfs merge=lfs -text

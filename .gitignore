@@ -14,6 +14,8 @@ out/
 # Rust / Cargo build artifacts
 /src-tauri/target/
 /target/
+/target_test/
+target_test/
 **/*.rs.bk
 
 # Tauri specific
