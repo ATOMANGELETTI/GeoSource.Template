@@ -9,7 +9,6 @@
   align-items: center;
   gap: var(--traffic-gap);
   padding-left: 14px;
-  -webkit-app-region: no-drag;
 }
 
 /* Show icons when hovering the traffic lights container */

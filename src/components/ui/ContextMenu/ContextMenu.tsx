@@ -9,7 +9,7 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 import type { LucideIcon } from "lucide-react";
-import styles from "@/app/styles/modules/ContextMenu.module.css";
+import styles from "./ContextMenu.module.css";
 
 // ─────────────────────────────────────────────
 // Types
