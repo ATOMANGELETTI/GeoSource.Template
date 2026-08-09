@@ -4,10 +4,13 @@ use tauri::{
 };
 
 /// Width and height of the tray-menu webview popover window in physical pixels (approx).
+#[allow(dead_code)]
 const MENU_WIDTH: i32 = 220;
+#[allow(dead_code)]
 const MENU_HEIGHT: i32 = 230;
 
 /// Set up system tray icon with custom right-click context menu webview positioning.
+#[allow(dead_code)]
 pub fn setup_tray(app: &AppHandle) -> Result<(), Box<dyn std::error::Error>> {
     let mut builder = TrayIconBuilder::new().tooltip("GeoSource Template");
 

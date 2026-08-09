@@ -18,6 +18,7 @@ use tauri_plugin_window_state::{Builder, StateFlags};
 /// and application loading are both complete. Shows and focuses the main window
 /// and closes the splashscreen window.
 #[tauri::command]
+#[allow(dead_code)]
 async fn close_splash_and_show_main(app_handle: tauri::AppHandle) -> Result<(), String> {
     if let Some(main_window) = app_handle.get_webview_window("main") {
         let (start_maximized, always_on_top) = if let Some(config_state) = app_handle.try_state::<std::sync::Mutex<config::AppConfig>>() {

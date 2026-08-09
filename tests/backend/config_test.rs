@@ -1,3 +1,5 @@
+#![allow(clippy::field_reassign_with_default)]
+
 use crate::config::*;
 use std::fs;
 use std::path::PathBuf;
@@ -84,9 +86,11 @@ fn test_save_and_load_roundtrip_via_tempfile() {
     let path = dir.join("geosource_test_settings_rt.yaml");
 
     for theme_name in &["snow-storm", "frost", "aurora", "polar-night"] {
-        let mut original = AppSettings::default();
-        original.theme = (*theme_name).to_string();
-        original.language = "fr".into();
+        let original = AppSettings {
+            theme: (*theme_name).to_string(),
+            language: "fr".into(),
+            ..Default::default()
+        };
 
         save_yaml(&original, &path, "test").expect("save");
 
@@ -119,17 +123,20 @@ fn test_save_and_load_bindings_via_tempfile() {
 
 #[test]
 fn test_log_level_settings() {
-    let mut settings = LogLevelSettings::default();
-    assert!(!settings.should_log(log::Level::Trace));
-    assert!(!settings.should_log(log::Level::Debug));
-    assert!(settings.should_log(log::Level::Info));
-    assert!(settings.should_log(log::Level::Warn));
-    assert!(settings.should_log(log::Level::Error));
+    let default_settings = LogLevelSettings::default();
+    assert!(!default_settings.should_log(log::Level::Trace));
+    assert!(!default_settings.should_log(log::Level::Debug));
+    assert!(default_settings.should_log(log::Level::Info));
+    assert!(default_settings.should_log(log::Level::Warn));
+    assert!(default_settings.should_log(log::Level::Error));
 
-    settings.trace = true;
-    settings.debug = true;
-    assert!(settings.should_log(log::Level::Trace));
-    assert!(settings.should_log(log::Level::Debug));
+    let custom_settings = LogLevelSettings {
+        trace: true,
+        debug: true,
+        ..Default::default()
+    };
+    assert!(custom_settings.should_log(log::Level::Trace));
+    assert!(custom_settings.should_log(log::Level::Debug));
 
     let yaml_map = "trace: true\ndebug: false\ninfo: true\nwarn: false\nerror: true\n";
     let deserialized_map: LogLevelSettings = serde_yaml::from_str(yaml_map).expect("deserialize map");
